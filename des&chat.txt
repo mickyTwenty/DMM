@@ -1,0 +1,266 @@
+===================================================
+Description
+===================================================
+There is an existing technology that is comprised of a Weight Indicator (WI) that is connected to a Raspberry Pi 4 via serial RS232. The WI outputs weight information via RS232 once every ~100ms. The core technology objective is for the Pi to capture the weight information of an object on a scale (that is connected to the WI) in real-time and display it in both barcode and numerical format. These core objectives have already been completed and all the code already exists in Python and is working.
+
+The only remaining pieces that this job entails are:
+
+- Redo the UI in QT Designer (from Tkinter). I have the desired end-state developed in XD with all asset files available.
+- Code business logic for which I already have a full DFD (Data Flow Diagram) for with details.
+- Create a method to take the last MySQL database entry and translate it into an API call to a REST HTTPS API end-point.
+
+A few more mention-worthy notes:
+- I am an IT Infrastructure Engineer myself, so I know how to make your job easy.
+- I have a full DEV sandbox setup with VPN access to the RPI as well as from RPI to API end-point
+- This project has massive potential and this coding requirement only represents v1.0 of this product that will be piloted at a *very* large Canadian organization. After a successful pilot, there will be a very large purchase order and I anticipate there will be many revisions of this.
+- I am very open to a long term mutually beneficial partnership where trust in one another is paramount.
+- I promise I will take care of you if you take care of me.
+- My preference is an arrangement with moderate (but fair) immediate compensation with the promise of near-future high remuneration upon the success of the pilot. This is legit and has a pilot purchase order from the very large client that I will share with the right candidate.
+- Catch is: I need this all done in 10 days (or less)!
+
+
+
+===================================================
+Chat
+===================================================
+Milos, Kako si?
+My wife is from Užice!
+Thank you for reaching out. I hope this note finds you and your family well and safe.
+S
+Let me know when you have time to chat about this project.
+Hello. I'm Milos.
+Very nice to meet you.
+I have experience with RPI + QT already.
+I'm available here 9pm(gmt+2)
+Are you around?
+S
+I am, sir!
+I'm here.
+Should I work in VPS.
+Sorry, Milos... Give me a few minutes... things are a little crazy at the moment... phones ringing, pregnant Serbian wife.....
+S
+You gonna be around in about 15mins?
+yes. no problem.
+tyt.
+S
+I will make an espresso and be right back.
+ok.
+I'm just called, be back in 10 mins.
+sorry.
+All good. I am here and available when you are.
+In the meantime, here's an XD link to what I had in mind for the UI to be done in QT:
+https://xd.adobe.com/view/b2fd38f8-5843-4fc4-746e-be3299390eaa-c4cc/
+Here's the DFD:
+
+DFD_v6.pdf
+This DFD represents desired end-state.
+This is what has already been completed in Python and Tkinter:
+
+Initial_Version_Completed.zip
+S
+I propose that you TeamViewer into my RPI prototype and I demo you what I already have and you can scan the existing code and then tell me what you think and we go from there. How does that sound?
+Hi. I'm back.
+let me check.
+ok.
+I can teamviewer now.
+ID: 1 393 445 552
+Password: shlivo
+let me know when you're in
+I see you
+So this is what exists now in Python / Tkintr
+Disregard Combined
+Core functionality is here
+So, I have a Weight Indicator that is normally connected to load cells, but is now connection to a potentiometer to simulate the analog signal that is weight
+my old fashioned LED indicated has 600 KG on it as my pot is set to that too
+S
+Now its 1501KGs
+yes
+Now it's 3002
+You get the idea...
+That Active Truck ID in the top left is a configurable parameter and is composed of the hostname with a "WP-" prefixed.
+ie... if I accepted this change, the hostname would be changed to WP-TESTING123
+All the weight data gets stored in a local MySQL DB
+and these buttons here are pretty self explanatory
+S
+the keep / clear data refers to what happens in the db
+yes.
+the .csv files are a result of exports done
+S
+all make sense so far?
+why do you want convert to qt?
+Because what you see here is a very generic...
+Call this v1 - generic.
+What we're working on now is v2 - customized
+and v2 customized is for a very big Canadian freight company that has a TMS (similar to ERP for trucking industry) that we have to integrate with via API
+and the UI must be as little operator inputs as possible.
+S
+Have you seen the XD?
+Yes.
+so, when API info is exchanged, the interface gets updated.
+S
+And, we need a modern look and feel, hence QT.
+I see.
+S
+Unless you have other ideas... I"m not totally locked into QT, in fact for commercial purposes there is licencing issues, so if you know of something that will result in a similar UI/UX that can integrate with Python and maybe C++ in the future, then I open to your inputs.
+It is possible to use PyQt, I think, so you can keep python code, and make ui with QT.
+but it's better to use c++ with QT, and python is only for inputs.
+S
+So, you're thinking C++, Python and QT?
+yes, that is possible.
+but I'm not sure what we are going to do without checking python code.
+At this point, I would like to keep things as simple as possible. Here is the situation; I have purchase order for 5 units from a very large freight company and if this does what they want want it to (which I know it will), then there will be a purchase order work approx. 600k USD in the next 60 days. We'll call this v3 or this project.
+v4 of the project will be more of a generic version of this without API integration that we will mass produce. My company owns patents on the scale technology, the only missing part is this.
+S
+Are you still looking at TV?
+no.
+Let me know when you are looking
+S
+or if you're still interested
+Yes.
+S
+OK - see this version that is up right now?
+yes.
+S
+This was a version in between the first one we saw and what we want this one to be.
+ok.
+The client wants as little operator inteaction as possible.
+This device will be mounted on forklifts.
+That's just debug information the previous developer was echo'ing to console
+S
+The freelancer I was working with from here was from India (West Bengal) and he can't continue because he is in a complete lockdown quarantine state in no access to technology. I very much liked working with him and he's a good and smart guy, but it's just impossible for him to continue now because of corona.
+all inputs contain 'M' suffix?
+only ones with M suffix should be used.... the indicator only outputs the M once the weight has been stablized.
+S
+I also have full API documentation I can send you.
+ok, good.
+As well as other important information from a business context.
+And the RPI has an IPSEC tunnel to the client's infrastructure
+S
+I have allot more information I can send you along with VPN access to my infrastructure so you can get full host access to the RPI using putty/VNC/WinSCP, etc... and I have Windows and Debian VMs you can connect to as well.
+ok.
+so this all have to be done in 10 days?
+Yes but backend code already exists for the RS232/Python end of things as well as other functionality.
+S
+I can send you the existing code.
+ok, but I don't work weekends in usual.
+S
+Well, first things first; do you think you can get it done in 10 days?
+yes.
+Let me know your exact deadline.
+Rough estimate of cost?
+S
+I would need the logic and API stuff tested before the UI/UX end of things because the client needs to see progress there soon.
+UI/UX is no problem.
+it can be done in 3 days enough.
+So, UI/UX and API tested by 27th.
+S
+Doable?
+30th.
+30th cutting it too close. I have to physically deploy on the 2nd and we need buffer to remediate things in case there are issues.
+Estimate in cost? (keeping in mind that there will be BIG $$ with success of this and I want a long term partnership).
+S
+I make sure I take care of those who take care of me.
+me too.
+and would you pay hourly?
+whatever works best for you. you can quote me on this as a job or hourly, or whatever you feel most comfortable with.
+S
+For me, honesty and trust and the most important things. All we have is our word.
+S
+I want you to pay hourly. and I'm also honest.
+
+
+
+=================================================
+skype
+=================================================
+Steve, 5:36 PM
+(wave)
+
+Hello!
+
+5:37 PM
+I'm here.
+This is Milos.
+
+Steve, 5:37 PM
+This is Steve.  Good to 'meet' you :-)
+
+5:38 PM
+Me too.
+
+Steve, 5:39 PM
+Would you like to 'meet' via Skype video call for a few minutes?
+
+5:40 PM
+It's possible only voice call. no camera. :(
+
+Steve, 5:41 PM
+that works... frankly, I need a break from typing!!
+
+
+Steve, 5:41 PM
+Give me a call when you're back.
+
+5:41 PM
+yes.
+let me check your code.
+and have a call. 
+ok?
+
+Steve, 5:42 PM
+
+WeightRPI.zip
+
+deal
+
+this is the first version of the app you saw.
+
+5:43 PM
+yes.
+and second version?
+
+Steve, 5:45 PM
+
+DMM.zip
+
+I think the 2nd version was done in QT too.
+
+5:46 PM
+ok.
+
+Steve, 5:46 PM
+And it's more advanced and incorporates a library for what will be v4 of this which will be a generic device (no API integration) that will be massed produced.
+
+basically, it eleminates the external indicator and makes the RPI an indicator itself
+
+5:47 PM
+ok.
+
+Steve, 5:47 PM
+I designed the electronics for that
+
+and that will also be a huge money maker
+
+5:47 PM
+good.
+
+Steve, 5:47 PM
+but, that's for a later discussion.
+
+5:47 PM
+yes.
+
+Steve, 5:50 PM
+I'll be perfectly honest about my situation with you Milos;  The owner for the company Weigh Point Inc. is 85yrs old and has nobody to give the company to after he dies.  I've known him for years and has said he'll give it to me in the next year or so... But in the meantime, the old man needs purpose so he's still running it.  He's been in business for 50 years but only doing small stuff because he's not a very good business man... but he is a good mad scientist and he pattented scales (load cellls) embedded in forks that can easily slide on existing forklift carriages.
+
+That said, he lives in technological world of the 1980s and early 90s and I have landed the company the biggest fish they've ever had with this client who loves the scales, but needs modern tech integration.
+
+So, I"m basically funding this out of my own pocket for the moment, and once the big PO comes through, I'll be taking the profit to buy the company and run it.
+
+Frankly, I just need to get this pilot for the client done, so they can run with it for about 30 days and prove out the concept.  I have a great relationship with the VP there and have weekly progress meetings with them on the project and they are super excited, because as simple as this sounds, there is nothing like this out on the market.
+
+5:54 PM
+good.
+
+Steve, 5:54 PM
+And the product is marked as "Legal for Trade" which is a government certification that not many company's have and must exist for businesses to bill based on weight.
