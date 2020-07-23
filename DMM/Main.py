@@ -116,6 +116,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setCentralWidget(self.centralwidget)
 
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint) 
+        self.showMaximized()
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(self)
