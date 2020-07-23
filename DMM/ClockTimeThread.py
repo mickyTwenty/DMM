@@ -14,7 +14,7 @@ class ClockTimeThread(threading.Thread):
             now = datetime.now()
             currentTime = now.strftime("%H:%M %p")
             currentDate = now.strftime("%A, %B %d, %Y")
-            timestamp = currentTime+' '+currentDate
+            timestamp = currentTime + ' ' + currentDate
             if timestamp != self.OLDTIME:
                 self.GUI.updateTimeText(timestamp)
                 self.OLDTIME = timestamp
