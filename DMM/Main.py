@@ -100,8 +100,8 @@ class MainWindow(QtWidgets.QMainWindow):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.sizePolicy().hasHeightForWidth())
         self.setSizePolicy(sizePolicy)
-        self.setMinimumSize(QtCore.QSize(1024, 600))
-        self.setMaximumSize(QtCore.QSize(1024, 600))
+        self.setMinimumSize(QtCore.QSize(1024, 700))
+        self.setMaximumSize(QtCore.QSize(1024, 700))
         self.setStyleSheet("QMainWindow#MainWindow {background-color: black;}")
         self.centralwidget = QtWidgets.QWidget(self)
         self.centralwidget.setObjectName("centralwidget")
@@ -116,10 +116,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setCentralWidget(self.centralwidget)
 
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.CustomizeWindowHint)
-        
-        self.setWindowFlag(QtCore.Qt.WindowCloseButtonHint, False)
-        self.setWindowFlag(QtCore.Qt.WindowMaximizeButtonHint, False)
-        self.setWindowFlag(QtCore.Qt.WindowMinimizeButtonHint, False)
         #self.showMaximized()
 
         self.retranslateUi(MainWindow)
