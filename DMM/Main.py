@@ -115,7 +115,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.verticalLayout.addWidget(self.mainStacked)
         self.setCentralWidget(self.centralwidget)
 
-        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.CustomizeWindowHint)
         
         self.setWindowFlag(QtCore.Qt.WindowCloseButtonHint, False)
         self.setWindowFlag(QtCore.Qt.WindowMaximizeButtonHint, False)
