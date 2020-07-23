@@ -30,7 +30,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.SERIALMODE = 'RS232'
         self.TRUCKID = ''
         self.CURRENTWEIGHT = '0'
-        self.WEIGHTMODE = 'KG'
+        self.WEIGHTMODE = 'LBS'
         self.HX711STAT = True
         self.RS232STAT = True
         self.DOCID = ''
@@ -115,8 +115,12 @@ class MainWindow(QtWidgets.QMainWindow):
         self.verticalLayout.addWidget(self.mainStacked)
         self.setCentralWidget(self.centralwidget)
 
-        self.setWindowFlags(QtCore.Qt.FramelessWindowHint) 
-        self.showMaximized()
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        
+        self.setWindowFlag(QtCore.Qt.WindowCloseButtonHint, False)
+        self.setWindowFlag(QtCore.Qt.WindowMaximizeButtonHint, False)
+        self.setWindowFlag(QtCore.Qt.WindowMinimizeButtonHint, False)
+        #self.showMaximized()
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(self)
