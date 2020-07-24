@@ -5,9 +5,11 @@
 # Created by: PyQt5 UI code generator 5.14.1
 #
 # WARNING! All changes made in this file will be lost!
-
+import os
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
+os.environ["QT_IM_MODULE"] = "qtvirtualkeyboard"
 
 
 class MainWidget(object):
@@ -149,6 +151,11 @@ class MainWidget(object):
         self.verticalLayout_4.setContentsMargins(3, 3, 3, 3)
         self.verticalLayout_4.setSpacing(0)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
+
+
+        self.editTest = QtWidgets.QLineEdit(self.liftWidget)
+        self.verticalLayout_4.addWidget(self.editTest)
+
         self.label_4 = QtWidgets.QLabel(self.liftWidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)

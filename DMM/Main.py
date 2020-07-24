@@ -1,3 +1,5 @@
+import sys, os
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QFontDatabase, QFont
 
@@ -5,6 +7,8 @@ from MainWidget import MainWidget
 from ToolsWidget import ToolsWidget
 import ClockHelper
 import WeightButtonHelper
+
+os.environ["QT_IM_MODULE"] = "qtvirtualkeyboard"
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -100,8 +104,8 @@ class MainWindow(QtWidgets.QMainWindow):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.sizePolicy().hasHeightForWidth())
         self.setSizePolicy(sizePolicy)
-        self.setMinimumSize(QtCore.QSize(1024, 700))
-        self.setMaximumSize(QtCore.QSize(1024, 700))
+        self.setMinimumSize(QtCore.QSize(1024, 600))
+        self.setMaximumSize(QtCore.QSize(1024, 600))
         self.setStyleSheet("QMainWindow#MainWindow {background-color: black;}")
         self.centralwidget = QtWidgets.QWidget(self)
         self.centralwidget.setObjectName("centralwidget")
@@ -127,7 +131,6 @@ class MainWindow(QtWidgets.QMainWindow):
 
 
 if __name__ == "__main__":
-    import sys
     app = QtWidgets.QApplication(sys.argv)
     window = MainWindow()
     window.show()
