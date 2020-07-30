@@ -1,6 +1,7 @@
 import time
 import threading
 from datetime import datetime
+from Config import _App
 
 
 class ClockTimeThread(threading.Thread):
@@ -10,7 +11,7 @@ class ClockTimeThread(threading.Thread):
         self.OLDTIME = ''
 
     def run(self):
-        while self.GUI.TIMESTAT:
+        while _App.TIMESTAT:
             now = datetime.now()
             currentTime = now.strftime("%H:%M %p")
             currentDate = now.strftime("%A, %B %d, %Y")

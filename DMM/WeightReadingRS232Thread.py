@@ -13,6 +13,7 @@ from PIL import Image
 import numpy as np
 import random
 from RS232Serial import RS232Serial
+from Config import _App
 
 class WeightReadingRs232Thread(threading.Thread):
     def __init__(self, GUI):
@@ -38,8 +39,8 @@ class WeightReadingRs232Thread(threading.Thread):
 
     def run(self):
         print('Entering Into RS232 Thread')
-        while self.GUI.RS232STAT:
-            if self.GUI.DEBUG is True:
+        while _App.RS232STAT:
+            if _App.DEBUG is True:
                 ############ TESTING
                 cval = random.randint(0, 1)
                 rval = random.randint(5000, 10000) * 1.7
@@ -102,7 +103,7 @@ class WeightReadingRs232Thread(threading.Thread):
         return mynum.__trunc__() if not mynum % 1 else float(mynum)
 
     def weightConversion(self, weight):
-        if self.GUI.WEIGHTMODE == 'KG':
+        if _App._Settings.WEIGHTMODE == 'KG':
             weight = float(weight) * 2.20462
             weight = round(weight, 1)
             weight = str(weight)
@@ -118,7 +119,7 @@ class WeightReadingRs232Thread(threading.Thread):
                 ean = EAN(weight, writer=ImageWriter())
                 fullname = ean.save('./res/img/barcode')
 
-                if self.GUI.WEIGHTMODE == 'KG':
+                if _App._Settings.WEIGHTMODE == 'KG':
                     fimg = Image.open("./res/img/kg.jpg")
                 else:
                     fimg = Image.open("./res/img/lbs.jpg")
@@ -126,7 +127,7 @@ class WeightReadingRs232Thread(threading.Thread):
                 basewidth, height = bar.size
                 # wpercent = (basewidth / float(fimg.size[0]))
                 # hsize = int((float(fimg.size[1]) * float(wpercent)))
-                fimg = fimg.resize((basewidth, 55), Image.ANTIALIAS)
+                fimg = fimg.resize((basewidth, 50), Image.ANTIALIAS)
                 img_merge = np.vstack((np.asarray(bar), np.asarray(fimg)))
                 img_merge = Image.fromarray(img_merge)
                 barimg = img_merge.resize((240, 160), Image.ANTIALIAS)
@@ -136,7 +137,7 @@ class WeightReadingRs232Thread(threading.Thread):
                                     error_correction=qrcode.constants.ERROR_CORRECT_L,
                                     box_size=50,
                                     border=1,)
-                qr.add_data(weight+' '+self.GUI.WEIGHTMODE)
+                qr.add_data(weight + ' ' + _App._Settings.WEIGHTMODE)
                 qr.make(fit=True)
                 qrimg = qr.make_image(fill_color="black", back_color="white")
                 #qrimg.save('./res/img/qrcode.png')
@@ -146,8 +147,10 @@ class WeightReadingRs232Thread(threading.Thread):
 
                 self.GUI.CURRENTWEIGHT = weight
                 self.GUI.updateWeightText(weight)
-                self.GUI.updateBarCodeImage(barimg)
-                self.GUI.updateQrCodeImage(qrimg)
+                if _App._Settings.WEIGHTCODE == 'BARCODE':
+                    self.GUI.updateBarCodeImage(barimg)
+                elif _App._Settings.WEIGHTCODE == 'QRCODE':
+                    self.GUI.updateQrCodeImage(qrimg)
 
             else:
                 print('Response contains M')

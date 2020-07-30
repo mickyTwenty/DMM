@@ -9,9 +9,6 @@ import os
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-os.environ["QT_IM_MODULE"] = "qtvirtualkeyboard"
-
-
 class MainWidget(object):
     def __init__(self, MainWindow):
         self.mainWidget = QtWidgets.QWidget()
@@ -20,6 +17,7 @@ class MainWidget(object):
         self.MainWindow = MainWindow
 
         self.btnTools.clicked.connect(self.MainWindow.setToolsWidget)
+        self.btnSetup.clicked.connect(self.MainWindow.showKeyboard)     # test for keyboard
 
     def updateTimeText(self, timestamp):
         self.lblDateTime.setText(timestamp)
@@ -153,8 +151,8 @@ class MainWidget(object):
         self.verticalLayout_4.setObjectName("verticalLayout_4")
 
 
-        self.editTest = QtWidgets.QLineEdit(self.liftWidget)
-        self.verticalLayout_4.addWidget(self.editTest)
+        #self.editTest = QtWidgets.QLineEdit(self.liftWidget)
+        #self.verticalLayout_4.addWidget(self.editTest)
 
         self.label_4 = QtWidgets.QLabel(self.liftWidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)

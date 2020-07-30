@@ -6,9 +6,3 @@ class ClockHelper:
 
     def startClock(self):
         ClockTimeThread(self.GUI).start()
-
-
-
-
-
-

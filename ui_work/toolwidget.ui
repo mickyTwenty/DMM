@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ToolWidget</class>
- <widget class="QWidget" name="ToolWidget">
+ <class>ToolsWidget</class>
+ <widget class="QWidget" name="ToolsWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -29,7 +29,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>ToolsWidget</string>
   </property>
   <property name="styleSheet">
    <string notr="true">QWidget#ToolWidget {
@@ -140,7 +140,7 @@ QToolButton {
        </property>
        <property name="icon">
         <iconset>
-         <normaloff>res/gui/tools_email.png</normaloff>res/gui/tools_email.png</iconset>
+         <normaloff>res/gui/tools_diagnostics.png</normaloff>res/gui/tools_diagnostics.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -160,7 +160,7 @@ QToolButton {
        </property>
        <property name="icon">
         <iconset>
-         <normaloff>res/gui/tools_copy.png</normaloff>res/gui/tools_copy.png</iconset>
+         <normaloff>res/gui/tools_info.png</normaloff>res/gui/tools_info.png</iconset>
        </property>
        <property name="iconSize">
         <size>

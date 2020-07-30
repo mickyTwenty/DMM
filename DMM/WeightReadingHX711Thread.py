@@ -13,6 +13,7 @@ from PIL import Image
 import numpy as np
 import random
 from HX711Serial import HX711Serial
+from Config import _App
 
 class WeightReadingHX711Thread(threading.Thread):
     def __init__(self, GUI):
@@ -38,8 +39,8 @@ class WeightReadingHX711Thread(threading.Thread):
 
     def run(self):
         print('Entering Into HX711 Thread')
-        while self.GUI.HX711STAT:
-            if self.GUI.DEBUG is True:
+        while _App.HX711STAT:
+            if _App.DEBUG is True:
                 ############ TESTING
                 cval = random.randint(0, 1)
                 rval = random.randint(5000, 10000) * 1.7

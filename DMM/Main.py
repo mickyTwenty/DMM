@@ -7,19 +7,24 @@ from MainWidget import MainWidget
 from ToolsWidget import ToolsWidget
 import ClockHelper
 import WeightButtonHelper
+import KeyboardWidget
 
-os.environ["QT_IM_MODULE"] = "qtvirtualkeyboard"
-
+from Config import _App
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
         self.setupUi()
+
+        self.currentWidget = -1;
+
         self.mainWidget = MainWidget(self)
         self.toolsWidget = ToolsWidget(self)
+        self.keyboard = KeyboardWidget.KeyboardWidget(self)
 
         self.mainStacked.addWidget(self.mainWidget.mainWidget)
         self.mainStacked.addWidget(self.toolsWidget.toolsWidget)
+        self.mainStacked.addWidget(self.keyboard)
        
         self.setMainWidget()
         #self.setToolsWidget()
@@ -29,19 +34,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.initHelperClass()
 
     def initStatVariables(self):
-        self.WEIGHTTHRESHOLD = 100
-
-        self.SERIALMODE = 'RS232'
         self.TRUCKID = ''
-        self.CURRENTWEIGHT = '0'
-        self.WEIGHTMODE = 'LBS'
-        self.HX711STAT = True
-        self.RS232STAT = True
+        #self.CURRENTWEIGHT = '0'
         self.DOCID = ''
-        self.OPENKEYBORADACTIONSTAT = False
-        self.TIMESTAT = True
-
-        self.DEBUG = True
 
     def setWeightFont(self):
         QFontDatabase.addApplicationFont("./res/font/DJB Get Digital.ttf")
@@ -51,30 +46,26 @@ class MainWindow(QtWidgets.QMainWindow):
         # DMMMainUI.closeEvent(self.closeEvent1)
 
     def initHelperClass(self):
-        ClockHelper.ClockHelper(self).startClock()
-        self.WBHelper = WeightButtonHelper.WeightButtonHelper(self)
-        if self.SERIALMODE == 'HX711':
+        ClockHelper.ClockHelper(self.mainWidget).startClock()
+        self.WBHelper = WeightButtonHelper.WeightButtonHelper(self.mainWidget)
+        if _App._Settings.SERIALMODE == 'HX711':
             self.WBHelper.readHX711()
         else:
             self.WBHelper.readRS232()
 
     def setMainWidget(self):
         self.mainStacked.setCurrentIndex(0)
+        self.currentWidget = 0
 
     def setToolsWidget(self):
         self.mainStacked.setCurrentIndex(1)
+        self.currentWidget = 1
 
-    def updateTimeText(self, timestamp):
-        self.mainWidget.updateTimeText(timestamp)
+    def showKeyboard(self):
+        self.mainStacked.setCurrentIndex(2)
 
-    def updateWeightText(self, weight):
-        self.mainWidget.updateWeightText(weight)
-
-    def updateBarCodeImage(self, img):
-        self.mainWidget.updateBarCodeImage(img)
-
-    def updateQrCodeImage(self, img):
-        self.mainWidget.updateQrCodeImage(img)
+    def hideKeyboard(self):
+        self.mainStacked.setCurrentIndex(self.currentWidget)
 
     def closeEvent(self, event):
         result = QtWidgets.QMessageBox.question(self,
@@ -87,9 +78,10 @@ class MainWindow(QtWidgets.QMainWindow):
             event.accept()
 
             print('Exiting Program Loop')
-            self.HX711STAT = False
-            self.RS232STAT = False
-            self.TIMESTAT = False
+            _App.HX711STAT = False
+            _App.RS232STAT = False
+            _App.TIMESTAT = False
+            _App._Settings.save()
             
     
     def keyPressEvent(self, event):
