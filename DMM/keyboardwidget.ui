@@ -1176,7 +1176,7 @@ background-color: rgb(169, 177, 188);
        <string>Space</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="key_com">
+     <widget class="QPushButton" name="key_dotcom">
       <property name="geometry">
        <rect>
         <x>540</x>

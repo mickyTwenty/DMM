@@ -2,6 +2,7 @@ import sys, os
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QFontDatabase, QFont
+import enum
 
 from MainWidget import MainWidget
 from ToolsWidget import ToolsWidget
@@ -11,12 +12,18 @@ import KeyboardWidget
 
 from Config import _App
 
+class CurrentWidget(enum.Enum):
+    NONE                = -1
+    MAIN_WIDGET         = 0
+    TOOLS_WIDGET        = 1
+    KEYBOARD_WIDGET     = 2
+
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
         self.setupUi()
 
-        self.currentWidget = -1;
+        self.currentWidget = CurrentWidget.NONE.value
 
         self.mainWidget = MainWidget(self)
         self.toolsWidget = ToolsWidget(self)
@@ -54,15 +61,15 @@ class MainWindow(QtWidgets.QMainWindow):
             self.WBHelper.readRS232()
 
     def setMainWidget(self):
-        self.mainStacked.setCurrentIndex(0)
-        self.currentWidget = 0
+        self.mainStacked.setCurrentIndex(CurrentWidget.MAIN_WIDGET.value)
+        self.currentWidget = CurrentWidget.MAIN_WIDGET.value
 
     def setToolsWidget(self):
-        self.mainStacked.setCurrentIndex(1)
-        self.currentWidget = 1
+        self.mainStacked.setCurrentIndex(CurrentWidget.TOOLS_WIDGET.value)
+        self.currentWidget = CurrentWidget.TOOLS_WIDGET.value
 
     def showKeyboard(self):
-        self.mainStacked.setCurrentIndex(2)
+        self.mainStacked.setCurrentIndex(CurrentWidget.KEYBOARD_WIDGET.value)
 
     def hideKeyboard(self):
         self.mainStacked.setCurrentIndex(self.currentWidget)
