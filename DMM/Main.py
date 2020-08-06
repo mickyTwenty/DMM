@@ -6,6 +6,7 @@ import enum
 
 from MainWidget import MainWidget
 from ToolsWidget import ToolsWidget
+import BasicSettingsWidget
 import ClockHelper
 import WeightButtonHelper
 import KeyboardWidget
@@ -13,10 +14,11 @@ import KeyboardWidget
 from Config import _App
 
 class CurrentWidget(enum.Enum):
-    NONE                = -1
-    MAIN_WIDGET         = 0
-    TOOLS_WIDGET        = 1
-    KEYBOARD_WIDGET     = 2
+    NONE                    = -1
+    MAIN_WIDGET             = 0
+    TOOLS_WIDGET            = 1
+    BASIC_SETTING_WIDGET    = 2
+    KEYBOARD_WIDGET         = 3
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
@@ -27,11 +29,13 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.mainWidget = MainWidget(self)
         self.toolsWidget = ToolsWidget(self)
+        self.basicsettingsWidget = BasicSettingsWidget.BasicSettingsWidget(self)
         self.keyboard = KeyboardWidget.KeyboardWidget(self)
 
         self.mainStacked.addWidget(self.mainWidget.mainWidget)
         self.mainStacked.addWidget(self.toolsWidget.toolsWidget)
-        self.mainStacked.addWidget(self.keyboard)
+        self.mainStacked.addWidget(self.basicsettingsWidget)
+        #self.mainStacked.addWidget(self.keyboard)
        
         self.setMainWidget()
         #self.setToolsWidget()
@@ -68,8 +72,14 @@ class MainWindow(QtWidgets.QMainWindow):
         self.mainStacked.setCurrentIndex(CurrentWidget.TOOLS_WIDGET.value)
         self.currentWidget = CurrentWidget.TOOLS_WIDGET.value
 
+    def setBasicSettingWidget(self):
+        self.mainStacked.setCurrentIndex(CurrentWidget.BASIC_SETTING_WIDGET.value)
+        self.currentWidget = CurrentWidget.BASIC_SETTING_WIDGET.value
+
     def showKeyboard(self):
-        self.mainStacked.setCurrentIndex(CurrentWidget.KEYBOARD_WIDGET.value)
+        #self.mainStacked.setCurrentIndex(CurrentWidget.KEYBOARD_WIDGET.value)
+        self.keyboard.show()
+        self.keyboard.exec_()
 
     def hideKeyboard(self):
         self.mainStacked.setCurrentIndex(self.currentWidget)

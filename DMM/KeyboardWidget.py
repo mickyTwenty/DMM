@@ -5,7 +5,7 @@ from functools import partial
 
 DEFAULT_LABEL_STRING = "Enter your name"
 
-class KeyboardWidget(QtWidgets.QWidget):
+class KeyboardWidget(QtWidgets.QDialog):
     def __init__(self, MainWindow):
         super(KeyboardWidget, self).__init__()
         uic.loadUi('keyboardwidget.ui', self)
@@ -40,6 +40,11 @@ class KeyboardWidget(QtWidgets.QWidget):
         self.Label.setText(LabelText)
         self.lineEdit.setEchoMode(EchoMode)
         self.source = Src
+
+        if Src is None:
+            self.lineEdit.setText("")
+        else:
+            self.lineEdit.setText(Src.getText())
 
     def initConnections(self):
         self.key_buttons.append(self.key_accent)

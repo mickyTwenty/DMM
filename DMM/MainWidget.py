@@ -17,7 +17,8 @@ class MainWidget(object):
         self.MainWindow = MainWindow
 
         self.btnTools.clicked.connect(self.MainWindow.setToolsWidget)
-        self.btnSetup.clicked.connect(self.MainWindow.showKeyboard)     # test for keyboard
+        self.btnSetup.clicked.connect(self.MainWindow.setBasicSettingWidget)     
+        self.btnLogin.clicked.connect(self.MainWindow.showKeyboard)         # test for keyboard
 
     def updateTimeText(self, timestamp):
         self.lblDateTime.setText(timestamp)
@@ -342,8 +343,30 @@ class MainWidget(object):
         self.label_7.setAlignment(QtCore.Qt.AlignCenter)
         self.label_7.setObjectName("label_7")
         self.verticalLayout_10.addWidget(self.label_7)
-        spacerItem8 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.verticalLayout_10.addItem(spacerItem8)
+        self.widget = QtWidgets.QWidget(self.actionWidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.widget.sizePolicy().hasHeightForWidth())
+        self.widget.setSizePolicy(sizePolicy)
+        self.widget.setMinimumSize(QtCore.QSize(0, 174))
+        self.widget.setStyleSheet("background:transparent;")
+        self.widget.setObjectName("widget")
+        self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.widget)
+        self.horizontalLayout_4.setObjectName("horizontalLayout_4")
+        spacerItem8 = QtWidgets.QSpacerItem(145, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_4.addItem(spacerItem8)
+        self.btnLogin = QtWidgets.QToolButton(self.widget)
+        self.btnLogin.setStyleSheet("background-color: transparent")
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap("res/gui/button_login.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.btnLogin.setIcon(icon2)
+        self.btnLogin.setIconSize(QtCore.QSize(159, 118))
+        self.btnLogin.setObjectName("btnLogin")
+        self.horizontalLayout_4.addWidget(self.btnLogin)
+        spacerItem9 = QtWidgets.QSpacerItem(144, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_4.addItem(spacerItem9)
+        self.verticalLayout_10.addWidget(self.widget)
         self.verticalLayout_8.addWidget(self.actionWidget)
         self.gridLayout.addLayout(self.verticalLayout_8, 2, 1, 1, 1)
 
