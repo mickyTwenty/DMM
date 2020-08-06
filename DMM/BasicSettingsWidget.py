@@ -1,4 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
+import CodeModeDialog
 import sys
 
 class BasicSettingsWidget(QtWidgets.QWidget):
@@ -10,3 +11,10 @@ class BasicSettingsWidget(QtWidgets.QWidget):
 
         self.btnBack.clicked.connect(self.MainWindow.setMainWidget)
         self.btnHome.clicked.connect(self.MainWindow.setMainWidget)
+
+        self.btnWeightcode.clicked.connect(self.slotCodeClicked)
+
+
+    def slotCodeClicked(self):
+        diag = CodeModeDialog.CodeModeDialog(self)
+        diag.exec_()

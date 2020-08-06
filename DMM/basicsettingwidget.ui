@@ -110,7 +110,7 @@ QToolButton {
       </widget>
      </item>
      <item row="0" column="2">
-      <widget class="QToolButton" name="btnWidghtcode">
+      <widget class="QToolButton" name="btnWeightcode">
        <property name="icon">
         <iconset>
          <normaloff>res/gui/settings_code_none.png</normaloff>res/gui/settings_code_none.png</iconset>
