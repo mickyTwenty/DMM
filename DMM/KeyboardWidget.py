@@ -10,6 +10,8 @@ class KeyboardWidget(QtWidgets.QDialog):
         super(KeyboardWidget, self).__init__()
         uic.loadUi('keyboardwidget.ui', self)
 
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.CustomizeWindowHint | QtCore.Qt.WindowTitleHint | QtCore.Qt.WA_ShowWithoutActivating)
+
         self.MainWindow = MainWindow
         self.key_buttons = []
 
@@ -98,7 +100,7 @@ class KeyboardWidget(QtWidgets.QDialog):
         for x in range(47):
             self.key_buttons[x].clicked.connect(partial(self.key_pressed, x))
 
-        self.key_reject.clicked.connect(self.MainWindow.hideKeyboard)
+        self.key_reject.clicked.connect(self.reject)
 
     def key_pressed(self, index):
         print(index)

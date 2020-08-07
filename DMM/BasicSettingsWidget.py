@@ -16,5 +16,5 @@ class BasicSettingsWidget(QtWidgets.QWidget):
 
 
     def slotCodeClicked(self):
-        diag = CodeModeDialog.CodeModeDialog(self)
+        diag = CodeModeDialog.CodeModeDialog()
         diag.exec_()
