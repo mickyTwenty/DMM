@@ -99,8 +99,8 @@ QPushButton {
 }
 
 QPushButton:pressed {
-	color: rgb(233, 221, 134);
-	background: rgb(111, 111, 111);
+	color: rgb(253, 241, 154);
+	background: rgb(131, 131, 131);
 }</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">

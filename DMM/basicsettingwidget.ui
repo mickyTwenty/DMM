@@ -69,6 +69,9 @@ QToolButton {
      </property>
      <item row="0" column="0">
       <widget class="QToolButton" name="btnTruckid">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
        <property name="icon">
         <iconset>
          <normaloff>res/gui/settings_truckid.png</normaloff>res/gui/settings_truckid.png</iconset>
@@ -83,6 +86,9 @@ QToolButton {
      </item>
      <item row="0" column="1">
       <widget class="QToolButton" name="btnWifi">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
        <property name="icon">
         <iconset>
          <normaloff>res/gui/settings_wifi_none.png</normaloff>res/gui/settings_wifi_none.png</iconset>
@@ -97,6 +103,9 @@ QToolButton {
      </item>
      <item row="0" column="3">
       <widget class="QToolButton" name="btnEmailsetup">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
        <property name="icon">
         <iconset>
          <normaloff>res/gui/settings_email.png</normaloff>res/gui/settings_email.png</iconset>
@@ -111,6 +120,9 @@ QToolButton {
      </item>
      <item row="0" column="2">
       <widget class="QToolButton" name="btnWeightcode">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
        <property name="icon">
         <iconset>
          <normaloff>res/gui/settings_code_none.png</normaloff>res/gui/settings_code_none.png</iconset>
@@ -125,6 +137,9 @@ QToolButton {
      </item>
      <item row="0" column="4">
       <widget class="QToolButton" name="btnWThresholdRecord">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
        <property name="icon">
         <iconset>
          <normaloff>res/gui/settings_wthreshold_record.png</normaloff>res/gui/settings_wthreshold_record.png</iconset>
@@ -139,6 +154,9 @@ QToolButton {
      </item>
      <item row="1" column="0">
       <widget class="QToolButton" name="btnWThresholdMatch">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
        <property name="icon">
         <iconset>
          <normaloff>res/gui/settings_wthreshold_match.png</normaloff>res/gui/settings_wthreshold_match.png</iconset>

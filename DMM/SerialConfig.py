@@ -3,8 +3,8 @@ import serial
 class SerialConfig:
 
     def __init__(self):
-        #self.port = "/dev/ttyUSB0"
-        self.port = "COM6"
+        self.port = "/dev/ttyUSB0"
+        #self.port = "COM6"
         # self.port = "/dev/ttyS2"
         self.baudrate = 9600
         self.bytesize = serial.EIGHTBITS        # number of bits per bytes
