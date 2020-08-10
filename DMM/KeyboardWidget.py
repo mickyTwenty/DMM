@@ -14,28 +14,50 @@ class KeyboardWidget(QtWidgets.QDialog):
 
         self.MainWindow = MainWindow
         self.key_buttons = []
+        self.fkey_buttons = []
 
-        self.key_list_by_lines_lower = [ '`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 
+        self.key_list = [
+            [ '`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 
             'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '\\',
             'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', "'",
-            'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', ' ', '.com' ]
-        
-        self.key_list_by_lines_caps = [ '`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 
+            'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', ' ', '.com' ],
+
+            [ '`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 
             'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '\\',
             'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', "'",
-            'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', ' ', '.COM' ]
+            'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', ' ', '.COM' ],
 
-        self.key_list_by_lines_shift = [ '~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', 
+            [ '~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', 
             'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '|',
             'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':', '"',
-            'Z', 'X', 'C', 'V', 'B', 'N', 'M', '<', '>', '?', ' ', '.COM' ]
+            'Z', 'X', 'C', 'V', 'B', 'N', 'M', '<', '>', '?', ' ', '.COM' ],
+
+            [ '~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', 
+            'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '|',
+            'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ':', '"',
+            'z', 'x', 'c', 'v', 'b', 'n', 'm', '<', '>', '?', ' ', '.com' ]
+        ]
+
+        self.fkey_list = [
+            QtCore.Qt.Key_Tab,
+            QtCore.Qt.Key_Home,
+            QtCore.Qt.Key_End,
+            QtCore.Qt.Key_Left,
+            QtCore.Qt.Key_Right,
+            QtCore.Qt.Key_Up,
+            QtCore.Qt.Key_Down,
+            QtCore.Qt.Key_Backspace,
+            QtCore.Qt.Key_Delete,
+            QtCore.Qt.Key_Return
+
+        ]
 
         self.initKeyboard()
         self.initConnections()
 
     def initKeyboard(self, Src = None, LabelText = DEFAULT_LABEL_STRING, EchoMode = QtWidgets.QLineEdit.Normal):
-        self.Capslock = False
-        self.Shift = False
+        self.Capslock = 0b00
+        self.Shift = 0b00
         self.key_capslock.setChecked(False)
         self.key_shift.setChecked(False)
 
@@ -49,6 +71,7 @@ class KeyboardWidget(QtWidgets.QDialog):
             self.lineEdit.setText(Src.getText())
 
     def initConnections(self):
+        # char key buttons
         self.key_buttons.append(self.key_accent)
         self.key_buttons.append(self.key_1)
         self.key_buttons.append(self.key_2)
@@ -100,12 +123,73 @@ class KeyboardWidget(QtWidgets.QDialog):
         for x in range(47):
             self.key_buttons[x].clicked.connect(partial(self.key_pressed, x))
 
-        self.key_reject.clicked.connect(self.reject)
+
+        # function key buttons
+        self.fkey_buttons.append(self.key_tab)
+        self.fkey_buttons.append(self.key_home)
+        self.fkey_buttons.append(self.key_end)
+        self.fkey_buttons.append(self.key_left)
+        self.fkey_buttons.append(self.key_right)
+        self.fkey_buttons.append(self.key_up)
+        self.fkey_buttons.append(self.key_down)
+        self.fkey_buttons.append(self.key_backspace)
+        self.fkey_buttons.append(self.key_delete)
+        self.fkey_buttons.append(self.key_enter)
+
+        for x in range(10):
+            self.fkey_buttons[x].clicked.connect(partial(self.fkey_pressed, x))
+
+        # modifier buttons
+        self.key_capslock.clicked.connect(self.caps_pressed)
+        self.key_shift.clicked.connect(self.shift_pressed)
+        self.key_clear.clicked.connect(self.clear_pressed)
+
+        # accept & reject buttons
+        self.key_accept.clicked.connect(self.accept_pressed)
+        self.key_reject.clicked.connect(self.reject_pressed)
+
 
     def key_pressed(self, index):
-        key_to_add = self.key_list_by_lines_lower[index]
-        eventPress = QtGui.QKeyEvent(QtCore.QEvent.KeyPress, QtCore.Qt.Key_1, QtCore.Qt.NoModifier, key_to_add)
+        key_to_add = self.key_list[self.Capslock | self.Shift][index]
+        eventPress = QtGui.QKeyEvent(QtCore.QEvent.KeyPress, 0, QtCore.Qt.NoModifier, key_to_add)
         QtCore.QCoreApplication.postEvent(self.lineEdit, eventPress)
-        eventRelease = QtGui.QKeyEvent(QtCore.QEvent.KeyRelease, QtCore.Qt.Key_1, QtCore.Qt.NoModifier, key_to_add)
-        QtCore.QCoreApplication.postEvent(self.lineEdit, eventRelease)
-        self.key_left.animateClick(100)
+        #eventRelease = QtGui.QKeyEvent(QtCore.QEvent.KeyRelease, 0, QtCore.Qt.NoModifier, key_to_add)
+        #QtCore.QCoreApplication.postEvent(self.lineEdit, eventRelease)
+
+        if self.key_shift.isChecked():
+            self.Shift = 0b00
+            self.key_shift.setChecked(False)
+
+    def fkey_pressed(self, index):
+        self._key_press(self.fkey_list[index])
+    
+    def _key_press(self, key):
+        event = QtGui.QKeyEvent(QtCore.QEvent.KeyPress, key, QtCore.Qt.NoModifier)
+        QtCore.QCoreApplication.postEvent(self.lineEdit, event)
+
+    def caps_pressed(self):
+        if self.key_capslock.isChecked():
+            self.Capslock = 0b01
+        else:
+            self.Capslock = 0b00
+    
+    def shift_pressed(self):
+        if self.key_shift.isChecked():
+            self.Shift = 0b10
+        else:
+            self.Shift = 0b00
+
+    def clear_pressed(self):
+        self.Capslock = 0b00
+        self.Shift = 0b00
+        self.key_capslock.setChecked(False)
+        self.key_shift.setChecked(False)
+
+        self.lineEdit.setText("")
+
+    def accept_pressed(self):
+        print("accept")
+
+    def reject_pressed(self):
+        print("reject")
+
