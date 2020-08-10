@@ -103,7 +103,6 @@ class KeyboardWidget(QtWidgets.QDialog):
         self.key_reject.clicked.connect(self.reject)
 
     def key_pressed(self, index):
-        print(index)
         key_to_add = self.key_list_by_lines_lower[index]
         eventPress = QtGui.QKeyEvent(QtCore.QEvent.KeyPress, QtCore.Qt.Key_1, QtCore.Qt.NoModifier, key_to_add)
         QtCore.QCoreApplication.postEvent(self.lineEdit, eventPress)

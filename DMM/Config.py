@@ -38,7 +38,7 @@ class App:
         self.HX711STAT = True
         self.RS232STAT = True
 
-        self.DEBUG = True
+        self.DEBUG = False
 
         self._Settings = AppSettings()
 
