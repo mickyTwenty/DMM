@@ -11,6 +11,7 @@ class KeyboardWidget(QtWidgets.QDialog):
         uic.loadUi('keyboardwidget.ui', self)
 
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.CustomizeWindowHint | QtCore.Qt.WindowTitleHint | QtCore.Qt.WA_ShowWithoutActivating)
+        self.setModal(True)
 
         self.MainWindow = MainWindow
         self.key_buttons = []
@@ -192,4 +193,5 @@ class KeyboardWidget(QtWidgets.QDialog):
 
     def reject_pressed(self):
         print("reject")
+        self.reject()
 
