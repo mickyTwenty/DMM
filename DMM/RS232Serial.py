@@ -26,7 +26,7 @@ class RS232Serial:
         stat = False
         try:
             self.ser.open()
-            #print('Serial Port Found!!!')
+            print('Serial Port Found!!!')
             stat = True
         except Exception as e:
             print("error open serial port: " + str(e))
