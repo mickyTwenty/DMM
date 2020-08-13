@@ -60,24 +60,24 @@ class WeightReadingRs232Thread(threading.Thread):
                         self.rsserial.flushOutput()
                         #time.sleep(0.5)
                     try:
-                        #if self.rsserial.isOpen():
-                        response = self.rsserial.readline()
-                        if len(response) > 5:
-                            response = self.rsserial.readline().decode('UTF-8')
-                            # response = self.rsserial.readline().decode('UTF-8')
-                            # print("read data: " + response)
-                            response = re.sub(r"[^a-zA-Z0-9]+", ' ', response)
-                            response = response.strip()
-                            print("received data: " + response)
-                            if len(response) > 0:
-                                currentWeight = self.extractDigit(response)
-                                if currentWeight != '-1':
-                                    self.doProcessing(response, currentWeight)
-                                else:
-                                    print('Weight coming Zero')
-                        time.sleep(self.rs232.INTERVAL)
-                        #self.rsserial.flushInput()
-                        #self.rsserial.flushOutput()
+                        if self.rsserial.isOpen():
+                            response = self.rsserial.readline()
+                            if len(response) > 5:
+                                response = self.rsserial.readline().decode('UTF-8')
+                                # response = self.rsserial.readline().decode('UTF-8')
+                                # print("read data: " + response)
+                                response = re.sub(r"[^a-zA-Z0-9]+", ' ', response)
+                                response = response.strip()
+                                print("received data: " + response)
+                                if len(response) > 0:
+                                    currentWeight = self.extractDigit(response)
+                                    if currentWeight != '-1':
+                                        self.doProcessing(response, currentWeight)
+                                    else:
+                                        print('Weight coming Zero')
+                            time.sleep(self.rs232.INTERVAL)
+                            #self.rsserial.flushInput()
+                            #self.rsserial.flushOutput()
 
                     except Exception as e:
                         print('RS232 Serial Read Error:', e)
