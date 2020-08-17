@@ -23,8 +23,9 @@ class MainWidget(object):
     def updateTimeText(self, timestamp):
         self.lblDateTime.setText(timestamp)
 
-    def updateWeightText(self, weight):
+    def updateWeightText(self, weight, unit):
         self.lblWeight.setText(weight)
+        self.lblUnit.setText(unit)
 
     def updateBarCodeImage(self, img):
         im = img.convert("RGB")

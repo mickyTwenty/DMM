@@ -47,11 +47,18 @@ class WeightReadingRs232Thread(threading.Thread):
             if _App.DEBUG is True:
                 ############ TESTING
                 cval = random.randint(0, 1)
+                mval = random.randint(0, 1)
                 rval = random.randint(5000, 10000) * 1.7
+
                 if cval == 0:
                     response = str(rval) + ' LBS GR'
                 else:
                     response = str(rval) + ' KG GR'
+
+                if mval == 1:
+                    response += ' M'
+
+                print("received data: " + response)
                 weight = self.extractDigit(response)
                 if weight != '-1':
                     self.doProcessing(response, weight)
@@ -116,7 +123,13 @@ class WeightReadingRs232Thread(threading.Thread):
         try:
             if 'M' not in response and weight != self.OLDWEIGHT:
                 self.OLDWEIGHT = weight
-                print("weight: " + weight)
+
+                if 'KG' in response:
+                    _App._Settings.WEIGHTMODE = 'KG'
+                elif 'LBS' in response:
+                    _App._Settings.WEIGHTMODE = 'LBS'
+                    
+                print("weight: " + weight + _App._Settings.WEIGHTMODE)
 
                 EAN = barcode.get_barcode_class('code128')
                 ean = EAN(weight, writer=ImageWriter())
@@ -149,7 +162,7 @@ class WeightReadingRs232Thread(threading.Thread):
                 #qrimg.save('./res/img/qrcode_resized.jpg')
 
                 self.GUI.CURRENTWEIGHT = weight
-                self.GUI.updateWeightText(weight)
+                self.GUI.updateWeightText(weight, _App._Settings.WEIGHTMODE)
                 if _App._Settings.WEIGHTCODE == 'BARCODE':
                     self.GUI.updateBarCodeImage(barimg)
                 elif _App._Settings.WEIGHTCODE == 'QRCODE':
