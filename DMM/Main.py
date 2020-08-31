@@ -10,6 +10,7 @@ import BasicSettingsWidget
 import ClockHelper
 import WeightButtonHelper
 import KeyboardWidget
+import WirelessHelper
 
 from Config import _App
 
@@ -58,6 +59,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def initHelperClass(self):
         ClockHelper.ClockHelper(self.mainWidget).startClock()
+        WirelessHelper.WirelessThread(self.mainWidget).start()
         self.WBHelper = WeightButtonHelper.WeightButtonHelper(self.mainWidget)
         if _App._Settings.SERIALMODE == 'HX711':
             self.WBHelper.readHX711()
@@ -76,10 +78,12 @@ class MainWindow(QtWidgets.QMainWindow):
         self.mainStacked.setCurrentIndex(CurrentWidget.BASIC_SETTING_WIDGET.value)
         self.currentWidget = CurrentWidget.BASIC_SETTING_WIDGET.value
 
-    def showKeyboard(self):
+    def showKeyboard(self, Src, LabelText, EchoMode = QtWidgets.QLineEdit.Normal):
         #self.mainStacked.setCurrentIndex(CurrentWidget.KEYBOARD_WIDGET.value)
+        self.keyboard.initKeyboard(Src, LabelText, EchoMode)
         self.keyboard.show()
-        self.keyboard.exec_()
+        return self.keyboard.exec_()
+        
 
     def hideKeyboard(self):
         self.mainStacked.setCurrentIndex(self.currentWidget)

@@ -119,7 +119,7 @@ class WeightReadingRs232Thread(threading.Thread):
         return weight
 
     def doProcessing(self, response, weight):
-        weight = self.weightConversion(weight)
+        #weight = self.weightConversion(weight)
         try:
             if 'M' not in response and weight != self.OLDWEIGHT:
                 self.OLDWEIGHT = weight

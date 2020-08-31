@@ -34,11 +34,15 @@ class AppSettings:
 
 class App:
     def __init__(self):
+        self.LoginID = ''
+
         self.TIMESTAT = True
         self.HX711STAT = True
         self.RS232STAT = True
+        self.WIFISTAT = True
 
-        self.DEBUG = False
+        self.DEBUG = True
+        self.KEYBOARD_TEXT = ['']
 
         self._Settings = AppSettings()
 
