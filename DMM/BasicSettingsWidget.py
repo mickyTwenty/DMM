@@ -15,6 +15,7 @@ class BasicSettingsWidget(QtWidgets.QWidget):
         self.btnHome.clicked.connect(self.MainWindow.setMainWidget)
 
         self.btnWeightcode.clicked.connect(self.slotCodeClicked)
+        self.btnWifi.clicked.connect(self.slotWifiClicked)
         
 
         self.icon_0 = QtGui.QIcon(QtGui.QPixmap("res/gui/settings_code_none.png"))
@@ -39,3 +40,6 @@ class BasicSettingsWidget(QtWidgets.QWidget):
                 self.btnWeightcode.setIcon(self.icon_2)
             else:
                 self.btnWeightcode.setIcon(self.icon_0)
+
+    def slotWifiClicked(self):
+        print("wifi")
