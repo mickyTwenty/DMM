@@ -102,6 +102,7 @@ class MainWindow(QtWidgets.QMainWindow):
             _App.HX711STAT = False
             _App.RS232STAT = False
             _App.TIMESTAT = False
+            _App.WIFISTAT = False
             _App._Settings.save()
             
     
