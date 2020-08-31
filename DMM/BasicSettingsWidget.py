@@ -1,5 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 import CodeModeDialog
+import WifiConfigDialog
 import sys
 
 from Config import _App
@@ -42,4 +43,5 @@ class BasicSettingsWidget(QtWidgets.QWidget):
                 self.btnWeightcode.setIcon(self.icon_0)
 
     def slotWifiClicked(self):
-        print("wifi")
+        diag = WifiConfigDialog.WifiConfigDialog()
+        r = diag.exec_()
