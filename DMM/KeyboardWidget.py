@@ -3,6 +3,7 @@ import sys
 
 from functools import partial
 
+from Config import _App
 DEFAULT_LABEL_STRING = "Enter your name"
 
 class KeyboardWidget(QtWidgets.QDialog):
@@ -64,12 +65,12 @@ class KeyboardWidget(QtWidgets.QDialog):
 
         self.Label.setText(LabelText)
         self.lineEdit.setEchoMode(EchoMode)
-        self.source = Src
+        self.source = _App.KEYBOARD_TEXT
 
         if Src is None:
             self.lineEdit.setText("")
         else:
-            self.lineEdit.setText(Src.getText())
+            self.lineEdit.setText(Src)
 
     def initConnections(self):
         # char key buttons
@@ -189,9 +190,9 @@ class KeyboardWidget(QtWidgets.QDialog):
         self.lineEdit.setText("")
 
     def accept_pressed(self):
-        print("accept")
+        self.source[0] = self.lineEdit.text()
+        return self.accept()
 
     def reject_pressed(self):
-        print("reject")
         self.reject()
 
