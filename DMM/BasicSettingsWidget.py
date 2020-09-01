@@ -43,5 +43,5 @@ class BasicSettingsWidget(QtWidgets.QWidget):
                 self.btnWeightcode.setIcon(self.icon_0)
 
     def slotWifiClicked(self):
-        diag = WifiConfigDialog.WifiConfigDialog()
+        diag = WifiConfigDialog.WifiConfigDialog(self)
         r = diag.exec_()
