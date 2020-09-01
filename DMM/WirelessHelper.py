@@ -15,7 +15,9 @@ class WirelessThread(threading.Thread):
         while _App.WIFISTAT:
             print(self.wireless.current)
             if ( self.wireless.current() is not None):
+                print("wifi connected")
                 _App.WIFI_CONNECTION = True
             else:
+                print("wifi connection is none")
                 _App.WIFI_CONNECTION = False
             time.sleep(10)
