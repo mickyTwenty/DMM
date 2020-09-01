@@ -12,10 +12,11 @@ class WifiConfigDialog(QtWidgets.QDialog):
         uic.loadUi('wificonfigdialog.ui', self)
 
         self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
-        self.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.CustomizeWindowHint | QtCore.Qt.WindowTitleHint | QtCore.Qt.WA_ShowWithoutActivating)
+        self.setWindowFlags(QtCore.Qt.Window | QtCore.Qt.FramelessWindowHint | QtCore.Qt.CustomizeWindowHint | QtCore.Qt.WindowTitleHint | QtCore.Qt.WA_ShowWithoutActivating)
         self.setModal(True)
 
-        self.getWIFIList()
+        #self.getWIFIList()
+        self.listWidget.addItems(self.getWIFIList())
 
     def getWIFIList(self):
         try:
@@ -50,7 +51,6 @@ class WifiConfigDialog(QtWidgets.QDialog):
                         eid = line.split('\"')[1]
                         if eid not in ssid:
                             ssid.append(eid)
-            print(ssid)
             return ssid
         except:
             return []
