@@ -59,7 +59,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def initHelperClass(self):
         ClockHelper.ClockHelper(self.mainWidget).startClock()
-        #WirelessHelper.WirelessThread(self.mainWidget).start()
+        WirelessHelper.WirelessThread(self.mainWidget).start()
         self.WBHelper = WeightButtonHelper.WeightButtonHelper(self.mainWidget)
         if _App._Settings.SERIALMODE == 'HX711':
             self.WBHelper.readHX711()

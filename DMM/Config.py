@@ -41,6 +41,10 @@ class App:
         self.RS232STAT = True
         self.WIFISTAT = True
 
+        self.WIFI_CONNECTION = False
+        self.WIFI_SSID = ''
+        self.WIFI_PWD = ''
+
         self.DEBUG = False
         self.KEYBOARD_TEXT = ['']
 

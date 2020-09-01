@@ -129,7 +129,7 @@ class WeightReadingRs232Thread(threading.Thread):
                 elif 'LBS' in response:
                     _App._Settings.WEIGHTMODE = 'LBS'
                     
-                print("weight: " + weight + _App._Settings.WEIGHTMODE)
+                #print("weight: " + weight + _App._Settings.WEIGHTMODE)
 
                 EAN = barcode.get_barcode_class('code128')
                 ean = EAN(weight, writer=ImageWriter())
