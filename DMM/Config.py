@@ -41,7 +41,7 @@ class App:
         self.RS232STAT = True
         self.WIFISTAT = True
 
-        self.DEBUG = True
+        self.DEBUG = False
         self.KEYBOARD_TEXT = ['']
 
         self._Settings = AppSettings()
