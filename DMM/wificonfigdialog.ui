@@ -88,7 +88,7 @@ background: rgb(95, 111,119);
 }</string>
        </property>
        <property name="text">
-        <string>🠔</string>
+        <string>←</string>
        </property>
       </widget>
      </item>
