@@ -8,7 +8,6 @@ from wireless import Wireless
 
 from Config import _App
 
-wireless = Wireless()
 
 class WifiConfigDialog(QtWidgets.QDialog):
     def __init__(self, parent):
@@ -20,6 +19,10 @@ class WifiConfigDialog(QtWidgets.QDialog):
         self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
         self.setWindowFlags(QtCore.Qt.Window | QtCore.Qt.FramelessWindowHint | QtCore.Qt.CustomizeWindowHint | QtCore.Qt.WindowTitleHint | QtCore.Qt.WA_ShowWithoutActivating)
         self.setModal(True)
+
+        self.ssid = ''
+        self.pwd = ''
+        self.wireless = Wireless()
 
         try:
             self.btnConnect.clicked.disconnect()
@@ -46,24 +49,17 @@ class WifiConfigDialog(QtWidgets.QDialog):
         if ( self.listWidget.currentItem() is None ):
             return
         
-        ssid = self.listWidget.currentItem().text()
+        self.ssid = self.listWidget.currentItem().text()
         
-        r = self.parent.MainWindow.showKeyboard(None, "Input wifi access password: " + ssid, QtWidgets.QLineEdit.Password)
+        r = self.parent.MainWindow.showKeyboard(None, "Input wifi access password: " + self.ssid, QtWidgets.QLineEdit.Password)
 
         if r:
-            pwd = _App.KEYBOARD_TEXT[0]
-            try:
-                print('connecting to wifi', ssid, '---', pwd)
+            self.pwd = _App.KEYBOARD_TEXT[0]
 
-                if len(ssid) > 0 and len(pwd) > 0:
-                    wireless.connect(ssid = ssid, password = pwd)
-                elif len(ssid) > 0 and len(pwd) == 0:
-                    wireless.connect(ssid = ssid, password = '')
-                else:
-                    print('NOT CONNECTING')
-                
-            except Exception as ex:
-                print('WIFI CON ERROR:', ex)
+            t = threading.Thread(target=self.wifi_connect)
+            t.daemon = True
+            t.start()
+            
 
     def getWIFIList(self):
         try:
@@ -100,4 +96,25 @@ class WifiConfigDialog(QtWidgets.QDialog):
             return ssid
         except:
             return []
+    
+    def wifi_connect(self):
+        try:
+            print('connecting to wifi', self.ssid, '---', self.pwd)
+
+            if len(self.ssid) > 0 and len(self.pwd) > 0:
+                self.wireless.connect(ssid = self.ssid, password = self.pwd)
+            elif len(self.ssid) > 0 and len(self.pwd) == 0:
+                self.wireless.connect(ssid = self.ssid, password = '')
+            else:
+                print('NOT CONNECTING')
+            
+            _App.WIFI_SSID = self.ssid
+            _App.WIFI_PWD = self.pwd
+
+            return self.accept()
+            
+        except Exception as ex:
+            print('WIFI CON ERROR:', ex)
+
+            return self.reject()
     

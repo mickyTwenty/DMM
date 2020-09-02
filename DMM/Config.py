@@ -45,7 +45,7 @@ class App:
         self.WIFI_SSID = ''
         self.WIFI_PWD = ''
 
-        self.DEBUG = False
+        self.DEBUG = True
         self.KEYBOARD_TEXT = ['']
 
         self._Settings = AppSettings()

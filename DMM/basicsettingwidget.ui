@@ -84,14 +84,14 @@ QToolButton {
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QToolButton" name="btnWifi">
+     <item row="0" column="3">
+      <widget class="QToolButton" name="btnEmailsetup">
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
        <property name="icon">
         <iconset>
-         <normaloff>res/gui/settings_wifi_none.png</normaloff>res/gui/settings_wifi_none.png</iconset>
+         <normaloff>res/gui/settings_email.png</normaloff>res/gui/settings_email.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -101,14 +101,14 @@ QToolButton {
        </property>
       </widget>
      </item>
-     <item row="0" column="3">
-      <widget class="QToolButton" name="btnEmailsetup">
+     <item row="0" column="1">
+      <widget class="QToolButton" name="btnWifi">
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
        <property name="icon">
         <iconset>
-         <normaloff>res/gui/settings_email.png</normaloff>res/gui/settings_email.png</iconset>
+         <normaloff>res/gui/settings_wifi_none.png</normaloff>res/gui/settings_wifi_none.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -166,6 +166,35 @@ QToolButton {
          <width>159</width>
          <height>118</height>
         </size>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QPushButton" name="btnTemp">
+       <property name="minimumSize">
+        <size>
+         <width>160</width>
+         <height>120</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>160</width>
+         <height>120</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+width: 160px;
+height: 120px;
+background: rgb(133, 131, 131);
+border: 2px solid  rgb(255, 238, 50);
+border-radius: 10px
+}
+
+QPushButton:pressed {
+background: rgb(153, 151, 151);
+}</string>
        </property>
       </widget>
      </item>

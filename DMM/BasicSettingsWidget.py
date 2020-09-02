@@ -45,3 +45,6 @@ class BasicSettingsWidget(QtWidgets.QWidget):
     def slotWifiClicked(self):
         diag = WifiConfigDialog.WifiConfigDialog(self)
         r = diag.exec_()
+
+    def paintEvent(self, event):        
+        self.paintEvent(event)
