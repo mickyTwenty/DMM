@@ -23,7 +23,7 @@ class WifiConfigDialog(QtWidgets.QDialog):
 
         self.ssid = ''
         self.pwd = ''
-        #self.wireless = Wireless()
+        self.wireless = Wireless()
 
         try:
             self.btnConnect.clicked.disconnect()
@@ -44,7 +44,7 @@ class WifiConfigDialog(QtWidgets.QDialog):
         self.btnAdd.setEnabled(False)
         self.btnConnect.setText("Loading...")
 
-        #self.listWidget.clear()
+        self.listWidget.clear()
         self.listWidget.addItems(self.getWIFIList())
 
         self.listWidget.setEnabled(True)
