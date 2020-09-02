@@ -1,5 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 from PyQt5.QtGui import QPainter
+from PyQt5.QtWidgets import QMessageBox
 import CodeModeDialog
 import WifiConfigDialog
 import sys
@@ -45,7 +46,8 @@ class BasicSettingsWidget(QtWidgets.QWidget):
 
     def slotWifiClicked(self):
         diag = WifiConfigDialog.WifiConfigDialog(self)
-        r = diag.exec_()
+        diag.exec_()
+        
 
     def paintEvent(self, event):        
         qp = QPainter()
