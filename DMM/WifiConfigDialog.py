@@ -159,10 +159,7 @@ class WifiConfigDialog(QtWidgets.QDialog):
 
     def connect_timer(self):
         if self.tick_connect is True:
-            t = threading.Thread(target=self.wifi_connect)
-            t.daemon = True
-            t.start()
-            '''
+            
             self.btnConnect.setEnabled(False)
             self.listWidget.setEnabled(False)
             self.btnAdd.setEnabled(False)
@@ -196,6 +193,6 @@ class WifiConfigDialog(QtWidgets.QDialog):
                 self.listWidget.setEnabled(True)
                 self.btnAdd.setEnabled(True)
                 self.btnConnect.setText("Connect")
-            '''
+            
             self.tick_connect = False
     
