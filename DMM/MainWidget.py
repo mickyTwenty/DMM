@@ -9,6 +9,8 @@ import os
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+from Config import _App
+
 class MainWidget(object):
     def __init__(self, MainWindow):
         self.mainWidget = QtWidgets.QWidget()
@@ -18,7 +20,12 @@ class MainWidget(object):
 
         self.btnTools.clicked.connect(self.MainWindow.setToolsWidget)
         self.btnSetup.clicked.connect(self.MainWindow.setBasicSettingWidget)     
-        self.btnLogin.clicked.connect(self.MainWindow.showKeyboard)         # test for keyboard
+        self.btnLogin.clicked.connect(self.on_btnLogin_clicked)
+
+    def on_btnLogin_clicked(self):
+        r = self.MainWindow.showKeyboard(_App.LoginID, "Input your Login ID")
+        if r:
+            _App.LoginID = _App.KEYBOARD_TEXT[0]
 
     def updateTimeText(self, timestamp):
         self.lblDateTime.setText(timestamp)

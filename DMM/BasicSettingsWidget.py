@@ -54,14 +54,29 @@ class BasicSettingsWidget(QtWidgets.QWidget):
         self.drawButtons()
 
     def drawButtons(self):
-        text = QTextDocument()
-        text.setHtml("<h1><font color=#d5d58c>WiFi</font></h1><h2><font color=#00c421>Direct</font></h2>")
+        self.drawWifiButton()
+        
 
-        pixmap = QPixmap(text.size().width(), text.size().height())
+    def drawWifiButton(self):
+        html = ""
+        if _App.WIFI_CONNECTION is False:
+            html = "<div style='text-align: center;color: #d5d58c;font-size: 36px'>WiFi</div><div style='text-align: center;color: #b51a00;font-size: 16px;margin-top: 20px;'>NOT CONNECTED</div>"
+        else:
+            html = "<div style='text-align: center;color: #d5d58c;font-size: 36px'>WiFi</div><div style='text-align: center;color: #00c421;font-size: 16px;margin-top: 20px;'>{}}</div>".format(_App.WIFI_SSID)
+
+
+        self.drawContents(self.btnTemp, html)
+
+    def drawContents(self, button, html):
+        text = QTextDocument()
+        text.setHtml(html)
+        text.setTextWidth(150)
+
+        pixmap = QPixmap(150, 100)
         pixmap.fill( QtCore.Qt.transparent )
         painter = QPainter(pixmap)
         text.drawContents(painter)
 
-        self.btnTemp.setIcon(QtGui.QIcon(pixmap))
-        self.btnTemp.setIconSize(QSize(160, 120))
+        button.setIcon(QtGui.QIcon(pixmap))
+        button.setIconSize(QSize(160, 120))
         painter.end()
