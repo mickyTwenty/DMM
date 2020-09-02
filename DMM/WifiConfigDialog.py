@@ -45,7 +45,7 @@ class WifiConfigDialog(QtWidgets.QDialog):
         self.btnConnect.setText("Loading...")
 
         self.listWidget.clear()
-        self.listWidget.addItems(self.getWIFIList())
+        self.listWidget.addItems(list(filter(None, self.getWIFIList())))
 
         self.listWidget.setEnabled(True)
         self.btnConnect.setEnabled(True)
@@ -110,7 +110,6 @@ class WifiConfigDialog(QtWidgets.QDialog):
                         eid = line.split('\"')[1]
                         if eid not in ssid:
                             ssid.append(eid)
-            print(ssid)
             return ssid
         except:
             return []
