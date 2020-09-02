@@ -89,4 +89,4 @@ class BasicSettingsWidget(QtWidgets.QWidget):
 
         button.setIcon(QtGui.QIcon(pixmap))
         button.setIconSize(QSize(160, 120))
-        painter.end()
+        #painter.end()
