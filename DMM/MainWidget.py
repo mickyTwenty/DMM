@@ -51,7 +51,7 @@ class MainWidget(object):
         self.lblBarcode.setPixmap(pixmap)
     
     def updateNoneCodeImage(self):
-        self.lblBarcode.setPixmap(None)
+        self.lblBarcode.clear()
 
     def setupUi(self, mainWidget):
         mainWidget.setObjectName("mainWidget")
