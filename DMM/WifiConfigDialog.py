@@ -39,6 +39,7 @@ class WifiConfigDialog(QtWidgets.QDialog):
     def initListWidget(self):
         self.listWidget.setEnabled(False)
         self.btnConnect.setEnabled(False)
+        self.btnAdd.setEnabled(False)
         self.btnConnect.setText("Loading...")
 
         self.listWidget.clear()
@@ -46,6 +47,7 @@ class WifiConfigDialog(QtWidgets.QDialog):
 
         self.listWidget.setEnabled(True)
         self.btnConnect.setEnabled(True)
+        self.btnAdd.setEnabled(True)
         self.btnConnect.setText("Connect")
 
     def on_btnConnect_clicked(self):
@@ -103,6 +105,7 @@ class WifiConfigDialog(QtWidgets.QDialog):
     def wifi_connect(self):
         self.btnConnect.setEnabled(False)
         self.listWidget.setEnabled(False)
+        self.btnAdd.setEnabled(False)
         self.btnConnect.setText("Connecting...")
         try:
             print('connecting to wifi', self.ssid, '---', self.pwd)
@@ -117,10 +120,11 @@ class WifiConfigDialog(QtWidgets.QDialog):
             _App.WIFI_SSID = self.ssid
             _App.WIFI_PWD = self.pwd
 
-            QMessageBox.information(self, "Wifi", "Wifi connected: " + self.ssid)
+            QMessageBox.information(None, "Wifi", "Wifi connected: " + self.ssid)
 
             self.btnConnect.setEnabled(True)
             self.listWidget.setEnabled(True)
+            self.btnAdd.setEnabled(True)
             self.btnConnect.setText("Connect")
 
             return self.accept()
@@ -132,5 +136,6 @@ class WifiConfigDialog(QtWidgets.QDialog):
 
             self.btnConnect.setEnabled(True)
             self.listWidget.setEnabled(True)
+            self.btnAdd.setEnabled(True)
             self.btnConnect.setText("Connect")
     
