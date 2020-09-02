@@ -130,7 +130,9 @@ class WifiConfigDialog(QtWidgets.QDialog):
         try:
             print('connecting to wifi', self.ssid, '---', self.pwd)
 
-            if self.wireless.connect(ssid = self.ssid, password = self.pwd) is False:
+            self.wireless.connect(ssid = self.ssid, password = self.pwd)
+
+            if self.wireless.current() is None:
                 raise Exception("wireless.connect() returned false")
             
             _App.WIFI_SSID = self.ssid
@@ -142,6 +144,8 @@ class WifiConfigDialog(QtWidgets.QDialog):
             self.listWidget.setEnabled(True)
             self.btnAdd.setEnabled(True)
             self.btnConnect.setText("Connect")
+
+            return self.accept()
             
         except Exception as ex:
             print('WIFI CON ERROR:', ex)
@@ -152,8 +156,6 @@ class WifiConfigDialog(QtWidgets.QDialog):
             self.listWidget.setEnabled(True)
             self.btnAdd.setEnabled(True)
             self.btnConnect.setText("Connect")
-        
-        #return self.accept()
 
     def connect_timer(self):
         if self.tick_connect is True:
