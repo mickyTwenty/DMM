@@ -142,8 +142,6 @@ class WifiConfigDialog(QtWidgets.QDialog):
             self.listWidget.setEnabled(True)
             self.btnAdd.setEnabled(True)
             self.btnConnect.setText("Connect")
-
-            return self.accept()
             
         except Exception as ex:
             print('WIFI CON ERROR:', ex)
@@ -154,6 +152,8 @@ class WifiConfigDialog(QtWidgets.QDialog):
             self.listWidget.setEnabled(True)
             self.btnAdd.setEnabled(True)
             self.btnConnect.setText("Connect")
+        
+        return self.accept()
 
     def connect_timer(self):
         if self.tick_connect is True:
