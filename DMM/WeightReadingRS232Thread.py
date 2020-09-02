@@ -167,6 +167,8 @@ class WeightReadingRs232Thread(threading.Thread):
                     self.GUI.updateBarCodeImage(barimg)
                 elif _App._Settings.WEIGHTCODE == 'QRCODE':
                     self.GUI.updateQrCodeImage(qrimg)
+                else:
+                    self.GUI.updateNoneCodeImage()
 
             else:
                 print('Response contains M')

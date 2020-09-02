@@ -49,6 +49,9 @@ class MainWidget(object):
         pixmap = QtGui.QPixmap.fromImage(qim)
         # pixmap = QPixmap('./res/img/qrcode_resized.jpg')
         self.lblBarcode.setPixmap(pixmap)
+    
+    def updateNoneCodeImage(self):
+        self.lblBarcode.setPixmap(None)
 
     def setupUi(self, mainWidget):
         mainWidget.setObjectName("mainWidget")
