@@ -31,6 +31,7 @@ class WifiConfigDialog(QtWidgets.QDialog):
             pass
 
         self.btnConnect.clicked.connect(self.on_btnConnect_clicked)
+        self.btnAdd.clicked.connect(self.on_btnAdd_clicked)
 
         t = threading.Thread(target=self.initListWidget)
         t.daemon = True
@@ -64,6 +65,14 @@ class WifiConfigDialog(QtWidgets.QDialog):
             t = threading.Thread(target=self.wifi_connect)
             t.daemon = True
             t.start()
+
+    def on_btnAdd_clicked(self):
+        new_ssid = ""
+
+        r = self.parent.MainWindow.showKeyboard(new_ssid, "Input new ssid")
+
+        if r:
+            self.listWidget.addItem(new_ssid)
             
 
     def getWIFIList(self):

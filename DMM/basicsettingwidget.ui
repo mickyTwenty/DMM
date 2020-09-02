@@ -170,7 +170,36 @@ QToolButton {
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QPushButton" name="btnTemp">
+      <widget class="QPushButton" name="btnWifi1">
+       <property name="minimumSize">
+        <size>
+         <width>160</width>
+         <height>120</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>160</width>
+         <height>120</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+width: 160px;
+height: 120px;
+background: rgb(133, 131, 131);
+border: 2px solid  rgb(255, 238, 50);
+border-radius: 10px
+}
+
+QPushButton:pressed {
+background: rgb(153, 151, 151);
+}</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QPushButton" name="btnWeightcode1">
        <property name="minimumSize">
         <size>
          <width>160</width>
