@@ -25,6 +25,13 @@ class WifiConfigDialog(QtWidgets.QDialog):
         self.pwd = ''
         self.wireless = Wireless()
 
+        self.tick_connect = False
+        self.timer = QtCore.QTimer()
+
+        #self.timer.setInterval(1000)
+        self.timer.timeout.connect(self.connect_timer)
+        self.timer.start(100)
+
         try:
             self.btnConnect.clicked.disconnect()
             self.btnAdd.clicked.disconnect()
@@ -52,7 +59,7 @@ class WifiConfigDialog(QtWidgets.QDialog):
         self.btnAdd.setEnabled(True)
         self.btnConnect.setText("Connect")
 
-    async def on_btnConnect_clicked(self):
+    def on_btnConnect_clicked(self):
         if ( self.listWidget.currentItem() is None ):
             return
         
@@ -62,10 +69,11 @@ class WifiConfigDialog(QtWidgets.QDialog):
 
         if r:
             self.pwd = _App.KEYBOARD_TEXT[0]
+            self.tick_connect = True
             #self.wifi_connect()
-            t = threading.Thread(target=self.wifi_connect)
-            t.daemon = True
-            t.start()
+            #t = threading.Thread(target=self.wifi_connect)
+            #t.daemon = True
+            #t.start()
 
     def on_btnAdd_clicked(self):
         new_ssid = ""
@@ -146,4 +154,42 @@ class WifiConfigDialog(QtWidgets.QDialog):
             self.listWidget.setEnabled(True)
             self.btnAdd.setEnabled(True)
             self.btnConnect.setText("Connect")
+
+    def connect_timer(self):
+        if self.tick_connect is True:
+            self.btnConnect.setEnabled(False)
+            self.listWidget.setEnabled(False)
+            self.btnAdd.setEnabled(False)
+            self.btnConnect.setText("Connecting...")
+            try:
+                print('connecting to wifi', self.ssid, '---', self.pwd)
+
+                if self.wireless.connect(ssid = self.ssid, password = self.pwd) is False:
+                    raise Exception("wireless.connect() returned false")
+                
+                _App.WIFI_SSID = self.ssid
+                _App.WIFI_PWD = self.pwd
+
+                QMessageBox.information(None, "Wifi", "Wifi connected: " + self.ssid)
+
+                self.btnConnect.setEnabled(True)
+                self.listWidget.setEnabled(True)
+                self.btnAdd.setEnabled(True)
+                self.btnConnect.setText("Connect")
+
+                self.tick_connect = False
+
+                return self.accept()
+                
+            except Exception as ex:
+                print('WIFI CON ERROR:', ex)
+                
+                QMessageBox.warning(None, "Wifi", "Wifi connect faild: " + self.ssid)
+
+                self.btnConnect.setEnabled(True)
+                self.listWidget.setEnabled(True)
+                self.btnAdd.setEnabled(True)
+                self.btnConnect.setText("Connect")
+        
+            self.tick_connect = False
     
