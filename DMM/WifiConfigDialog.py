@@ -40,6 +40,7 @@ class WifiConfigDialog(QtWidgets.QDialog):
 
         self.btnConnect.clicked.connect(self.on_btnConnect_clicked)
         self.btnAdd.clicked.connect(self.on_btnAdd_clicked)
+        self.btnBack.clicked.connect(self.on_btnBack_clicked)
 
         t = threading.Thread(target=self.initListWidget)
         t.daemon = True
@@ -84,6 +85,9 @@ class WifiConfigDialog(QtWidgets.QDialog):
             new_ssid = _App.KEYBOARD_TEXT[0]
             if new_ssid != "":
                 self.listWidget.addItem(new_ssid)
+
+    def on_btnBack_clicked(self):
+        self.reject()
             
 
     def getWIFIList(self):

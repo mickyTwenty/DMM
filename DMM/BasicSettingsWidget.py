@@ -60,20 +60,20 @@ class BasicSettingsWidget(QtWidgets.QWidget):
     def drawWifiButton(self):
         html = ""
         if _App.WIFI_CONNECTION is False:
-            html = "<div style='text-align: center;color: #d5d58c;font-size: 36px;font-weight: 600;'>WiFi</div><div style='text-align: center;color: #b51a00;font-size: 16px;margin-top: 30px;font-weight: 400;'>NOT CONNECTED</div>"
+            html = "<div style='text-align: center;color: #d5d58c;font-size: 36px;font-weight: 500;'>WiFi</div><div style='text-align: center;color: #b51a00;font-size: 16px;margin-top: 30px;font-weight: 400;'>NOT CONNECTED</div>"
         else:
-            html = "<div style='text-align: center;color: #d5d58c;font-size: 36px;font-weight: 600;'>WiFi</div><div style='text-align: center;color: #00c421;font-size: 16px;margin-top: 30px;font-weight: 400;'>{}</div>".format(_App.WIFI_SSID)
+            html = "<div style='text-align: center;color: #d5d58c;font-size: 36px;font-weight: 500;'>WiFi</div><div style='text-align: center;color: #00c421;font-size: 16px;margin-top: 30px;font-weight: 400;'>{}</div>".format(_App.WIFI_SSID)
 
         self.drawContents(self.btnWifi1, html)
 
     def drawWeightcodeButton(self):
         html = ""
         if _App._Settings.WEIGHTCODE == 'BARCODE':
-            html = "<div style='text-align: center;color: #d5d58c;font-size: 24px;font-weight: 600;'>Weight as Code</div><div style='text-align: center;color: #00c421;font-size: 26px;font-weight: 600;margin-top: 10px;'>BARCODE</div>"
+            html = "<div style='text-align: center;color: #d5d58c;font-size: 24px;font-weight: 500;'>Weight as Code</div><div style='text-align: center;color: #00c421;font-size: 26px;font-weight: 500;margin-top: 10px;'>BARCODE</div>"
         elif _App._Settings.WEIGHTCODE == 'QRCODE':
-            html = "<div style='text-align: center;color: #d5d58c;font-size: 24px;font-weight: 600;'>Weight as Code</div><div style='text-align: center;color: #00c421;font-size: 26px;font-weight: 600;margin-top: 10px;'>QR CODE</div>"
+            html = "<div style='text-align: center;color: #d5d58c;font-size: 24px;font-weight: 500;'>Weight as Code</div><div style='text-align: center;color: #00c421;font-size: 26px;font-weight: 500;margin-top: 10px;'>QR CODE</div>"
         else:
-            html = "<div style='text-align: center;color: #d5d58c;font-size: 24px;font-weight: 600;'>Weight as Code</div><div style='text-align: center;color: #b51a00;font-size: 26px;font-weight: 600;margin-top: 10px;'>NO CODE</div>"
+            html = "<div style='text-align: center;color: #d5d58c;font-size: 24px;font-weight: 500;'>Weight as Code</div><div style='text-align: center;color: #b51a00;font-size: 26px;font-weight: 500;margin-top: 10px;'>NO CODE</div>"
         
         self.drawContents(self.btnWeightcode1, html)
 
