@@ -99,6 +99,8 @@ class WifiConfigDialog(QtWidgets.QDialog):
             return []
     
     def wifi_connect(self):
+        self.btnConnect.setEnabled(False)
+        self.listWidget.setEnabled(False)
         try:
             print('connecting to wifi', self.ssid, '---', self.pwd)
 
@@ -114,11 +116,16 @@ class WifiConfigDialog(QtWidgets.QDialog):
 
             QMessageBox.information(self, "Wifi", "Wifi connected: " + self.ssid)
 
+            self.btnConnect.setEnabled(True)
+            self.listWidget.setEnabled(True)
+
             return self.accept()
             
         except Exception as ex:
             print('WIFI CON ERROR:', ex)
             
             QMessageBox.warning(None, "Wifi", "Wifi connect faild: " + self.ssid)
-            return self.reject()
+
+            self.btnConnect.setEnabled(True)
+            self.listWidget.setEnabled(True)
     
