@@ -153,7 +153,7 @@ class WifiConfigDialog(QtWidgets.QDialog):
             self.btnAdd.setEnabled(True)
             self.btnConnect.setText("Connect")
         
-        return self.accept()
+        #return self.accept()
 
     def connect_timer(self):
         if self.tick_connect is True:
