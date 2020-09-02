@@ -56,20 +56,41 @@
       <number>3</number>
      </property>
      <item>
-      <spacer name="horizontalSpacer_3">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeType">
-        <enum>QSizePolicy::Fixed</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
+      <widget class="QPushButton" name="pushButton">
+       <property name="minimumSize">
         <size>
-         <width>70</width>
-         <height>20</height>
+         <width>65</width>
+         <height>65</height>
         </size>
        </property>
-      </spacer>
+       <property name="maximumSize">
+        <size>
+         <width>65</width>
+         <height>65</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>36</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+border-radius: 4px;
+border: none;
+background: rgb(35, 51, 59);
+color: white;
+padding: 0px;
+}
+
+QPushButton:pressed {
+background: rgb(95, 111,119);
+}</string>
+       </property>
+       <property name="text">
+        <string>←</string>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QLabel" name="label">

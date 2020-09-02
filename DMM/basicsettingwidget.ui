@@ -38,7 +38,19 @@
 
 QToolButton {
 	background-color: transparent;
-};</string>
+}
+
+QPushButton {
+width: 160px;
+height: 120px;
+background: rgb(133, 131, 131);
+border: 2px solid  rgb(255, 238, 50);
+border-radius: 10px
+}
+
+QPushButton:pressed {
+background: rgb(153, 151, 151);
+}</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="leftMargin">
@@ -184,17 +196,7 @@ QToolButton {
         </size>
        </property>
        <property name="styleSheet">
-        <string notr="true">QPushButton {
-width: 160px;
-height: 120px;
-background: rgb(133, 131, 131);
-border: 2px solid  rgb(255, 238, 50);
-border-radius: 10px
-}
-
-QPushButton:pressed {
-background: rgb(153, 151, 151);
-}</string>
+        <string notr="true"/>
        </property>
       </widget>
      </item>
@@ -213,17 +215,7 @@ background: rgb(153, 151, 151);
         </size>
        </property>
        <property name="styleSheet">
-        <string notr="true">QPushButton {
-width: 160px;
-height: 120px;
-background: rgb(133, 131, 131);
-border: 2px solid  rgb(255, 238, 50);
-border-radius: 10px
-}
-
-QPushButton:pressed {
-background: rgb(153, 151, 151);
-}</string>
+        <string notr="true"/>
        </property>
       </widget>
      </item>
