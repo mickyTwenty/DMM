@@ -62,10 +62,10 @@ class WifiConfigDialog(QtWidgets.QDialog):
 
         if r:
             self.pwd = _App.KEYBOARD_TEXT[0]
-
-            t = threading.Thread(target=self.wifi_connect)
-            t.daemon = True
-            t.start()
+            self.wifi_connect()
+            #t = threading.Thread(target=self.wifi_connect)
+            #t.daemon = True
+            #t.start()
 
     def on_btnAdd_clicked(self):
         new_ssid = ""
