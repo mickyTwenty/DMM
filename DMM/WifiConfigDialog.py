@@ -26,11 +26,11 @@ class WifiConfigDialog(QtWidgets.QDialog):
         self.wireless = Wireless()
 
         self.tick_connect = False
-        self.timer = QtCore.QTimer()
+        #self.timer = QtCore.QTimer()
 
         #self.timer.setInterval(1000)
-        self.timer.timeout.connect(self.connect_timer)
-        self.timer.start(100)
+        #self.timer.timeout.connect(self.connect_timer)
+        #self.timer.start(100)
 
         try:
             self.btnConnect.clicked.disconnect()
@@ -71,9 +71,9 @@ class WifiConfigDialog(QtWidgets.QDialog):
             self.pwd = _App.KEYBOARD_TEXT[0]
             self.tick_connect = True
             #self.wifi_connect()
-            #t = threading.Thread(target=self.wifi_connect)
-            #t.daemon = True
-            #t.start()
+            t = threading.Thread(target=self.wifi_connect)
+            t.daemon = True
+            t.start()
 
     def on_btnAdd_clicked(self):
         new_ssid = ""
