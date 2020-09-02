@@ -23,7 +23,7 @@ class WifiConfigDialog(QtWidgets.QDialog):
 
         self.ssid = ''
         self.pwd = ''
-        self.wireless = Wireless()
+        #self.wireless = Wireless()
 
         try:
             self.btnConnect.clicked.disconnect()
@@ -44,7 +44,7 @@ class WifiConfigDialog(QtWidgets.QDialog):
         self.btnAdd.setEnabled(False)
         self.btnConnect.setText("Loading...")
 
-        self.listWidget.clear()
+        #self.listWidget.clear()
         self.listWidget.addItems(self.getWIFIList())
 
         self.listWidget.setEnabled(True)
@@ -72,8 +72,10 @@ class WifiConfigDialog(QtWidgets.QDialog):
 
         r = self.parent.MainWindow.showKeyboard(new_ssid, "Input new ssid")
 
-        if r and (new_ssid is not ""):
-            self.listWidget.addItem(new_ssid)
+        if r:
+            new_ssid = _App.KEYBOARD_TEXT[0]
+            if new_ssid != "":
+                self.listWidget.addItem(new_ssid)
             
 
     def getWIFIList(self):
