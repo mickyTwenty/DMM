@@ -1,4 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
+from PyQt5.QtGui import QPainter
 import CodeModeDialog
 import WifiConfigDialog
 import sys
@@ -47,4 +48,6 @@ class BasicSettingsWidget(QtWidgets.QWidget):
         r = diag.exec_()
 
     def paintEvent(self, event):        
-        self.paintEvent(event)
+        qp = QPainter()
+        qp.begin(self)
+        qp.end()

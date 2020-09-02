@@ -1,4 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
+from PyQt5.QtWidgets import QMessageBox
 import os
 import time
 from subprocess import check_output
@@ -111,10 +112,13 @@ class WifiConfigDialog(QtWidgets.QDialog):
             _App.WIFI_SSID = self.ssid
             _App.WIFI_PWD = self.pwd
 
+            QMessageBox.information(self, "Wifi", "Wifi connected: " + self.ssid)
+
             return self.accept()
             
         except Exception as ex:
             print('WIFI CON ERROR:', ex)
-
+            
+            QMessageBox.warning(None, "Wifi", "Wifi connect faild: " + self.ssid)
             return self.reject()
     

@@ -13,12 +13,12 @@ class WirelessThread(threading.Thread):
 
     def run(self):
         while _App.WIFISTAT:
-            print(self.wireless.current())
             if ( self.wireless.current() is not None):
                 print("wifi connected")
-                #_App.WIFI_SSID = self.wireless.current()
+                _App.WIFI_SSID = self.wireless.current()
                 _App.WIFI_CONNECTION = True
             else:
                 print("wifi connection is none")
+                _App.WIFI_SSID = ''
                 _App.WIFI_CONNECTION = False
             time.sleep(10)
