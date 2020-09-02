@@ -110,6 +110,7 @@ class WifiConfigDialog(QtWidgets.QDialog):
                         eid = line.split('\"')[1]
                         if eid not in ssid:
                             ssid.append(eid)
+            print(ssid)
             return ssid
         except:
             return []
