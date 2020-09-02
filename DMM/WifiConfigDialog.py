@@ -122,7 +122,7 @@ class WifiConfigDialog(QtWidgets.QDialog):
         try:
             print('connecting to wifi', self.ssid, '---', self.pwd)
 
-            if self.wireless.connect(ssid = self.ssid, password = self.pwd) is True:
+            if self.wireless.connect(ssid = self.ssid, password = self.pwd) is False:
                 raise Exception("wireless.connect() returned false")
             
             _App.WIFI_SSID = self.ssid
