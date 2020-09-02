@@ -27,6 +27,7 @@ class WifiConfigDialog(QtWidgets.QDialog):
 
         try:
             self.btnConnect.clicked.disconnect()
+            self.btnAdd.clicked.disconnect()
         except:
             pass
 
@@ -71,7 +72,7 @@ class WifiConfigDialog(QtWidgets.QDialog):
 
         r = self.parent.MainWindow.showKeyboard(new_ssid, "Input new ssid")
 
-        if r:
+        if r and (new_ssid is not ""):
             self.listWidget.addItem(new_ssid)
             
 
