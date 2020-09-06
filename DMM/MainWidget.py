@@ -22,6 +22,8 @@ class MainWidget(object):
         self.btnSetup.clicked.connect(self.MainWindow.setBasicSettingWidget)     
         self.btnLogin.clicked.connect(self.on_btnLogin_clicked)
 
+        #self.setWifiLoading()
+
     def on_btnLogin_clicked(self):
         r = self.MainWindow.showKeyboard(_App.LoginID, "Input your Login ID")
         if r:
@@ -52,6 +54,17 @@ class MainWidget(object):
     
     def updateNoneCodeImage(self):
         self.lblBarcode.clear()
+
+    def setWifiLoading(self):
+        movie = QtGui.QMovie("res/gui/loader.gif")
+        self.lblWifi.setMovie(movie)
+        movie.start()
+    
+    def setWifiIcon(self):
+        if _App.WIFI_CONNECTION is True:
+            self.lblWifi.setPixmap(QtGui.QPixmap("res/gui/wifi.png"))
+        elif _App.WIFI_CONNECTION is False:
+            self.lblWifi.setPixmap(QtGui.QPixmap("res/gui/wifi_not.png"))
 
     def setupUi(self, mainWidget):
         mainWidget.setObjectName("mainWidget")
@@ -102,6 +115,8 @@ class MainWidget(object):
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.lblBarcode = QtWidgets.QLabel(self.scaleWidget)
+        self.lblBarcode.setMinimumSize(QtCore.QSize(225, 165))
+        self.lblBarcode.setMaximumSize(QtCore.QSize(225, 165))
         self.lblBarcode.setAlignment(QtCore.Qt.AlignCenter)
         self.lblBarcode.setObjectName("lblBarcode")
         #self.lblBarcode.setStyleSheet("background-color:red")
@@ -244,18 +259,18 @@ class MainWidget(object):
         self.horizontalLayout_2.addWidget(self.label)
         spacerItem5 = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_2.addItem(spacerItem5)
-        self.label_2 = QtWidgets.QLabel(mainWidget)
+        self.lblWifi = QtWidgets.QLabel(mainWidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.label_2.sizePolicy().hasHeightForWidth())
-        self.label_2.setSizePolicy(sizePolicy)
-        self.label_2.setMinimumSize(QtCore.QSize(50, 36))
-        self.label_2.setMaximumSize(QtCore.QSize(50, 36))
-        self.label_2.setText("")
-        self.label_2.setPixmap(QtGui.QPixmap("res/gui/wifi.png"))
-        self.label_2.setObjectName("label_2")
-        self.horizontalLayout_2.addWidget(self.label_2)
+        sizePolicy.setHeightForWidth(self.lblWifi.sizePolicy().hasHeightForWidth())
+        self.lblWifi.setSizePolicy(sizePolicy)
+        self.lblWifi.setMinimumSize(QtCore.QSize(50, 36))
+        self.lblWifi.setMaximumSize(QtCore.QSize(50, 36))
+        self.lblWifi.setText("")
+        self.lblWifi.setPixmap(QtGui.QPixmap("res/gui/wifi.png"))
+        self.lblWifi.setObjectName("lblWifi")
+        self.horizontalLayout_2.addWidget(self.lblWifi)
         self.gridLayout.addLayout(self.horizontalLayout_2, 0, 1, 1, 1)
         self.verticalLayout_6 = QtWidgets.QVBoxLayout()
         self.verticalLayout_6.setObjectName("verticalLayout_6")

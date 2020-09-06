@@ -41,15 +41,17 @@ QToolButton {
 }
 
 QPushButton {
-width: 160px;
-height: 120px;
-background: rgb(133, 131, 131);
-border: 2px solid  rgb(255, 238, 50);
-border-radius: 10px
+	width: 160px;
+	height: 120px;
+	background: rgb(133, 131, 131);
+	border: 2px solid  rgb(255, 238, 50);
+	border-radius: 10px;
+	color: #d5d58c;
+	font-size: 36px;
 }
 
 QPushButton:pressed {
-background: rgb(153, 151, 151);
+	background: rgb(153, 151, 151);
 }</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -80,70 +82,24 @@ background: rgb(153, 151, 151);
       <number>40</number>
      </property>
      <item row="0" column="0">
-      <widget class="QToolButton" name="btnTruckid">
-       <property name="cursor">
-        <cursorShape>PointingHandCursor</cursorShape>
-       </property>
-       <property name="icon">
-        <iconset>
-         <normaloff>res/gui/settings_truckid.png</normaloff>res/gui/settings_truckid.png</iconset>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>159</width>
-         <height>118</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QToolButton" name="btnEmailsetup">
-       <property name="cursor">
-        <cursorShape>PointingHandCursor</cursorShape>
-       </property>
-       <property name="icon">
-        <iconset>
-         <normaloff>res/gui/settings_email.png</normaloff>res/gui/settings_email.png</iconset>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>159</width>
-         <height>118</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QToolButton" name="btnWifi">
-       <property name="cursor">
-        <cursorShape>PointingHandCursor</cursorShape>
-       </property>
-       <property name="icon">
-        <iconset>
-         <normaloff>res/gui/settings_wifi_none.png</normaloff>res/gui/settings_wifi_none.png</iconset>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>159</width>
-         <height>118</height>
-        </size>
-       </property>
-      </widget>
+      <widget class="QPushButton" name="btnTruckid"/>
      </item>
      <item row="0" column="2">
-      <widget class="QToolButton" name="btnWeightcode">
-       <property name="cursor">
-        <cursorShape>PointingHandCursor</cursorShape>
-       </property>
-       <property name="icon">
-        <iconset>
-         <normaloff>res/gui/settings_code_none.png</normaloff>res/gui/settings_code_none.png</iconset>
-       </property>
-       <property name="iconSize">
+      <widget class="QPushButton" name="btnWeightcode">
+       <property name="minimumSize">
         <size>
-         <width>159</width>
-         <height>118</height>
+         <width>160</width>
+         <height>120</height>
         </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>160</width>
+         <height>120</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
        </property>
       </widget>
      </item>
@@ -181,8 +137,8 @@ background: rgb(153, 151, 151);
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
-      <widget class="QPushButton" name="btnWifi1">
+     <item row="0" column="1">
+      <widget class="QPushButton" name="btnWifi">
        <property name="minimumSize">
         <size>
          <width>160</width>
@@ -200,22 +156,11 @@ background: rgb(153, 151, 151);
        </property>
       </widget>
      </item>
-     <item row="1" column="2">
-      <widget class="QPushButton" name="btnWeightcode1">
-       <property name="minimumSize">
-        <size>
-         <width>160</width>
-         <height>120</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>160</width>
-         <height>120</height>
-        </size>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"/>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="btnEmailsetup">
+       <property name="text">
+        <string>EMAIL
+SETUP</string>
        </property>
       </widget>
      </item>

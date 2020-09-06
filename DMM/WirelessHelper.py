@@ -13,6 +13,18 @@ class WirelessThread(threading.Thread):
 
     def run(self):
         while _App.WIFISTAT:
+            
+            if _App.WIFICONNECTING is True:
+                try:
+                    print('connecting to wifi', _App.WIFI_SSID, '---', _App.WIFI_PWD)
+                    self.wireless.connect(ssid = _App.WIFI_SSID, password = _App.WIFI_PWD)
+
+                except Exception as ex:
+                    print('WIFI CON ERROR:', ex)
+
+            _App.WIFICONNECTING = False
+            
+
             if ( self.wireless.current() is not None):
                 print("wifi connected")
                 _App.WIFI_SSID = self.wireless.current()
@@ -21,4 +33,7 @@ class WirelessThread(threading.Thread):
                 print("wifi connection is none")
                 _App.WIFI_SSID = ''
                 _App.WIFI_CONNECTION = False
+
+            self.GUI.setWifiIcon()
+                    
             time.sleep(10)

@@ -40,6 +40,7 @@ class App:
         self.HX711STAT = True
         self.RS232STAT = True
         self.WIFISTAT = True
+        self.WIFICONNECTING = False
 
         self.WIFI_CONNECTION = False
         self.WIFI_SSID = ''
