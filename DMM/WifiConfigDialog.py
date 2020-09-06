@@ -54,7 +54,7 @@ class WifiConfigDialog(QtWidgets.QDialog):
         self.setEnabled(False)
         self.btnConnect.setText("Loading...")
 
-        #self.listWidget.clear()
+        self.listWidget.clear()
         self.listWidget.addItems(list(filter(None, self.getWIFIList())))
 
         #self.listWidget.setEnabled(True)

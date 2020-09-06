@@ -181,26 +181,6 @@ QListWidget::item {
 }
 </string>
      </property>
-     <item>
-      <property name="text">
-       <string>aefafad</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>badfad</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>df</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>adfa</string>
-      </property>
-     </item>
     </widget>
    </item>
    <item>
