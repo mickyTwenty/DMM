@@ -22,8 +22,6 @@ class MainWidget(object):
         self.btnSetup.clicked.connect(self.MainWindow.setBasicSettingWidget)     
         self.btnLogin.clicked.connect(self.on_btnLogin_clicked)
 
-        #self.setWifiLoading()
-
     def on_btnLogin_clicked(self):
         r = self.MainWindow.showKeyboard(_App.LoginID, "Input your Login ID")
         if r:
@@ -64,7 +62,7 @@ class MainWidget(object):
         if _App.WIFI_CONNECTION is True:
             self.lblWifi.setPixmap(QtGui.QPixmap("res/gui/wifi.png"))
         elif _App.WIFI_CONNECTION is False:
-            self.lblWifi.setPixmap(QtGui.QPixmap("res/gui/wifi_not.png"))
+            self.lblWifi.setPixmap(QtGui.QPixmap("res/gui/wifi-disabled.png"))
 
     def setupUi(self, mainWidget):
         mainWidget.setObjectName("mainWidget")
