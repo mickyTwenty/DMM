@@ -126,7 +126,7 @@ class WeightReadingRs232Thread(threading.Thread):
 
                 if 'KG' in response:
                     _App._Settings.WEIGHTMODE = 'KG'
-                elif 'LBS' in response:
+                elif 'LB' in response:
                     _App._Settings.WEIGHTMODE = 'LBS'
                     
                 print("weight: " + weight + _App._Settings.WEIGHTMODE)
