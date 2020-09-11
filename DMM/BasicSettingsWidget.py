@@ -37,7 +37,7 @@ class BasicSettingsWidget(QtWidgets.QWidget):
         diag.exec_()
 
     def slotTruckidClicked(self):
-        r = self.MainWindow.showKeyboard(_App._Settings.TRUCK_ID, "Enter Truck ID")
+        r = self.MainWindow.showKeyboard(_App._Settings.TRUCK_ID[3:], "Enter Truck ID")
         if r:
             _App._Settings.TRUCK_ID = "WP-" + _App.KEYBOARD_TEXT[0]
             #self.editPort.setText(str(self.smtp_port))
