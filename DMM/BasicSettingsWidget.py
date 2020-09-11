@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtCore import QSizeF, QSize, QRectF, QRect
 import CodeModeDialog
 import WifiConfigDialog
+import EmailSetupDialog
 import sys
 
 from Config import _App
@@ -20,7 +21,7 @@ class BasicSettingsWidget(QtWidgets.QWidget):
 
         self.btnWeightcode.clicked.connect(self.slotCodeClicked)
         self.btnWifi.clicked.connect(self.slotWifiClicked)
-        
+        self.btnEmailsetup.clicked.connect(self.slotEmailClicked)
 
         self.icon_0 = QtGui.QIcon(QtGui.QPixmap("res/gui/settings_code_none.png"))
         self.icon_1 = QtGui.QIcon(QtGui.QPixmap("res/gui/settings_code_bar.png"))
@@ -47,6 +48,10 @@ class BasicSettingsWidget(QtWidgets.QWidget):
 
     def slotWifiClicked(self):
         diag = WifiConfigDialog.WifiConfigDialog(self)
+        diag.exec_()
+
+    def slotEmailClicked(self):
+        diag = EmailSetupDialog.EmailSetupDialog(self)
         diag.exec_()
         
 

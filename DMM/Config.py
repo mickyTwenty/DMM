@@ -1,12 +1,27 @@
 import configparser
+import pathlib
+import json
 
 config_file = 'config.ini'
+smtp_config_file = 'smtp.ini'
 
 global _App
 
 class AppSettings:
     def __init__(self):
+        self.WEIGHTTHRESHOLD = 0
+        self.SERIALMODE = ''
+        self.WEIGHTMODE = ''
+        self.WEIGHTCODE = ''
+
+        self.SMTP_SERVER = None
+        self.SMTP_PORT = None
+        self.SMTP_EMAIL = None
+        self.SMTP_PWD = None
+        self.SMTP_CCEMAIL = None
+
         self.load()
+        self.loadSMTPConfig()
     
     def load(self):
         print('loading config.ini...')
@@ -30,6 +45,19 @@ class AppSettings:
         with open(config_file, 'w') as configfile:
             config.write(configfile)
 
+    def loadSMTPConfig(self):
+        print('loading smtp config...')
+        config = configparser.ConfigParser()
+        config.read(smtp_config_file)
+        
+        self.SMTP_SERVER = config['SMTP']['SERVER']
+        self.SMTP_PORT = config['SMTP'].getint('PORT')
+        self.SMTP_EMAIL = config['SMTP']['EMAIL']
+        self.SMTP_PWD = config['SMTP']['PASSWORD']
+        self.SMTP_CCEMAIL = config['SMTP']['CC']
+
+    def saveSMTPConfig(self):
+        print('saving smtp config...')
 
 
 class App:
@@ -46,7 +74,7 @@ class App:
         self.WIFI_SSID = ''
         self.WIFI_PWD = ''
 
-        self.DEBUG = False
+        self.DEBUG = True
         self.KEYBOARD_TEXT = ['']
 
         self._Settings = AppSettings()
