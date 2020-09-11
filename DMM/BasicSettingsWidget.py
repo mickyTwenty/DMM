@@ -39,8 +39,10 @@ class BasicSettingsWidget(QtWidgets.QWidget):
     def slotTruckidClicked(self):
         r = self.MainWindow.showKeyboard(_App._Settings.TRUCK_ID[3:], "Enter Truck ID")
         if r:
-            _App._Settings.TRUCK_ID = "WP-" + _App.KEYBOARD_TEXT[0]
-            #self.editPort.setText(str(self.smtp_port))
+            if _App.KEYBOARD_TEXT[0] == '':
+                _App._Settings.TRUCK_ID = ''
+            else:
+                _App._Settings.TRUCK_ID = "WP-" + _App.KEYBOARD_TEXT[0]
 
     def paintEvent(self, event):
         self.drawButtons()
