@@ -25,32 +25,49 @@ class EmailSetupDialog(QtWidgets.QDialog):
         self.editPassword.setText(self.smtp_pwd)
         self.editCcemail.setText(self.smtp_ccemail)
 
-        try:
-            self.btnBack.clicked.disconnect()
-            self.btnSave.clicked.disconnect()
-            self.editServer.cursorPositionChanged.disconnect()
-            self.editPort.cursorPositionChanged.disconnect()
-        except:
-            pass
-
         self.btnBack.clicked.connect(self.on_btnBack_clicked)
         self.btnSave.clicked.connect(self.on_btnSave_clicked)
-        self.editServer.cursorPositionChanged.connect(self.on_editServer_changed)
-        self.editPort.cursorPositionChanged.connect(self.on_editPort_changed)
-
-    def on_editServer_changed(self):
-        r = self.parent.MainWindow.showKeyboard(self.smtp_server, "Enter SMTP Server")
-
-        if r:
-            self.smtp_server = _App.KEYBOARD_TEXT[0]
-            self.editServer.setText(self.smtp_server)
+        self.editServer.installEventFilter(self)
+        self.editPort.installEventFilter(self)
+        self.editEmail.installEventFilter(self)
+        self.editPassword.installEventFilter(self)
+        self.editCcemail.installEventFilter(self)
     
-    def on_editPort_changed(self):
-        r = self.parent.MainWindow.showKeyboard(str(self.smtp_port), "Enter SMTP Port")
+    def mousePressEvent(self, event):
+        print("Main Widget Mouse Press")
+        super(EmailSetupDialog, self).mousePressEvent(event)
 
-        if r:
-            self.smtp_port = int(_App.KEYBOARD_TEXT[0])
-            self.editPort.setText(str(self.smtp_port))
+    def eventFilter(self, obj, event):
+        if event.type() == event.MouseButtonPress:
+            if obj == self.editServer:
+                r = self.parent.MainWindow.showKeyboard(self.smtp_server, "Enter SMTP Server")
+                if r:
+                    self.smtp_server = _App.KEYBOARD_TEXT[0]
+                    self.editServer.setText(self.smtp_server)
+            elif obj == self.editPort:
+                r = self.parent.MainWindow.showKeyboard(str(self.smtp_port), "Enter SMTP Port")
+                if r:
+                    self.smtp_port = int(_App.KEYBOARD_TEXT[0])
+                    self.editPort.setText(str(self.smtp_port))
+            elif obj == self.editEmail:
+                r = self.parent.MainWindow.showKeyboard(self.smtp_email, "Enter Your Email")
+                if r:
+                    self.smtp_email = _App.KEYBOARD_TEXT[0]
+                    self.editEmail.setText(self.smtp_email)
+            elif obj == self.editPassword:
+                r = self.parent.MainWindow.showKeyboard(self.smtp_pwd, "Enter Email Password", QtWidgets.QLineEdit.Password)
+                if r:
+                    self.smtp_pwd = _App.KEYBOARD_TEXT[0]
+                    self.editPassword.setText(self.smtp_pwd)
+            elif obj == self.editCcemail:
+                r = self.parent.MainWindow.showKeyboard(self.smtp_ccemail, "Enter Recipient Email")
+                if r:
+                    self.smtp_ccemail = _App.KEYBOARD_TEXT[0]
+                    self.editCcemail.setText(self.smtp_ccemail)
+
+
+        # regardless, just do the default
+        return super(EmailSetupDialog, self).eventFilter(obj, event)
 
     def on_btnBack_clicked(self):
         self.reject()

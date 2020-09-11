@@ -145,11 +145,6 @@ QPushButton:pressed {
           <height>70</height>
          </size>
         </property>
-        <property name="font">
-         <font>
-          <pointsize>-1</pointsize>
-         </font>
-        </property>
         <property name="styleSheet">
          <string notr="true">color: rgb(90, 90, 90);</string>
         </property>
