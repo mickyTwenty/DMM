@@ -1,6 +1,4 @@
 import configparser
-import pathlib
-import json
 
 config_file = 'config.ini'
 smtp_config_file = 'smtp.ini'
@@ -58,7 +56,16 @@ class AppSettings:
 
     def saveSMTPConfig(self):
         print('saving smtp config...')
+        config = configparser.RawConfigParser()
+        config.add_section('SMTP')
+        config.set('SMTP', 'SERVER', self.SMTP_SERVER)
+        config.set('SMTP', 'PORT', self.SMTP_PORT)
+        config.set('SMTP', 'EMAIL', self.SMTP_EMAIL)
+        config.set('SMTP', 'PASSWORD', self.SMTP_PWD)
+        config.set('SMTP', 'CC', self.SMTP_CCEMAIL)
 
+        with open(smtp_config_file, 'w') as configfile:
+            config.write(configfile)
 
 class App:
     def __init__(self):
