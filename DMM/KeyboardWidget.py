@@ -72,6 +72,12 @@ class KeyboardWidget(QtWidgets.QDialog):
         else:
             self.lineEdit.setText(Src)
     
+    def showEvent(self, event):
+        self.lineEdit.deselect()
+        self.lineEdit.setCursorPosition(9999)
+        #self.lineEdit.selectAll()
+        #self.lineEdit.setText("")
+
     def initConnections(self):
         # char key buttons
         self.key_buttons.append(self.key_accent)
