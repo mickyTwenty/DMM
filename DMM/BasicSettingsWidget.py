@@ -22,29 +22,11 @@ class BasicSettingsWidget(QtWidgets.QWidget):
         self.btnWeightcode.clicked.connect(self.slotCodeClicked)
         self.btnWifi.clicked.connect(self.slotWifiClicked)
         self.btnEmailsetup.clicked.connect(self.slotEmailClicked)
-
-        self.icon_0 = QtGui.QIcon(QtGui.QPixmap("res/gui/settings_code_none.png"))
-        self.icon_1 = QtGui.QIcon(QtGui.QPixmap("res/gui/settings_code_bar.png"))
-        self.icon_2 = QtGui.QIcon(QtGui.QPixmap("res/gui/settings_code_qr.png"))
-
-        if _App._Settings.WEIGHTCODE == 'BARCODE':
-            self.btnWeightcode.setIcon(self.icon_1)
-        elif _App._Settings.WEIGHTCODE == 'QRCODE':
-            self.btnWeightcode.setIcon(self.icon_2)
-        else:
-            self.btnWeightcode.setIcon(self.icon_0)
-
+        self.btnTruckid.clicked.connect(self.slotTruckidClicked)
 
     def slotCodeClicked(self):
         diag = CodeModeDialog.CodeModeDialog()
-        r = diag.exec_()
-        if r:
-            if _App._Settings.WEIGHTCODE == 'BARCODE':
-                self.btnWeightcode.setIcon(self.icon_1)
-            elif _App._Settings.WEIGHTCODE == 'QRCODE':
-                self.btnWeightcode.setIcon(self.icon_2)
-            else:
-                self.btnWeightcode.setIcon(self.icon_0)
+        diag.exec_()
 
     def slotWifiClicked(self):
         diag = WifiConfigDialog.WifiConfigDialog(self)
@@ -53,7 +35,12 @@ class BasicSettingsWidget(QtWidgets.QWidget):
     def slotEmailClicked(self):
         diag = EmailSetupDialog.EmailSetupDialog(self)
         diag.exec_()
-        
+
+    def slotTruckidClicked(self):
+        r = self.MainWindow.showKeyboard(_App._Settings.TRUCK_ID, "Enter Truck ID")
+        if r:
+            _App._Settings.TRUCK_ID = "WP-" + _App.KEYBOARD_TEXT[0]
+            #self.editPort.setText(str(self.smtp_port))
 
     def paintEvent(self, event):
         self.drawButtons()
@@ -85,7 +72,10 @@ class BasicSettingsWidget(QtWidgets.QWidget):
 
     def drawTruckidButton(self):
         html = ""
-        html = "<div style='text-align: center;color: #d5d58c;font-size: 24px;font-weight: 500;'>TRUCK ID</div><div style='text-align: center;color: #00c421;font-size: 26px;font-weight: 500;margin-top: 10px;'>WP-WORLD</div>"
+        if _App._Settings.TRUCK_ID == '':
+            html = "<div style='text-align: center;color: #d5d58c;font-size: 24px;font-weight: 500;'>TRUCK ID</div><div style='text-align: center;color: #b51a00;font-size: 26px;font-weight: 500;margin-top: 39px;'>NOT SET</div>"
+        else:
+            html = "<div style='text-align: center;color: #d5d58c;font-size: 24px;font-weight: 500;'>TRUCK ID</div><div style='text-align: center;color: #00c421;font-size: 26px;font-weight: 500;margin-top: 10px;'>{}</div>".format(_App._Settings.TRUCK_ID)
         self.drawContents(self.btnTruckid, html)
 
     def drawContents(self, button, html):

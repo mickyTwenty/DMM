@@ -7,6 +7,7 @@ global _App
 
 class AppSettings:
     def __init__(self):
+        self.TRUCK_ID = ''
         self.WEIGHTTHRESHOLD = 0
         self.SERIALMODE = ''
         self.WEIGHTMODE = ''
@@ -26,6 +27,7 @@ class AppSettings:
         config = configparser.ConfigParser()
         config.read(config_file)
 
+        self.TRUCK_ID = config['Settings']['TRUCKID']
         self.WEIGHTTHRESHOLD = config['Settings'].getint('WEIGHTTHRESHOLD')
         self.SERIALMODE = config['Settings']['SERIALMODE']
         self.WEIGHTMODE = config['Settings']['WEIGHTMODE']
@@ -35,6 +37,7 @@ class AppSettings:
         print('saving config.ini...')
         config = configparser.RawConfigParser()
         config.add_section('Settings')
+        config.set('Settings', 'TRUCKID', self.TRUCK_ID)
         config.set('Settings', 'WEIGHTTHRESHOLD', self.WEIGHTTHRESHOLD)
         config.set('Settings', 'SERIALMODE', self.SERIALMODE)
         config.set('Settings', 'WEIGHTMODE', self.WEIGHTMODE)
