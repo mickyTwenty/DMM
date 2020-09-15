@@ -124,18 +124,21 @@ class WeightReadingRs232Thread(threading.Thread):
             if 'M' not in response and weight != self.OLDWEIGHT:
                 self.OLDWEIGHT = weight
 
+                weightmode = ''
+
                 if 'KG' in response:
-                    _App._Settings.WEIGHTMODE = 'KG'
+                    weightmode = 'KGS'
                 elif 'LB' in response:
-                    _App._Settings.WEIGHTMODE = 'LBS'
-                    
-                print("weight: " + weight + _App._Settings.WEIGHTMODE)
+                    weightmode = 'LBS'
+
+                _App._Settings.WEIGHTMODE = weightmode
+                print("weight: " + weight + weightmode)
 
                 EAN = barcode.get_barcode_class('code128')
                 ean = EAN(weight, writer=ImageWriter())
                 fullname = ean.save('./res/img/barcode')
 
-                if _App._Settings.WEIGHTMODE == 'KG':
+                if _App._Settings.WEIGHTMODE == 'KGS':
                     fimg = Image.open("./res/img/kg.jpg")
                 else:
                     fimg = Image.open("./res/img/lbs.jpg")
@@ -153,7 +156,7 @@ class WeightReadingRs232Thread(threading.Thread):
                                     error_correction=qrcode.constants.ERROR_CORRECT_L,
                                     box_size=50,
                                     border=1,)
-                qr.add_data(weight + ' ' + _App._Settings.WEIGHTMODE)
+                qr.add_data(weight + ' ' + weightmode)
                 qr.make(fit=True)
                 qrimg = qr.make_image(fill_color="black", back_color="white")
                 #qrimg.save('./res/img/qrcode.png')
@@ -162,13 +165,18 @@ class WeightReadingRs232Thread(threading.Thread):
                 #qrimg.save('./res/img/qrcode_resized.jpg')
 
                 self.GUI.CURRENTWEIGHT = weight
-                self.GUI.updateWeightText(weight, _App._Settings.WEIGHTMODE)
+                self.GUI.updateWeightText(weight, weightmode)
+
                 if _App._Settings.WEIGHTCODE == 'BARCODE':
                     self.GUI.updateBarCodeImage(barimg)
                 elif _App._Settings.WEIGHTCODE == 'QRCODE':
                     self.GUI.updateQrCodeImage(qrimg)
                 else:
                     self.GUI.updateNoneCodeImage()
+
+                now = datetime.now()
+                date_time = now.strftime("%m/%d/%Y %H:%M:%S")
+                self.GUI.insertDB([_App._Settings.TRUCK_ID, weight, weightmode, "NO DATA", "SINGLE", date_time])
 
             else:
                 print('Response contains M')
