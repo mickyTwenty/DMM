@@ -46,7 +46,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.initHelperClass()
 
     def initStatVariables(self):
-        self.TRUCKID = ''
+        #self.TRUCKID = ''
         #self.CURRENTWEIGHT = '0'
         self.DOCID = ''
 

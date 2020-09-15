@@ -72,6 +72,7 @@ class AppSettings:
 
 class App:
     def __init__(self):
+        self.LoginState = False
         self.LoginID = ''
 
         self.TIMESTAT = True

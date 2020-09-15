@@ -77,7 +77,7 @@ class BasicSettingsWidget(QtWidgets.QWidget):
         if _App._Settings.TRUCK_ID == '':
             html = "<div style='text-align: center;color: #d5d58c;font-size: 24px;font-weight: 500;'>TRUCK ID</div><div style='text-align: center;color: #b51a00;font-size: 26px;font-weight: 500;margin-top: 39px;'>NOT SET</div>"
         else:
-            html = "<div style='text-align: center;color: #d5d58c;font-size: 24px;font-weight: 500;'>TRUCK ID</div><div style='text-align: center;color: #00c421;font-size: 26px;font-weight: 500;margin-top: 10px;'>{}</div>".format(_App._Settings.TRUCK_ID)
+            html = "<div style='text-align: center;color: #d5d58c;font-size: 24px;font-weight: 500;'>TRUCK ID</div><div style='text-align: center;color: #00c421;font-size: 22px;font-weight: 500;margin-top: 10px;'>{}</div>".format(_App._Settings.TRUCK_ID)
         self.drawContents(self.btnTruckid, html)
 
     def drawContents(self, button, html):

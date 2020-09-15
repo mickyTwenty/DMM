@@ -8,6 +8,8 @@
 import os
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+import sqlite3
+from sqlite3 import Error
 
 from Config import _App
 
@@ -18,14 +20,24 @@ class MainWidget(object):
 
         self.MainWindow = MainWindow
 
+        self.icon_login = QtGui.QPixmap("res/gui/button_login.png")
+        self.icon_logout = QtGui.QPixmap("res/gui/button_logout.png")
+
         self.btnTools.clicked.connect(self.MainWindow.setToolsWidget)
         self.btnSetup.clicked.connect(self.MainWindow.setBasicSettingWidget)     
         self.btnLogin.clicked.connect(self.on_btnLogin_clicked)
 
     def on_btnLogin_clicked(self):
-        r = self.MainWindow.showKeyboard(_App.LoginID, "Input your Login ID")
-        if r:
-            _App.LoginID = _App.KEYBOARD_TEXT[0]
+        if _App.LoginState == True:
+            _App.LoginID = ''
+            _App.LoginState = False
+            self.btnLogin.setIcon(QtGui.QIcon(self.icon_login))
+        else:
+            r = self.MainWindow.showKeyboard(_App.LoginID, "Input your Login ID")
+            if r and _App.KEYBOARD_TEXT[0] != '':
+                _App.LoginID = _App.KEYBOARD_TEXT[0]
+                _App.LoginState = True
+                self.btnLogin.setIcon(QtGui.QIcon(self.icon_logout))
 
     def updateTimeText(self, timestamp):
         self.lblDateTime.setText(timestamp)
@@ -63,6 +75,27 @@ class MainWidget(object):
             self.lblWifi.setPixmap(QtGui.QPixmap("res/gui/wifi.png"))
         elif _App.WIFI_CONNECTION is False:
             self.lblWifi.setPixmap(QtGui.QPixmap("res/gui/wifi-disabled.png"))
+
+    def insertDB(self, data):
+        if _App.LoginState == False or _App._Settings.TRUCK_ID == '':
+            return
+
+        stat = False
+        try:
+            conn = sqlite3.connect('./res/db/weightrpi.db')
+            sql = 'INSERT INTO tbl_weight_info(truckid, weight, measurement, barcode, scantype, recorded) VALUES (?,?,?,?,?,?)'
+            cur = conn.cursor()
+            cur.execute(sql, data)
+            conn.commit()
+            stat = True
+        except Error as e:
+            print(e)
+            stat = False
+        finally:
+            conn.close()
+
+        print('Data Stored')
+        return stat
 
     def setupUi(self, mainWidget):
         mainWidget.setObjectName("mainWidget")
