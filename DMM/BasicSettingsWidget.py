@@ -5,7 +5,10 @@ from PyQt5.QtCore import QSizeF, QSize, QRectF, QRect
 import CodeModeDialog
 import WifiConfigDialog
 import EmailSetupDialog
+
+import subprocess
 import sys
+import os
 
 from Config import _App
 
@@ -42,7 +45,22 @@ class BasicSettingsWidget(QtWidgets.QWidget):
             if _App.KEYBOARD_TEXT[0] == '':
                 _App._Settings.TRUCK_ID = ''
             else:
-                _App._Settings.TRUCK_ID = "WP-" + _App.KEYBOARD_TEXT[0]
+                new_id = "WP-" + _App.KEYBOARD_TEXT[0]
+
+                if new_id == _App._Settings.TRUCK_ID:
+                    return
+
+                try:
+                    subprocess.run(['sudo', _App.APP_PATH + '/change_hostname.sh', new_id])
+                    #subprocess.call(['hostname', truckid])
+                    
+                    _App._Settings.TRUCK_ID = new_id
+
+                    reply = QMessageBox.question(None, "Reboot System", "Sytem Reboot Required?", QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
+                    if reply == QMessageBox.Yes:
+                        os.system('sudo shutdown -r now')
+                except:
+                    print('Hostname Edit Failed')
 
     def paintEvent(self, event):
         self.drawButtons()

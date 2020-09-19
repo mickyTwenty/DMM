@@ -8,7 +8,16 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QMessageBox, QInputDialog
 
+from glob import glob
+import os
+from datetime import datetime
+
+from Config import _App
+import GenCSVKeepData
+import EmailSetup
+from Calculator import Calculator
 
 class ToolsWidget(object):
     def __init__(self, MainWindow):
@@ -18,6 +27,80 @@ class ToolsWidget(object):
         self.MainWindow = MainWindow
 
         self.btnBack.clicked.connect(self.MainWindow.setMainWidget)
+
+        self.btnCopy.clicked.connect(self.slotCopyCsvClicked)
+        self.btnEmail.clicked.connect(self.slotEmailCsvClicked)
+        self.btnCalc.clicked.connect(self.slotCalcClicked)
+
+    def getSDPath(self):
+        path = '/media/pi/*/'
+        dirs = glob(path)
+        if len(dirs) > 0:
+            path = dirs[0]
+        else:
+            path = os.getcwd()
+            path = path + '/'
+        now = datetime.now()
+        date_time = now.strftime("%m-%d-%Y-%H-%M-%S")
+        filepath = path + 'csv/ALL_' + date_time + '.csv'
+        return filepath
+
+    def slotCopyCsvClicked(self):
+        directorypath = self.getSDPath()
+        if not directorypath:
+            print("Task Error", "Error Occured")
+        else:
+            csvc = GenCSVKeepData.GenCSVKeepData()
+            csvc.doTask(directorypath)
+            print("Data Task", "CSV File Created and Database Kept\nPath:" + directorypath)
+
+    def slotEmailCsvClicked(self):
+        if _App._Settings.SMTP_CCEMAIL == '':
+            QMessageBox.warning(None, "SMTP Config Error", "Please confirm SMTP config first.")
+            return
+
+        text, ok = QInputDialog.getText(None, 'SMTP CCEmail', 'Enter email to:', QtWidgets.QLineEdit.Normal, _App._Settings.SMTP_CCEMAIL)
+        #reply = QMessageBox.question(None, "CSV Report", "Do you report to {}?".format(_App._Settings.SMTP_CCEMAIL), QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
+
+        if ok:
+            try:
+                _App._Settings.SMTP_CCEMAIL = text
+                truckid = _App._Settings.TRUCK_ID
+                now = datetime.now()
+                date_time = now.strftime("%m/%d/%Y-%H:%M:%S")
+
+                subject = truckid + '-Weight Report ' + date_time
+                message = 'Please see attached CSV Weight report taken for ' + truckid + ' - ' + date_time
+
+                filepath = './csv/' + truckid + '.csv'
+                csvc = GenCSVKeepData.GenCSVKeepData()
+                csvc.doTask(filepath)
+                attachments = [filepath]
+                
+                [smtp_server, smtp_port, smtp_email, smtp_pwd, smtp_ccemail] = _App._Settings.getSMTPConfig()
+                print('Connecting to server...')
+                server = EmailSetup.EmailConnection(smtp_server, smtp_port, smtp_email, smtp_pwd)
+                print('Preparing the email...')
+                email = EmailSetup.Email(from_='<%s>' % (smtp_email),  # you can pass only email
+                                        to='<%s>' % (smtp_ccemail),  # you can pass only email
+                                        subject=subject, message=message, attachments=attachments)
+                print('Sending...')
+                server.send(email)
+                print('Disconnecting...')
+                server.close()
+                _App._Settings.saveSMTPConfig()
+                
+                print('Done!')
+                QMessageBox.information(None, "Email Task", "Email Sent Successfully!!!")
+                
+            except:
+                print('Error Occured')
+                QMessageBox.information(None, "Email Task", "Sorry !!! Email Sent Unsucessfull")
+
+    def slotCalcClicked(self):
+        calc = Calculator()
+        calc.show()
+        calc.exec_()
 
     def setupUi(self, ToolsWidget):
         ToolsWidget.setObjectName("ToolsWidget")
@@ -53,15 +136,15 @@ class ToolsWidget(object):
         self.btnEmail.setIconSize(QtCore.QSize(200, 148))
         self.btnEmail.setObjectName("btnEmail")
         self.gridLayout.addWidget(self.btnEmail, 0, 0, 1, 1)
-        self.toolButton = QtWidgets.QToolButton(ToolsWidget)
-        self.toolButton.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.toolButton.setStyleSheet("background-color: transparent")
+        self.btnCalc = QtWidgets.QToolButton(ToolsWidget)
+        self.btnCalc.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.btnCalc.setStyleSheet("background-color: transparent")
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap("res/gui/tools_calculator.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.toolButton.setIcon(icon2)
-        self.toolButton.setIconSize(QtCore.QSize(200, 148))
-        self.toolButton.setObjectName("toolButton")
-        self.gridLayout.addWidget(self.toolButton, 1, 0, 1, 1)
+        self.btnCalc.setIcon(icon2)
+        self.btnCalc.setIconSize(QtCore.QSize(200, 148))
+        self.btnCalc.setObjectName("btnCalc")
+        self.gridLayout.addWidget(self.btnCalc, 1, 0, 1, 1)
         self.btnDiagnostics = QtWidgets.QToolButton(ToolsWidget)
         self.btnDiagnostics.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         icon3 = QtGui.QIcon()
@@ -119,7 +202,7 @@ class ToolsWidget(object):
         ToolsWidget.setWindowTitle(_translate("ToolsWidget", "ToolsWidget"))
         self.btnCopy.setText(_translate("ToolsWidget", "..."))
         self.btnEmail.setText(_translate("ToolsWidget", "..."))
-        self.toolButton.setText(_translate("ToolsWidget", "..."))
+        self.btnCalc.setText(_translate("ToolsWidget", "..."))
         self.btnDiagnostics.setText(_translate("ToolsWidget", "..."))
         self.btnInfo.setText(_translate("ToolsWidget", "..."))
         self.btnBack.setText(_translate("ToolsWidget", "..."))

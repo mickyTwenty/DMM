@@ -1,4 +1,5 @@
 import configparser
+import os
 
 config_file = 'config.ini'
 smtp_config_file = 'smtp.ini'
@@ -69,6 +70,9 @@ class AppSettings:
 
         with open(smtp_config_file, 'w') as configfile:
             config.write(configfile)
+    
+    def getSMTPConfig(self):
+        return [self.SMTP_SERVER, self.SMTP_PORT, self.SMTP_EMAIL, self.SMTP_PWD, self.SMTP_CCEMAIL]
 
 class App:
     def __init__(self):
@@ -84,6 +88,8 @@ class App:
         self.WIFI_CONNECTION = False
         self.WIFI_SSID = ''
         self.WIFI_PWD = ''
+
+        self.APP_PATH = os.getcwd()
 
         self.DEBUG = True
         self.KEYBOARD_TEXT = ['']
