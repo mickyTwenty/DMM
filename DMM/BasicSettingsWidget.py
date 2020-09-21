@@ -57,6 +57,7 @@ class BasicSettingsWidget(QtWidgets.QWidget):
                     #subprocess.call(['hostname', truckid])
                     
                     _App._Settings.TRUCK_ID = new_id
+                    _App._Settings.save()
 
                     reply = QMessageBox.question(None, "Reboot System", "Sytem Reboot Required?", QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
                     if reply == QMessageBox.Yes:
