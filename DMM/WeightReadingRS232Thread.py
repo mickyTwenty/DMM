@@ -58,7 +58,7 @@ class WeightReadingRs232Thread(threading.Thread):
                 if mval == 1:
                     response += ' M'
 
-                print("received data: " + response)
+                #print("received data: " + response)
                 weight = self.extractDigit(response)
                 if weight != '-1':
                     self.doProcessing(response, weight)
@@ -132,7 +132,7 @@ class WeightReadingRs232Thread(threading.Thread):
                     weightmode = 'LBS'
 
                 _App._Settings.WEIGHTMODE = weightmode
-                print("weight: " + weight + weightmode)
+                #print("weight: " + weight + weightmode)
 
                 EAN = barcode.get_barcode_class('code128')
                 ean = EAN(weight, writer=ImageWriter())
@@ -179,7 +179,8 @@ class WeightReadingRs232Thread(threading.Thread):
                 self.GUI.insertDB([_App._Settings.TRUCK_ID, weight, weightmode, "NO DATA", "SINGLE", date_time])
 
             else:
-                print('Response contains M')
+                return
+                #print('Response contains M')
 
         except Exception as e:
             print('Data Processing Error:',e)
