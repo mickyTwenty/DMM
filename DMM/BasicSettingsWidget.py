@@ -52,7 +52,8 @@ class BasicSettingsWidget(QtWidgets.QWidget):
 
                 try:
                     #subprocess.run(['sudo', _App.APP_PATH + '/change_hostname.sh', new_id])
-                    subprocess.run(['./change_hostname.sh',  new_id])
+                    #subprocess.run(['./change_hostname.sh',  new_id])
+                    subprocess.call(['sh', './change_hostname.sh', new_id])
                     #subprocess.call(['hostname', truckid])
                     
                     _App._Settings.TRUCK_ID = new_id
