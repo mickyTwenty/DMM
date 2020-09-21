@@ -11,7 +11,7 @@ class Ui_Calculator(object):
         Calculator.setEnabled(True)
         Calculator.resize(560, 531)
 
-        stylesheet = "QDialog { background-color: rgb(26,27,40); } QPushButton { background-color: rgb(30,36,53); border-radius: 8px; color: white; } QPushButton:pressed { background-color: rgb(40, 46, 63); } "
+        stylesheet = "QDialog { background-color: rgb(26,27,40); } QPushButton { background-color: rgb(30,36,53); border-radius: 20px; color: white; } QPushButton:pressed { background-color: rgb(40, 46, 63); } "
         stylesheet1 = "QPushButton{ background-color: rgb(82, 201, 220); } QPushButton:pressed { background-color: rgb(102, 221, 240); }"
         stylesheet2 = "QPushButton{ background-color: rgb(145, 25, 30); color: rgb(216, 62, 70); } QPushButton:pressed { background-color: rgb(165, 45, 50); }"
 
