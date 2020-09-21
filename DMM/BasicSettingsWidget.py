@@ -26,6 +26,7 @@ class BasicSettingsWidget(QtWidgets.QWidget):
         self.btnWifi.clicked.connect(self.slotWifiClicked)
         self.btnEmailsetup.clicked.connect(self.slotEmailClicked)
         self.btnTruckid.clicked.connect(self.slotTruckidClicked)
+        self.btnWThresholdRecord.clicked.connect(self.slotRWTClicked)
 
     def slotCodeClicked(self):
         diag = CodeModeDialog.CodeModeDialog()
@@ -57,13 +58,21 @@ class BasicSettingsWidget(QtWidgets.QWidget):
                     #subprocess.call(['hostname', truckid])
                     
                     _App._Settings.TRUCK_ID = new_id
-                    _App._Settings.save()
 
                     reply = QMessageBox.question(None, "Reboot System", "Sytem Reboot Required?", QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
                     if reply == QMessageBox.Yes:
+                        _App._Settings.save()
                         os.system('sudo shutdown -r now')
                 except:
                     print('Hostname Edit Failed')
+
+    def slotRWTClicked(self):
+        r = self.MainWindow.showKeyboard(str(_App._Settings.WEIGHTTHRESHOLD), "Enter Record Weight Threshold")
+        if r:
+            if _App.KEYBOARD_TEXT[0] == ''  or _App.KEYBOARD_TEXT[0].isdigit() == False:
+                QMessageBox.warning(None, "Input Error", "Please input valid number")
+            else:
+                _App._Settings.WEIGHTTHRESHOLD = int(_App.KEYBOARD_TEXT[0])
 
     def paintEvent(self, event):
         self.drawButtons()

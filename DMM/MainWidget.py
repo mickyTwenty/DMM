@@ -8,10 +8,12 @@
 import os
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import QFontDatabase, QFont
 import sqlite3
 from sqlite3 import Error
 
 from Config import _App
+from Config import APP_STATE
 
 class MainWidget(object):
     def __init__(self, MainWindow):
@@ -20,12 +22,31 @@ class MainWidget(object):
 
         self.MainWindow = MainWindow
 
+        self.setFont()
+
         self.icon_login = QtGui.QPixmap("res/gui/button_login.png")
         self.icon_logout = QtGui.QPixmap("res/gui/button_logout.png")
 
         self.btnTools.clicked.connect(self.MainWindow.setToolsWidget)
         self.btnSetup.clicked.connect(self.MainWindow.setBasicSettingWidget)     
         self.btnLogin.clicked.connect(self.on_btnLogin_clicked)
+
+    def setAppState(self):
+        if _App.APPSTATE == APP_STATE.STATE_NEED_TRUCKID:
+            self.setMessageText("PLEASE SET TRUCK ID")
+            self.setActiveLiftText("SET TRUCK ID")
+        
+        if _App.APPSTATE == APP_STATE.STATE_NEED_LOGIN:
+            self.setMessageText("PLEASE LOGIN")
+            self.setActiveLiftText("PLEASE LOGIN")
+
+    def setFont(self):
+        QFontDatabase.addApplicationFont("./res/font/DJB Get Digital.ttf")
+        your_ttf_font = QFont("DJB Get Digital", 65)
+        # your_ttf_font.setBold(True)
+        self.lblWeight.setFont(your_ttf_font)
+        self.lblActiveLift.setFont(your_ttf_font)
+        # DMMMainUI.closeEvent(self.closeEvent1)
 
     def on_btnLogin_clicked(self):
         if _App.LoginState == True:
@@ -38,6 +59,12 @@ class MainWidget(object):
                 _App.LoginID = _App.KEYBOARD_TEXT[0]
                 _App.LoginState = True
                 self.btnLogin.setIcon(QtGui.QIcon(self.icon_logout))
+    
+    def setMessageText(self, message):
+        self.lblMessage.setText(message)
+
+    def setActiveLiftText(self, message):
+        self.lblActiveLift.setText(message)
 
     def updateTimeText(self, timestamp):
         self.lblDateTime.setText(timestamp)
@@ -228,8 +255,14 @@ class MainWidget(object):
         self.label_4.setAlignment(QtCore.Qt.AlignCenter)
         self.label_4.setObjectName("label_4")
         self.verticalLayout_4.addWidget(self.label_4)
-        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.verticalLayout_4.addItem(spacerItem1)
+        self.lblActiveLift = QtWidgets.QLabel(self.liftWidget)
+        font = QtGui.QFont()
+        font.setPointSize(48)
+        self.lblActiveLift.setFont(font)
+        self.lblActiveLift.setStyleSheet("color: rgb(0, 255, 240);")
+        self.lblActiveLift.setAlignment(QtCore.Qt.AlignCenter)
+        self.lblActiveLift.setObjectName("lblActiveLift")
+        self.verticalLayout_4.addWidget(self.lblActiveLift)
         self.verticalLayout_2.addWidget(self.liftWidget)
         self.gridLayout.addLayout(self.verticalLayout_2, 2, 0, 1, 1)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
@@ -244,8 +277,8 @@ class MainWidget(object):
         self.lblDateTime.setStyleSheet("color: rgb(104, 144, 153);")
         self.lblDateTime.setObjectName("lblDateTime")
         self.horizontalLayout.addWidget(self.lblDateTime)
-        spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout.addItem(spacerItem2)
+        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout.addItem(spacerItem1)
         self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setContentsMargins(-1, -1, 7, -1)
@@ -261,8 +294,8 @@ class MainWidget(object):
         self.btnTools.setIconSize(QtCore.QSize(55, 50))
         self.btnTools.setObjectName("btnTools")
         self.horizontalLayout_2.addWidget(self.btnTools)
-        spacerItem3 = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_2.addItem(spacerItem3)
+        spacerItem2 = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_2.addItem(spacerItem2)
         self.btnSetup = QtWidgets.QToolButton(mainWidget)
         self.btnSetup.setMinimumSize(QtCore.QSize(45, 45))
         self.btnSetup.setMaximumSize(QtCore.QSize(45, 45))
@@ -274,8 +307,8 @@ class MainWidget(object):
         self.btnSetup.setIconSize(QtCore.QSize(45, 45))
         self.btnSetup.setObjectName("btnSetup")
         self.horizontalLayout_2.addWidget(self.btnSetup)
-        spacerItem4 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_2.addItem(spacerItem4)
+        spacerItem3 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_2.addItem(spacerItem3)
         self.label = QtWidgets.QLabel(mainWidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -288,8 +321,8 @@ class MainWidget(object):
         self.label.setPixmap(QtGui.QPixmap("res/gui/logo.png"))
         self.label.setObjectName("label")
         self.horizontalLayout_2.addWidget(self.label)
-        spacerItem5 = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_2.addItem(spacerItem5)
+        spacerItem4 = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_2.addItem(spacerItem4)
         self.lblWifi = QtWidgets.QLabel(mainWidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -351,8 +384,8 @@ class MainWidget(object):
         self.btnLogup.setIconSize(QtCore.QSize(63, 64))
         self.btnLogup.setObjectName("btnLogup")
         self.verticalLayout_7.addWidget(self.btnLogup)
-        spacerItem6 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.verticalLayout_7.addItem(spacerItem6)
+        spacerItem5 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout_7.addItem(spacerItem5)
         self.btnLogdown = QtWidgets.QToolButton(self.logWidget)
         self.btnLogdown.setMinimumSize(QtCore.QSize(63, 64))
         self.btnLogdown.setMaximumSize(QtCore.QSize(63, 64))
@@ -397,8 +430,16 @@ class MainWidget(object):
         self.label_6.setAlignment(QtCore.Qt.AlignCenter)
         self.label_6.setObjectName("label_6")
         self.verticalLayout_9.addWidget(self.label_6)
-        spacerItem7 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.verticalLayout_9.addItem(spacerItem7)
+        self.lblMessage = QtWidgets.QLabel(self.messageWidget)
+        font = QtGui.QFont()
+        font.setPointSize(18)
+        font.setBold(True)
+        font.setWeight(75)
+        self.lblMessage.setFont(font)
+        self.lblMessage.setStyleSheet("color: rgb(255, 228, 30);")
+        self.lblMessage.setAlignment(QtCore.Qt.AlignCenter)
+        self.lblMessage.setObjectName("lblMessage")
+        self.verticalLayout_9.addWidget(self.lblMessage)
         self.verticalLayout_8.addWidget(self.messageWidget)
         self.actionWidget = QtWidgets.QWidget(mainWidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
@@ -440,8 +481,8 @@ class MainWidget(object):
         self.widget.setObjectName("widget")
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.widget)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
-        spacerItem8 = QtWidgets.QSpacerItem(145, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_4.addItem(spacerItem8)
+        spacerItem6 = QtWidgets.QSpacerItem(145, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_4.addItem(spacerItem6)
         self.btnLogin = QtWidgets.QToolButton(self.widget)
         icon4 = QtGui.QIcon()
         icon4.addPixmap(QtGui.QPixmap("res/gui/button_login.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -449,8 +490,8 @@ class MainWidget(object):
         self.btnLogin.setIconSize(QtCore.QSize(159, 118))
         self.btnLogin.setObjectName("btnLogin")
         self.horizontalLayout_4.addWidget(self.btnLogin)
-        spacerItem9 = QtWidgets.QSpacerItem(144, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_4.addItem(spacerItem9)
+        spacerItem7 = QtWidgets.QSpacerItem(144, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_4.addItem(spacerItem7)
         self.verticalLayout_10.addWidget(self.widget)
         self.verticalLayout_8.addWidget(self.actionWidget)
         self.gridLayout.addLayout(self.verticalLayout_8, 2, 1, 1, 1)
@@ -465,8 +506,10 @@ class MainWidget(object):
         self.lblWeight.setText(_translate("mainWidget", "00000.0"))
         self.lblUnit.setText(_translate("mainWidget", "LBS"))
         self.label_4.setText(_translate("mainWidget", "ACTIVE LIFT"))
+        self.lblActiveLift.setText(_translate("mainWidget", "PLEASE LOGIN"))
         self.lblDateTime.setText(_translate("mainWidget", "13:00 Monday, May 04,  2020"))
         self.label_5.setText(_translate("mainWidget", "LOG"))
         self.label_6.setText(_translate("mainWidget", "MESSAGE CENTER"))
+        self.lblMessage.setText(_translate("mainWidget", "Please Login"))
         self.label_7.setText(_translate("mainWidget", "AVAILABLE ACTIONS"))
 

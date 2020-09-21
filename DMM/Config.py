@@ -1,8 +1,18 @@
 import configparser
 import os
+import enum
 
 config_file = 'config.ini'
 smtp_config_file = 'smtp.ini'
+
+default_rwt = 10
+
+class APP_STATE(enum.Enum):
+    NONE                    = -1
+    STATE_NEED_LOGIN        = 0
+    STATE_NEED_TRUCKID      = 1
+    STATE_BEGIN_LIFT        = 2
+    STATE_SCAN_BARCODE      = 3
 
 global _App
 
@@ -33,6 +43,9 @@ class AppSettings:
         self.SERIALMODE = config['Settings']['SERIALMODE']
         self.WEIGHTMODE = config['Settings']['WEIGHTMODE']
         self.WEIGHTCODE = config['Settings']['WEIGHTCODE']
+
+        if self.WEIGHTTHRESHOLD is None:
+            self.WEIGHTTHRESHOLD = default_rwt
 
     def save(self):
         print('saving config.ini...')
@@ -76,9 +89,12 @@ class AppSettings:
 
 class App:
     def __init__(self):
+        self.APPSTATE = APP_STATE.NONE
+
         self.LoginState = False
         self.LoginID = ''
 
+        self.CHECKERSTAT = True
         self.TIMESTAT = True
         self.HX711STAT = True
         self.RS232STAT = True

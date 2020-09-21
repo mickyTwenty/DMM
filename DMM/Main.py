@@ -7,6 +7,7 @@ import enum
 from MainWidget import MainWidget
 from ToolsWidget import ToolsWidget
 import BasicSettingsWidget
+import AppcheckerHelper
 import ClockHelper
 import WeightButtonHelper
 import KeyboardWidget
@@ -41,14 +42,15 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setMainWidget()
         #self.setToolsWidget()
 
-        self.initStatVariables()
-        self.setWeightFont()
+        #self.initStatVariables()
+        #self.setWeightFont()
         self.initHelperClass()
 
-    def initStatVariables(self):
+
+    #def initStatVariables(self):
         #self.TRUCKID = ''
         #self.CURRENTWEIGHT = '0'
-        self.DOCID = ''
+        #self.DOCID = ''
 
     def setWeightFont(self):
         QFontDatabase.addApplicationFont("./res/font/DJB Get Digital.ttf")
@@ -58,6 +60,7 @@ class MainWindow(QtWidgets.QMainWindow):
         # DMMMainUI.closeEvent(self.closeEvent1)
 
     def initHelperClass(self):
+        AppcheckerHelper.AppcheckerThread(self.mainWidget).start()
         ClockHelper.ClockHelper(self.mainWidget).startClock()
         WirelessHelper.WirelessThread(self.mainWidget).start()
         self.WBHelper = WeightButtonHelper.WeightButtonHelper(self.mainWidget)
@@ -99,6 +102,7 @@ class MainWindow(QtWidgets.QMainWindow):
             event.accept()
 
             print('Exiting Program Loop')
+            _App.CHECKERSTAT = False
             _App.HX711STAT = False
             _App.RS232STAT = False
             _App.TIMESTAT = False
