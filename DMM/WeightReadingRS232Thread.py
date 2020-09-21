@@ -14,6 +14,7 @@ import numpy as np
 import random
 from RS232Serial import RS232Serial
 from Config import _App
+from Config import APP_STATE
 
 class WeightReadingRs232Thread(threading.Thread):
     def __init__(self, GUI):
@@ -44,6 +45,10 @@ class WeightReadingRs232Thread(threading.Thread):
             return
 
         while _App.RS232STAT:
+            if _App.APPSTATE != APP_STATE.STATE_BEGIN_LIFT:
+                time.sleep(1)
+                continue
+
             if _App.DEBUG is True:
                 ############ TESTING
                 cval = random.randint(0, 1)

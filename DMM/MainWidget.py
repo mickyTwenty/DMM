@@ -35,10 +35,18 @@ class MainWidget(object):
         if _App.APPSTATE == APP_STATE.STATE_NEED_TRUCKID:
             self.setMessageText("PLEASE SET TRUCK ID")
             self.setActiveLiftText("SET TRUCK ID")
+            self.updateWeightText("TRUCKID", "")
+            self.updateNoneCodeImage()
         
         if _App.APPSTATE == APP_STATE.STATE_NEED_LOGIN:
             self.setMessageText("PLEASE LOGIN")
             self.setActiveLiftText("PLEASE LOGIN")
+            self.updateWeightText("LOGIN", "")
+            self.updateNoneCodeImage()
+
+        if _App.APPSTATE == APP_STATE.STATE_BEGIN_LIFT:
+            self.setMessageText("PLEASE BEGIN LIFT")
+            self.setActiveLiftText("")
 
     def setFont(self):
         QFontDatabase.addApplicationFont("./res/font/DJB Get Digital.ttf")
@@ -59,6 +67,7 @@ class MainWidget(object):
                 _App.LoginID = _App.KEYBOARD_TEXT[0]
                 _App.LoginState = True
                 self.btnLogin.setIcon(QtGui.QIcon(self.icon_logout))
+                self.updateWeightText("", "")
     
     def setMessageText(self, message):
         self.lblMessage.setText(message)
