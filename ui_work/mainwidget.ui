@@ -132,6 +132,18 @@ color: rgb(241, 187, 2);</string>
          <layout class="QHBoxLayout" name="horizontalLayout_3">
           <item>
            <widget class="QLabel" name="lblBarcode">
+            <property name="minimumSize">
+             <size>
+              <width>225</width>
+              <height>165</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>225</width>
+              <height>165</height>
+             </size>
+            </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
             </property>
@@ -162,13 +174,13 @@ color: rgb(241, 187, 2);</string>
               </property>
               <property name="minimumSize">
                <size>
-                <width>260</width>
+                <width>280</width>
                 <height>80</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>260</width>
+                <width>280</width>
                 <height>80</height>
                </size>
               </property>
@@ -523,7 +535,7 @@ color: rgb(241, 187, 2);</string>
       </spacer>
      </item>
      <item>
-      <widget class="QLabel" name="label_2">
+      <widget class="QLabel" name="lblWifi">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>

@@ -4,8 +4,7 @@ Raises: None
 
 Takes UI from Calculator.py and applies functionality to each button.
 """
-# Author: Jacob Hallberg
-# Last Edited: 12/30/2017
+
 from math import sqrt
 from PyQt5 import QtWidgets, QtCore
 from Calculator_UI import Ui_Calculator
@@ -55,9 +54,10 @@ class Calculator(QtWidgets.QDialog, Ui_Calculator):
         self.Equal.clicked.connect(self.button_clicked)
         self.Decimal.clicked.connect(self.button_clicked)
         self.PlusMinus.clicked.connect(self.button_clicked)
-        self.Sqrt.clicked.connect(self.button_clicked)
+        #self.Sqrt.clicked.connect(self.button_clicked)
         self.C.clicked.connect(self.button_clicked)
         self.Back.clicked.connect(self.button_clicked)
+        self.Exit.clicked.connect(self.btnExit_clicked)
 
     def button_clicked(self):
         """Args: None
@@ -81,6 +81,9 @@ class Calculator(QtWidgets.QDialog, Ui_Calculator):
             self.add_remove_minus()
         else:
             self.string_appender()
+    
+    def btnExit_clicked(self):
+        self.accept()
 
     def operations(self):
         """Args: None

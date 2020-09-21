@@ -2,9 +2,6 @@
 Generated python code using PyQt5 Designer. Need to fix bad formatting
 as this is generated UI code after making the UI using PyQt5 Designer.
 """
-# Author: Jacob Hallberg
-# Last Edited: 12/30/2017
-
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -12,10 +9,16 @@ class Ui_Calculator(object):
     def setupUi(self, Calculator):
         Calculator.setObjectName("Calculator")
         Calculator.setEnabled(True)
-        Calculator.resize(450, 681)
+        Calculator.resize(560, 531)
+
+        stylesheet = "QDialog { background-color: rgb(26,27,40); } QPushButton { background-color: rgb(30,36,53); border-radius: 8px; color: white; } QPushButton:pressed { background-color: rgb(40, 46, 63); } "
+        stylesheet1 = "QPushButton{ background-color: rgb(82, 201, 220); } QPushButton:pressed { background-color: rgb(102, 221, 240); }"
+        stylesheet2 = "QPushButton{ background-color: rgb(145, 25, 30); color: rgb(216, 62, 70); } QPushButton:pressed { background-color: rgb(165, 45, 50); }"
+
+        Calculator.setStyleSheet(stylesheet)
 
         self.Five = QtWidgets.QPushButton(Calculator)
-        self.Five.setGeometry(QtCore.QRect(120, 380, 101, 91))
+        self.Five.setGeometry(QtCore.QRect(120, 230, 101, 91))
 
         font = QtGui.QFont()
         font.setFamily("STIX")
@@ -25,7 +28,7 @@ class Ui_Calculator(object):
         self.Five.setObjectName("Five")
 
         self.Six = QtWidgets.QPushButton(Calculator)
-        self.Six.setGeometry(QtCore.QRect(230, 380, 101, 91))
+        self.Six.setGeometry(QtCore.QRect(230, 230, 101, 91))
 
         font = QtGui.QFont()
         font.setFamily("STIX")
@@ -35,7 +38,7 @@ class Ui_Calculator(object):
         self.Six.setObjectName("Six")
 
         self.Seven = QtWidgets.QPushButton(Calculator)
-        self.Seven.setGeometry(QtCore.QRect(10, 280, 101, 91))
+        self.Seven.setGeometry(QtCore.QRect(10, 130, 101, 91))
 
         font = QtGui.QFont()
         font.setFamily("STIX")
@@ -44,18 +47,19 @@ class Ui_Calculator(object):
         self.Seven.setFont(font)
         self.Seven.setObjectName("Seven")
 
-        self.Sqrt = QtWidgets.QPushButton(Calculator)
-        self.Sqrt.setGeometry(QtCore.QRect(120, 180, 101, 91))
+        #self.Sqrt = QtWidgets.QPushButton(Calculator)
+        #self.Sqrt.setGeometry(QtCore.QRect(450, 230, 101, 91))
 
-        font = QtGui.QFont()
-        font.setFamily("STIX")
-        font.setPointSize(18)
+        #font = QtGui.QFont()
+        #font.setFamily("STIX")
+        #font.setPointSize(18)
 
-        self.Sqrt.setFont(font)
-        self.Sqrt.setObjectName("Sqrt")
+        #self.Sqrt.setFont(font)
+        #self.Sqrt.setObjectName("Sqrt")
+        #self.Sqrt.setStyleSheet(stylesheet1)
 
         self.Multiply = QtWidgets.QPushButton(Calculator)
-        self.Multiply.setGeometry(QtCore.QRect(340, 380, 101, 91))
+        self.Multiply.setGeometry(QtCore.QRect(340, 230, 101, 91))
 
         font = QtGui.QFont()
         font.setFamily("STIX")
@@ -63,9 +67,10 @@ class Ui_Calculator(object):
 
         self.Multiply.setFont(font)
         self.Multiply.setObjectName("Multiply")
+        self.Multiply.setStyleSheet(stylesheet1)
 
         self.Decimal = QtWidgets.QPushButton(Calculator)
-        self.Decimal.setGeometry(QtCore.QRect(120, 580, 101, 91))
+        self.Decimal.setGeometry(QtCore.QRect(120, 430, 101, 91))
 
         font = QtGui.QFont()
         font.setFamily("STIX")
@@ -75,7 +80,7 @@ class Ui_Calculator(object):
         self.Decimal.setObjectName("Decimal")
 
         self.Eight = QtWidgets.QPushButton(Calculator)
-        self.Eight.setGeometry(QtCore.QRect(120, 280, 101, 91))
+        self.Eight.setGeometry(QtCore.QRect(120, 130, 101, 91))
 
         font = QtGui.QFont()
         font.setFamily("STIX")
@@ -85,7 +90,7 @@ class Ui_Calculator(object):
         self.Eight.setObjectName("Eight")
 
         self.Divide = QtWidgets.QPushButton(Calculator)
-        self.Divide.setGeometry(QtCore.QRect(340, 280, 101, 91))
+        self.Divide.setGeometry(QtCore.QRect(340, 130, 101, 91))
 
         font = QtGui.QFont()
         font.setFamily("STIX")
@@ -93,9 +98,10 @@ class Ui_Calculator(object):
 
         self.Divide.setFont(font)
         self.Divide.setObjectName("Divide")
+        self.Divide.setStyleSheet(stylesheet1)
 
         self.PlusMinus = QtWidgets.QPushButton(Calculator)
-        self.PlusMinus.setGeometry(QtCore.QRect(230, 180, 101, 91))
+        self.PlusMinus.setGeometry(QtCore.QRect(450, 230, 101, 91))
 
         font = QtGui.QFont()
         font.setFamily("STIX")
@@ -103,9 +109,10 @@ class Ui_Calculator(object):
 
         self.PlusMinus.setFont(font)
         self.PlusMinus.setObjectName("PlusMinus")
+        self.PlusMinus.setStyleSheet(stylesheet1)
 
         self.Equal = QtWidgets.QPushButton(Calculator)
-        self.Equal.setGeometry(QtCore.QRect(230, 580, 101, 91))
+        self.Equal.setGeometry(QtCore.QRect(230, 430, 101, 91))
 
         font = QtGui.QFont()
         font.setFamily("STIX")
@@ -113,9 +120,10 @@ class Ui_Calculator(object):
 
         self.Equal.setFont(font)
         self.Equal.setObjectName("Equal")
+        self.Equal.setStyleSheet(stylesheet1)
 
         self.Zero = QtWidgets.QPushButton(Calculator)
-        self.Zero.setGeometry(QtCore.QRect(10, 580, 101, 91))
+        self.Zero.setGeometry(QtCore.QRect(10, 430, 101, 91))
         
         font = QtGui.QFont()
         font.setFamily("STIX")
@@ -126,7 +134,7 @@ class Ui_Calculator(object):
 
         self.C = QtWidgets.QPushButton(Calculator)
         self.C.setEnabled(True)
-        self.C.setGeometry(QtCore.QRect(340, 180, 101, 91))
+        self.C.setGeometry(QtCore.QRect(450, 330, 101, 91))
 
         font = QtGui.QFont()
         font.setFamily("STIX")
@@ -134,9 +142,22 @@ class Ui_Calculator(object):
 
         self.C.setFont(font)
         self.C.setObjectName("C")
+        self.C.setStyleSheet(stylesheet1)
+
+        self.Exit = QtWidgets.QPushButton(Calculator)
+        self.Exit.setEnabled(True)
+        self.Exit.setGeometry(QtCore.QRect(450, 430, 101, 91))
+
+        font = QtGui.QFont()
+        font.setFamily("STIX")
+        font.setPointSize(18)
+
+        self.Exit.setFont(font)
+        self.Exit.setObjectName("C")
+        self.Exit.setStyleSheet(stylesheet2)
 
         self.Nine = QtWidgets.QPushButton(Calculator)
-        self.Nine.setGeometry(QtCore.QRect(230, 280, 101, 91))
+        self.Nine.setGeometry(QtCore.QRect(230, 130, 101, 91))
 
         font = QtGui.QFont()
         font.setFamily("STIX")
@@ -146,7 +167,7 @@ class Ui_Calculator(object):
         self.Nine.setObjectName("Nine")
 
         self.Minus = QtWidgets.QPushButton(Calculator)
-        self.Minus.setGeometry(QtCore.QRect(340, 480, 101, 91))
+        self.Minus.setGeometry(QtCore.QRect(340, 330, 101, 91))
 
         font = QtGui.QFont()
         font.setFamily("STIX")
@@ -155,9 +176,10 @@ class Ui_Calculator(object):
         self.Minus.setFont(font)
         self.Minus.setCheckable(False)
         self.Minus.setObjectName("Minus")
+        self.Minus.setStyleSheet(stylesheet1)
 
         self.Three = QtWidgets.QPushButton(Calculator)
-        self.Three.setGeometry(QtCore.QRect(230, 480, 101, 91))
+        self.Three.setGeometry(QtCore.QRect(230, 330, 101, 91))
 
         font = QtGui.QFont()
         font.setFamily("STIX")
@@ -167,7 +189,7 @@ class Ui_Calculator(object):
         self.Three.setObjectName("Three")
 
         self.One = QtWidgets.QPushButton(Calculator)
-        self.One.setGeometry(QtCore.QRect(10, 480, 101, 91))
+        self.One.setGeometry(QtCore.QRect(10, 330, 101, 91))
 
         font = QtGui.QFont()
         font.setFamily("STIX")
@@ -177,7 +199,7 @@ class Ui_Calculator(object):
         self.One.setObjectName("One")
 
         self.Four = QtWidgets.QPushButton(Calculator)
-        self.Four.setGeometry(QtCore.QRect(10, 380, 101, 91))
+        self.Four.setGeometry(QtCore.QRect(10, 230, 101, 91))
 
         font = QtGui.QFont()
         font.setFamily("STIX")
@@ -187,13 +209,14 @@ class Ui_Calculator(object):
         self.Four.setObjectName("Four")
 
         self.NumberField = QtWidgets.QLCDNumber(Calculator)
-        self.NumberField.setGeometry(QtCore.QRect(13, 10, 421, 161))
+        self.NumberField.setGeometry(QtCore.QRect(13, 10, 531, 111))
         self.NumberField.setSmallDecimalPoint(False)
         self.NumberField.setDigitCount(16)
         self.NumberField.setObjectName("NumberField")
+        self.NumberField.setStyleSheet("color: white; border: none; border-bottom: 1px solid rgb(58,61,76);")
 
         self.Plus = QtWidgets.QPushButton(Calculator)
-        self.Plus.setGeometry(QtCore.QRect(340, 580, 101, 91))
+        self.Plus.setGeometry(QtCore.QRect(340, 430, 101, 91))
 
         font = QtGui.QFont()
         font.setFamily("STIX")
@@ -201,9 +224,10 @@ class Ui_Calculator(object):
 
         self.Plus.setFont(font)
         self.Plus.setObjectName("Plus")
+        self.Plus.setStyleSheet(stylesheet1)
 
         self.Two = QtWidgets.QPushButton(Calculator)
-        self.Two.setGeometry(QtCore.QRect(120, 480, 101, 91))
+        self.Two.setGeometry(QtCore.QRect(120, 330, 101, 91))
 
         font = QtGui.QFont()
         font.setFamily("STIX")
@@ -213,7 +237,7 @@ class Ui_Calculator(object):
         self.Two.setObjectName("Two")
 
         self.Back = QtWidgets.QPushButton(Calculator)
-        self.Back.setGeometry(QtCore.QRect(10, 180, 101, 91))
+        self.Back.setGeometry(QtCore.QRect(450, 130, 101, 91))
 
         font = QtGui.QFont()
         font.setFamily("STIX")
@@ -221,17 +245,18 @@ class Ui_Calculator(object):
         self.Back.setFont(font)
         
         self.Back.setObjectName("Back")
+        self.Back.setStyleSheet(stylesheet1)
 
         self.retranslateUi(Calculator)
         QtCore.QMetaObject.connectSlotsByName(Calculator)
 
     def retranslateUi(self, Calculator):
         _translate = QtCore.QCoreApplication.translate
-        Calculator.setWindowTitle(_translate("Calculator", "Jacob Hallberg\'s Calculator"))
+        Calculator.setWindowTitle(_translate("Calculator", "Calculator"))
         self.Five.setText(_translate("Calculator", "5"))
         self.Six.setText(_translate("Calculator", "6"))
         self.Seven.setText(_translate("Calculator", "7"))
-        self.Sqrt.setText(_translate("Calculator", "√"))
+        #self.Sqrt.setText(_translate("Calculator", "√"))
         self.Multiply.setText(_translate("Calculator", "*"))
         self.Decimal.setText(_translate("Calculator", "."))
         self.Eight.setText(_translate("Calculator", "8"))
@@ -240,6 +265,7 @@ class Ui_Calculator(object):
         self.Equal.setText(_translate("Calculator", "="))
         self.Zero.setText(_translate("Calculator", "0"))
         self.C.setText(_translate("Calculator", "C"))
+        self.Exit.setText(_translate("Calculator", "Exit"))
         self.Nine.setText(_translate("Calculator", "9"))
         self.Minus.setText(_translate("Calculator", "-"))
         self.Three.setText(_translate("Calculator", "3"))
