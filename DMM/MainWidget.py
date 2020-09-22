@@ -9,8 +9,10 @@ import os
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QFontDatabase, QFont
+from PyQt5.QtWidgets import QMessageBox
 import sqlite3
 from sqlite3 import Error
+import subprocess
 
 from Config import _App
 from Config import APP_STATE
@@ -30,6 +32,7 @@ class MainWidget(object):
         self.btnTools.clicked.connect(self.MainWindow.setToolsWidget)
         self.btnSetup.clicked.connect(self.MainWindow.setBasicSettingWidget)     
         self.btnLogin.clicked.connect(self.on_btnLogin_clicked)
+        self.btnSetRWT.clicked.connect(self.on_btnRwt_clicked)
 
     def setAppState(self):
         if _App.APPSTATE == APP_STATE.STATE_NEED_TRUCKID:
@@ -37,16 +40,22 @@ class MainWidget(object):
             self.setActiveLiftText("SET TRUCK ID")
             self.updateWeightText("TRUCKID", "")
             self.updateNoneCodeImage()
+            self.btnLogin.setVisible(False)
+            self.btnSetRWT.setVisible(True)
         
         if _App.APPSTATE == APP_STATE.STATE_NEED_LOGIN:
             self.setMessageText("PLEASE LOGIN")
             self.setActiveLiftText("PLEASE LOGIN")
             self.updateWeightText("LOGIN", "")
             self.updateNoneCodeImage()
+            self.btnLogin.setVisible(True)
+            self.btnSetRWT.setVisible(False)
 
         if _App.APPSTATE == APP_STATE.STATE_BEGIN_LIFT:
             self.setMessageText("PLEASE BEGIN LIFT")
             self.setActiveLiftText("")
+            self.btnLogin.setVisible(True)
+            self.btnSetRWT.setVisible(False)
 
     def setFont(self):
         QFontDatabase.addApplicationFont("./res/font/DJB Get Digital.ttf")
@@ -68,6 +77,32 @@ class MainWidget(object):
                 _App.LoginState = True
                 self.btnLogin.setIcon(QtGui.QIcon(self.icon_logout))
                 self.updateWeightText("", "")
+
+    def on_btnRwt_clicked(self):
+        r = self.MainWindow.showKeyboard('', "Enter Truck ID")
+        if r:
+            if _App.KEYBOARD_TEXT[0] == '':
+                _App._Settings.TRUCK_ID = ''
+            else:
+                new_id = "WP-" + _App.KEYBOARD_TEXT[0]
+
+                if new_id == _App._Settings.TRUCK_ID:
+                    return
+
+                try:
+                    #subprocess.run(['sudo', _App.APP_PATH + '/change_hostname.sh', new_id])
+                    #subprocess.run(['./change_hostname.sh',  new_id])
+                    subprocess.call(['sh', './change_hostname.sh', new_id])
+                    #subprocess.call(['hostname', truckid])
+                    
+                    _App._Settings.TRUCK_ID = new_id
+
+                    reply = QMessageBox.question(None, "Reboot System", "Sytem Reboot Required?", QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
+                    if reply == QMessageBox.Yes:
+                        _App._Settings.save()
+                        os.system('sudo shutdown -r now')
+                except:
+                    print('Hostname Edit Failed')
     
     def setMessageText(self, message):
         self.lblMessage.setText(message)
@@ -499,6 +534,13 @@ class MainWidget(object):
         self.btnLogin.setIconSize(QtCore.QSize(159, 118))
         self.btnLogin.setObjectName("btnLogin")
         self.horizontalLayout_4.addWidget(self.btnLogin)
+        self.btnSetRWT = QtWidgets.QToolButton(self.widget)
+        icon5 = QtGui.QIcon()
+        icon5.addPixmap(QtGui.QPixmap("res/gui/settings_wthreshold_record.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.btnSetRWT.setIcon(icon5)
+        self.btnSetRWT.setIconSize(QtCore.QSize(159, 118))
+        self.btnSetRWT.setObjectName("btnSetRWT")
+        self.horizontalLayout_4.addWidget(self.btnSetRWT)
         spacerItem7 = QtWidgets.QSpacerItem(144, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_4.addItem(spacerItem7)
         self.verticalLayout_10.addWidget(self.widget)
