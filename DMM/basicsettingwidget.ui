@@ -103,40 +103,6 @@ QPushButton:pressed {
        </property>
       </widget>
      </item>
-     <item row="0" column="4">
-      <widget class="QToolButton" name="btnWThresholdRecord">
-       <property name="cursor">
-        <cursorShape>PointingHandCursor</cursorShape>
-       </property>
-       <property name="icon">
-        <iconset>
-         <normaloff>res/gui/settings_wthreshold_record.png</normaloff>res/gui/settings_wthreshold_record.png</iconset>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>159</width>
-         <height>118</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QToolButton" name="btnWThresholdMatch">
-       <property name="cursor">
-        <cursorShape>PointingHandCursor</cursorShape>
-       </property>
-       <property name="icon">
-        <iconset>
-         <normaloff>res/gui/settings_wthreshold_match.png</normaloff>res/gui/settings_wthreshold_match.png</iconset>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>159</width>
-         <height>118</height>
-        </size>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="1">
       <widget class="QPushButton" name="btnWifi">
        <property name="minimumSize">
@@ -163,6 +129,12 @@ QPushButton:pressed {
 SETUP</string>
        </property>
       </widget>
+     </item>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="btnSetRWT"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="QPushButton" name="btnSetMWT"/>
      </item>
     </layout>
    </item>

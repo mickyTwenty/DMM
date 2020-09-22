@@ -1,5 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
-from PyQt5.QtGui import QPainter, QTextDocument, QPixmap
+from PyQt5.QtGui import QPainter, QTextDocument, QPixmap, QFont, QFontMetrics
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtCore import QSizeF, QSize, QRectF, QRect
 import CodeModeDialog
@@ -26,7 +26,7 @@ class BasicSettingsWidget(QtWidgets.QWidget):
         self.btnWifi.clicked.connect(self.slotWifiClicked)
         self.btnEmailsetup.clicked.connect(self.slotEmailClicked)
         self.btnTruckid.clicked.connect(self.slotTruckidClicked)
-        self.btnWThresholdRecord.clicked.connect(self.slotRWTClicked)
+        self.btnSetRWT.clicked.connect(self.slotRWTClicked)
 
     def slotCodeClicked(self):
         diag = CodeModeDialog.CodeModeDialog()
@@ -81,6 +81,8 @@ class BasicSettingsWidget(QtWidgets.QWidget):
         self.drawWifiButton()
         self.drawWeightcodeButton()
         self.drawTruckidButton()
+        self.drawRWTButton()
+        self.drawMWTButton()
         
     def drawWifiButton(self):
         html = ""
@@ -107,8 +109,28 @@ class BasicSettingsWidget(QtWidgets.QWidget):
         if _App._Settings.TRUCK_ID == '':
             html = "<div style='text-align: center;color: #d5d58c;font-size: 24px;font-weight: 500;'>TRUCK ID</div><div style='text-align: center;color: #b51a00;font-size: 26px;font-weight: 500;margin-top: 39px;'>NOT SET</div>"
         else:
-            html = "<div style='text-align: center;color: #d5d58c;font-size: 24px;font-weight: 500;'>TRUCK ID</div><div style='text-align: center;color: #00c421;font-size: 22px;font-weight: 500;margin-top: 10px;'>{}</div>".format(_App._Settings.TRUCK_ID)
+            font = QFont("", 22)
+            fm = QFontMetrics(font)
+            pixelsWide = fm.width(_App._Settings.TRUCK_ID)
+
+            if pixelsWide <= 200:
+                html = "<div style='text-align: center;color: #d5d58c;font-size: 24px;font-weight: 500;'>TRUCK ID</div><div style='text-align: center;color: #00c421;font-size: 22px;font-weight: 500;margin-top: 40px;'>{}</div>".format(_App._Settings.TRUCK_ID)
+            else:
+                html = "<div style='text-align: center;color: #d5d58c;font-size: 24px;font-weight: 500;'>TRUCK ID</div><div style='text-align: center;color: #00c421;font-size: 22px;font-weight: 500;margin-top: 10px;'>{}</div>".format(_App._Settings.TRUCK_ID)
         self.drawContents(self.btnTruckid, html)
+    
+    def drawRWTButton(self):
+        html = ""
+        if _App._Settings.WEIGHTTHRESHOLD is None:
+            html = "<div style='text-align: center;color: #9d4040;font-size: 22px;font-weight: 500;'>RECORD</div><div style='text-align: center;color: #d5d58c;font-size: 16px;font-weight: 500;'>WEIGHT THRESHOLD</div><div style='text-align: center;color: #b51a00;font-size: 26px;font-weight: 500;margin-top: 5px;'>NOT SET</div>"
+        else:
+            html = "<div style='text-align: center;color: #9d4040;font-size: 22px;font-weight: 500;'>RECORD</div><div style='text-align: center;color: #d5d58c;font-size: 16px;font-weight: 500;'>WEIGHT THRESHOLD</div><div style='text-align: center;color: #00c421;font-size: 26px;font-weight: 500;margin-top: 5px;'>{}</div>".format(_App._Settings.WEIGHTTHRESHOLD)
+        self.drawContents(self.btnSetRWT, html)
+
+    def drawMWTButton(self):
+        html = "<div style='text-align: center;color: #a2e28d;font-size: 22px;font-weight: 500;'>MATCH</div><div style='text-align: center;color: #d5d58c;font-size: 16px;font-weight: 500;'>WEIGHT THRESHOLD</div><div style='text-align: center;color: #b51a00;font-size: 26px;font-weight: 500;margin-top: 5px;'>NOT SET</div>"
+        self.drawContents(self.btnSetMWT, html)
+
 
     def drawContents(self, button, html):
         text = QTextDocument()
