@@ -244,8 +244,8 @@ class Ui_mainWidget(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.logWidget.sizePolicy().hasHeightForWidth())
         self.logWidget.setSizePolicy(sizePolicy)
-        self.logWidget.setMinimumSize(QtCore.QSize(0, 207))
-        self.logWidget.setMaximumSize(QtCore.QSize(16777215, 207))
+        self.logWidget.setMinimumSize(QtCore.QSize(480, 207))
+        self.logWidget.setMaximumSize(QtCore.QSize(480, 207))
         self.logWidget.setStyleSheet("QWidget #logWidget {\n"
 "border: 3px solid rgb(32, 125, 198);\n"
 "}")
@@ -310,8 +310,8 @@ class Ui_mainWidget(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.messageWidget.sizePolicy().hasHeightForWidth())
         self.messageWidget.setSizePolicy(sizePolicy)
-        self.messageWidget.setMinimumSize(QtCore.QSize(0, 90))
-        self.messageWidget.setMaximumSize(QtCore.QSize(16777215, 90))
+        self.messageWidget.setMinimumSize(QtCore.QSize(480, 90))
+        self.messageWidget.setMaximumSize(QtCore.QSize(480, 90))
         self.messageWidget.setStyleSheet("QWidget #messageWidget {\n"
 "border: 3px solid rgb(32, 125, 198);\n"
 "}")
@@ -353,8 +353,8 @@ class Ui_mainWidget(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.actionWidget.sizePolicy().hasHeightForWidth())
         self.actionWidget.setSizePolicy(sizePolicy)
-        self.actionWidget.setMinimumSize(QtCore.QSize(0, 214))
-        self.actionWidget.setMaximumSize(QtCore.QSize(16777215, 214))
+        self.actionWidget.setMinimumSize(QtCore.QSize(480, 214))
+        self.actionWidget.setMaximumSize(QtCore.QSize(480, 214))
         self.actionWidget.setStyleSheet("QWidget #actionWidget {\n"
 "border: 3px solid rgb(32, 125, 198);\n"
 "}")
