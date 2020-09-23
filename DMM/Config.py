@@ -1,6 +1,7 @@
 import configparser
 import os
 import enum
+from datetime import datetime
 
 config_file = 'config.ini'
 smtp_config_file = 'smtp.ini'
@@ -98,6 +99,7 @@ class App:
         self.TIMESTAT = True
         self.HX711STAT = True
         self.RS232STAT = True
+        self.BCSCANSTAT = True
         self.WIFISTAT = True
         self.WIFICONNECTING = False
 
@@ -107,9 +109,14 @@ class App:
 
         self.APP_PATH = os.getcwd()
 
-        self.DEBUG = False
+        self.DEBUG = True
         self.KEYBOARD_TEXT = ['']
 
         self._Settings = AppSettings()
+
+    def getDateTimeStamp(self, format):
+        now = datetime.now()
+        date_time = now.strftime(format)
+        return date_time
 
 _App = App()

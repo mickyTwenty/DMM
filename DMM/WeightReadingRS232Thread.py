@@ -45,7 +45,7 @@ class WeightReadingRs232Thread(threading.Thread):
             return
 
         while _App.RS232STAT:
-            if _App.APPSTATE != APP_STATE.STATE_BEGIN_LIFT:
+            if _App.APPSTATE.value < APP_STATE.STATE_BEGIN_LIFT.value:
                 time.sleep(1)
                 continue
 
@@ -63,12 +63,12 @@ class WeightReadingRs232Thread(threading.Thread):
                 if mval == 1:
                     response += ' M'
 
-                #print("received data: " + response)
+                print("received data: " + response)
                 weight = self.extractDigit(response)
                 if weight != '-1':
                     self.doProcessing(response, weight)
                 # time.sleep(self.window.INTERVAL)
-                time.sleep(1)
+                time.sleep(5)
             else:
                 if self.rsserial.isOpen():
                     self.rsserial.flushInput()
@@ -126,7 +126,15 @@ class WeightReadingRs232Thread(threading.Thread):
     def doProcessing(self, response, weight):
         #weight = self.weightConversion(weight)
         try:
+                
             if 'M' not in response and weight != self.OLDWEIGHT:
+                if float(weight) < _App._Settings.WEIGHTTHRESHOLD:
+                    #self.GUI.updateWeightText("NO LOAD", "")
+                    #self.GUI.updateNoneCodeImage()
+                    _App.APPSTATE = APP_STATE.STATE_BEGIN_LIFT
+                    self.GUI.setAppState()
+                    return
+
                 self.OLDWEIGHT = weight
 
                 weightmode = ''
@@ -137,7 +145,7 @@ class WeightReadingRs232Thread(threading.Thread):
                     weightmode = 'LBS'
 
                 _App._Settings.WEIGHTMODE = weightmode
-                #print("weight: " + weight + weightmode)
+                print("weight: " + weight + weightmode)
 
                 EAN = barcode.get_barcode_class('code128')
                 ean = EAN(weight, writer=ImageWriter())
@@ -169,8 +177,7 @@ class WeightReadingRs232Thread(threading.Thread):
                 qrimg = qrimg.resize((160, 160), Image.ANTIALIAS)
                 #qrimg.save('./res/img/qrcode_resized.jpg')
 
-                self.GUI.CURRENTWEIGHT = weight
-                self.GUI.updateWeightText(weight, weightmode)
+                self.GUI.setNewLift(float(weight), weightmode)
 
                 if _App._Settings.WEIGHTCODE == 'BARCODE':
                     self.GUI.updateBarCodeImage(barimg)
@@ -179,13 +186,13 @@ class WeightReadingRs232Thread(threading.Thread):
                 else:
                     self.GUI.updateNoneCodeImage()
 
-                now = datetime.now()
-                date_time = now.strftime("%m/%d/%Y %H:%M:%S")
-                self.GUI.insertDB([_App._Settings.TRUCK_ID, weight, weightmode, "NO DATA", "SINGLE", date_time])
+                #now = datetime.now()
+                #date_time = now.strftime("%m/%d/%Y %H:%M:%S")
+                #self.GUI.insertDB([_App._Settings.TRUCK_ID, weight, weightmode, "NO DATA", "SINGLE", date_time])
 
             else:
+                print('Response contains M')
                 return
-                #print('Response contains M')
 
         except Exception as e:
-            print('Data Processing Error:',e)
+            print('Data Processing Error:', e)

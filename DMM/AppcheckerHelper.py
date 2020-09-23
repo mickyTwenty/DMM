@@ -17,11 +17,8 @@ class AppcheckerThread(threading.Thread):
                 _App.APPSTATE = APP_STATE.STATE_NEED_TRUCKID
             elif _App.LoginState is False:
                 _App.APPSTATE = APP_STATE.STATE_NEED_LOGIN
-            else:
-                _App.APPSTATE = APP_STATE.STATE_BEGIN_LIFT
             
             self.GUI.setAppState()
-
 
             time.sleep(1)
 

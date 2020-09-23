@@ -10,6 +10,7 @@ import BasicSettingsWidget
 import AppcheckerHelper
 import ClockHelper
 import WeightButtonHelper
+import BarcodeScannerHelper
 import KeyboardWidget
 import WirelessHelper
 
@@ -62,6 +63,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def initHelperClass(self):
         AppcheckerHelper.AppcheckerThread(self.mainWidget).start()
         ClockHelper.ClockHelper(self.mainWidget).startClock()
+        BarcodeScannerHelper.BarcodeScannerHelper(self.mainWidget).startScan()
         WirelessHelper.WirelessThread(self.mainWidget).start()
         self.WBHelper = WeightButtonHelper.WeightButtonHelper(self.mainWidget)
         if _App._Settings.SERIALMODE == 'HX711':
@@ -105,6 +107,7 @@ class MainWindow(QtWidgets.QMainWindow):
             _App.CHECKERSTAT = False
             _App.HX711STAT = False
             _App.RS232STAT = False
+            _App.BCSCANSTAT = False
             _App.TIMESTAT = False
             _App.WIFISTAT = False
             _App._Settings.save()

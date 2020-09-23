@@ -60,13 +60,13 @@ QToolButton { background: transparent; }</string>
        </property>
        <property name="minimumSize">
         <size>
-         <width>0</width>
+         <width>521</width>
          <height>207</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>16777215</width>
+         <width>521</width>
          <height>207</height>
         </size>
        </property>
@@ -259,13 +259,13 @@ color: rgb(241, 187, 2);</string>
        </property>
        <property name="minimumSize">
         <size>
-         <width>0</width>
+         <width>521</width>
          <height>310</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>16777215</width>
+         <width>521</width>
          <height>310</height>
         </size>
        </property>
@@ -344,6 +344,39 @@ color: rgb(241, 187, 2);</string>
            <set>Qt::AlignCenter</set>
           </property>
          </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="lblLiftID">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>50</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>50</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>25</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">color: rgb(0, 255, 240);</string>
+          </property>
+          <property name="text">
+           <string>Lift ID</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QListWidget" name="listBarcodes"/>
         </item>
        </layout>
       </widget>

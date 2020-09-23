@@ -22,7 +22,7 @@ class Ui_Calculator(object):
 
         font = QtGui.QFont()
         font.setFamily("STIX")
-        font.setPointSize(18)
+        font.setPointSize(24)
 
         self.Five.setFont(font)
         self.Five.setObjectName("Five")
@@ -32,7 +32,7 @@ class Ui_Calculator(object):
 
         font = QtGui.QFont()
         font.setFamily("STIX")
-        font.setPointSize(18)
+        font.setPointSize(24)
 
         self.Six.setFont(font)
         self.Six.setObjectName("Six")
@@ -42,7 +42,7 @@ class Ui_Calculator(object):
 
         font = QtGui.QFont()
         font.setFamily("STIX")
-        font.setPointSize(18)
+        font.setPointSize(24)
 
         self.Seven.setFont(font)
         self.Seven.setObjectName("Seven")
@@ -52,7 +52,7 @@ class Ui_Calculator(object):
 
         #font = QtGui.QFont()
         #font.setFamily("STIX")
-        #font.setPointSize(18)
+        #font.setPointSize(24)
 
         #self.Sqrt.setFont(font)
         #self.Sqrt.setObjectName("Sqrt")
@@ -63,7 +63,7 @@ class Ui_Calculator(object):
 
         font = QtGui.QFont()
         font.setFamily("STIX")
-        font.setPointSize(18)
+        font.setPointSize(24)
 
         self.Multiply.setFont(font)
         self.Multiply.setObjectName("Multiply")
@@ -74,7 +74,7 @@ class Ui_Calculator(object):
 
         font = QtGui.QFont()
         font.setFamily("STIX")
-        font.setPointSize(18)
+        font.setPointSize(24)
 
         self.Decimal.setFont(font)
         self.Decimal.setObjectName("Decimal")
@@ -84,7 +84,7 @@ class Ui_Calculator(object):
 
         font = QtGui.QFont()
         font.setFamily("STIX")
-        font.setPointSize(18)
+        font.setPointSize(24)
 
         self.Eight.setFont(font)
         self.Eight.setObjectName("Eight")
@@ -94,7 +94,7 @@ class Ui_Calculator(object):
 
         font = QtGui.QFont()
         font.setFamily("STIX")
-        font.setPointSize(18)
+        font.setPointSize(24)
 
         self.Divide.setFont(font)
         self.Divide.setObjectName("Divide")
@@ -105,7 +105,7 @@ class Ui_Calculator(object):
 
         font = QtGui.QFont()
         font.setFamily("STIX")
-        font.setPointSize(18)
+        font.setPointSize(24)
 
         self.PlusMinus.setFont(font)
         self.PlusMinus.setObjectName("PlusMinus")
@@ -116,7 +116,7 @@ class Ui_Calculator(object):
 
         font = QtGui.QFont()
         font.setFamily("STIX")
-        font.setPointSize(18)
+        font.setPointSize(24)
 
         self.Equal.setFont(font)
         self.Equal.setObjectName("Equal")
@@ -127,7 +127,7 @@ class Ui_Calculator(object):
         
         font = QtGui.QFont()
         font.setFamily("STIX")
-        font.setPointSize(18)
+        font.setPointSize(24)
 
         self.Zero.setFont(font)
         self.Zero.setObjectName("Zero")
@@ -138,7 +138,7 @@ class Ui_Calculator(object):
 
         font = QtGui.QFont()
         font.setFamily("STIX")
-        font.setPointSize(18)
+        font.setPointSize(24)
 
         self.C.setFont(font)
         self.C.setObjectName("C")
@@ -150,7 +150,7 @@ class Ui_Calculator(object):
 
         font = QtGui.QFont()
         font.setFamily("STIX")
-        font.setPointSize(18)
+        font.setPointSize(24)
 
         self.Exit.setFont(font)
         self.Exit.setObjectName("C")
@@ -161,7 +161,7 @@ class Ui_Calculator(object):
 
         font = QtGui.QFont()
         font.setFamily("STIX")
-        font.setPointSize(18)
+        font.setPointSize(24)
 
         self.Nine.setFont(font)
         self.Nine.setObjectName("Nine")
@@ -171,7 +171,7 @@ class Ui_Calculator(object):
 
         font = QtGui.QFont()
         font.setFamily("STIX")
-        font.setPointSize(18)
+        font.setPointSize(24)
 
         self.Minus.setFont(font)
         self.Minus.setCheckable(False)
@@ -183,7 +183,7 @@ class Ui_Calculator(object):
 
         font = QtGui.QFont()
         font.setFamily("STIX")
-        font.setPointSize(18)
+        font.setPointSize(24)
 
         self.Three.setFont(font)
         self.Three.setObjectName("Three")
@@ -193,7 +193,7 @@ class Ui_Calculator(object):
 
         font = QtGui.QFont()
         font.setFamily("STIX")
-        font.setPointSize(18)
+        font.setPointSize(24)
 
         self.One.setFont(font)
         self.One.setObjectName("One")
@@ -203,7 +203,7 @@ class Ui_Calculator(object):
 
         font = QtGui.QFont()
         font.setFamily("STIX")
-        font.setPointSize(18)
+        font.setPointSize(24)
 
         self.Four.setFont(font)
         self.Four.setObjectName("Four")
@@ -220,7 +220,7 @@ class Ui_Calculator(object):
 
         font = QtGui.QFont()
         font.setFamily("STIX")
-        font.setPointSize(18)
+        font.setPointSize(24)
 
         self.Plus.setFont(font)
         self.Plus.setObjectName("Plus")
@@ -231,7 +231,7 @@ class Ui_Calculator(object):
 
         font = QtGui.QFont()
         font.setFamily("STIX")
-        font.setPointSize(18)
+        font.setPointSize(24)
 
         self.Two.setFont(font)
         self.Two.setObjectName("Two")

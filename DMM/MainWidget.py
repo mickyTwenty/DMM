@@ -24,6 +24,10 @@ class MainWidget(object):
 
         self.MainWindow = MainWindow
 
+        self.CURRENT_WEIGHT = 0
+        self.CURRENT_LID = ''
+        self.CURRENT_SID = ''
+
         self.setFont()
 
         self.icon_login = QtGui.QPixmap("res/gui/button_login.png")
@@ -53,7 +57,15 @@ class MainWidget(object):
 
         if _App.APPSTATE == APP_STATE.STATE_BEGIN_LIFT:
             self.setMessageText("PLEASE BEGIN LIFT")
-            self.setActiveLiftText("")
+            self.setActiveLiftText("NO LOAD")
+            self.updateWeightText("NO LOAD", "")
+            self.updateNoneCodeImage()
+            self.btnLogin.setVisible(True)
+            self.btnSetRWT.setVisible(False)
+        
+        if _App.APPSTATE == APP_STATE.STATE_SCAN_BARCODE:
+            self.setMessageText("PLEASE SCAN BARCODE OF ITEMS")
+            #self.setActiveLiftText("")
             self.btnLogin.setVisible(True)
             self.btnSetRWT.setVisible(False)
 
@@ -76,7 +88,10 @@ class MainWidget(object):
                 _App.LoginID = _App.KEYBOARD_TEXT[0]
                 _App.LoginState = True
                 self.btnLogin.setIcon(QtGui.QIcon(self.icon_logout))
-                self.updateWeightText("", "")
+
+                _App.APPSTATE = APP_STATE.STATE_BEGIN_LIFT
+                self.setAppState()
+                #self.updateWeightText("", "")
 
     def on_btnRwt_clicked(self):
         r = self.MainWindow.showKeyboard('', "Enter Truck ID")
@@ -108,7 +123,18 @@ class MainWidget(object):
         self.lblMessage.setText(message)
 
     def setActiveLiftText(self, message):
+        self.lblActiveLift.setVisible(True)
+        self.lblLiftID.setVisible(False)
+        self.listBarcodes.setVisible(False)
+
         self.lblActiveLift.setText(message)
+    
+    def setLiftIDText(self, message):
+        self.lblLiftID.setVisible(True)
+        self.listBarcodes.setVisible(True)
+        self.lblActiveLift.setVisible(False)
+
+        self.lblLiftID.setText(message)
 
     def updateTimeText(self, timestamp):
         self.lblDateTime.setText(timestamp)
@@ -168,6 +194,20 @@ class MainWidget(object):
         print('Data Stored')
         return stat
 
+    def setNewLift(self, weight, weightmode):
+        self.CURRENT_WEIGHT = weight
+        self.updateWeightText(str(weight), weightmode)
+        self.generateLID()
+
+        _App.APPSTATE = APP_STATE.STATE_SCAN_BARCODE
+        self.setAppState()
+    
+    def generateLID(self):
+        datetime = _App.getDateTimeStamp("%Y%m%d%H%M%S")
+        self.CURRENT_LID = "{}-{}".format(_App._Settings.TRUCK_ID, datetime)
+        self.setLiftIDText(self.CURRENT_LID)
+        #self.setActiveLiftText(self.CURRENT_LID)
+
     def setupUi(self, mainWidget):
         mainWidget.setObjectName("mainWidget")
         mainWidget.resize(1024, 600)
@@ -191,8 +231,8 @@ class MainWidget(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.scaleWidget.sizePolicy().hasHeightForWidth())
         self.scaleWidget.setSizePolicy(sizePolicy)
-        self.scaleWidget.setMinimumSize(QtCore.QSize(0, 207))
-        self.scaleWidget.setMaximumSize(QtCore.QSize(16777215, 207))
+        self.scaleWidget.setMinimumSize(QtCore.QSize(521, 207))
+        self.scaleWidget.setMaximumSize(QtCore.QSize(521, 207))
         self.scaleWidget.setStyleSheet("QWidget #scaleWidget {border: 3px solid rgb(32, 125, 198);}")
         self.scaleWidget.setObjectName("scaleWidget")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.scaleWidget)
@@ -271,8 +311,8 @@ class MainWidget(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.liftWidget.sizePolicy().hasHeightForWidth())
         self.liftWidget.setSizePolicy(sizePolicy)
-        self.liftWidget.setMinimumSize(QtCore.QSize(0, 310))
-        self.liftWidget.setMaximumSize(QtCore.QSize(16777215, 310))
+        self.liftWidget.setMinimumSize(QtCore.QSize(521, 310))
+        self.liftWidget.setMaximumSize(QtCore.QSize(521, 310))
         self.liftWidget.setStyleSheet("QWidget #liftWidget {border: 3px solid rgb(32, 125, 198);}")
         self.liftWidget.setObjectName("liftWidget")
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.liftWidget)
@@ -307,6 +347,19 @@ class MainWidget(object):
         self.lblActiveLift.setAlignment(QtCore.Qt.AlignCenter)
         self.lblActiveLift.setObjectName("lblActiveLift")
         self.verticalLayout_4.addWidget(self.lblActiveLift)
+        self.lblLiftID = QtWidgets.QLabel(self.liftWidget)
+        self.lblLiftID.setMinimumSize(QtCore.QSize(0, 50))
+        self.lblLiftID.setMaximumSize(QtCore.QSize(16777215, 50))
+        font = QtGui.QFont()
+        font.setPointSize(25)
+        self.lblLiftID.setFont(font)
+        self.lblLiftID.setStyleSheet("color: rgb(0, 255, 240);")
+        self.lblLiftID.setAlignment(QtCore.Qt.AlignCenter)
+        self.lblLiftID.setObjectName("lblLiftID")
+        self.verticalLayout_4.addWidget(self.lblLiftID)
+        self.listBarcodes = QtWidgets.QListWidget(self.liftWidget)
+        self.listBarcodes.setObjectName("listBarcodes")
+        self.verticalLayout_4.addWidget(self.listBarcodes)
         self.verticalLayout_2.addWidget(self.liftWidget)
         self.gridLayout.addLayout(self.verticalLayout_2, 2, 0, 1, 1)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
@@ -558,6 +611,7 @@ class MainWidget(object):
         self.lblUnit.setText(_translate("mainWidget", "LBS"))
         self.label_4.setText(_translate("mainWidget", "ACTIVE LIFT"))
         self.lblActiveLift.setText(_translate("mainWidget", "PLEASE LOGIN"))
+        self.lblLiftID.setText(_translate("mainWidget", "Lift ID"))
         self.lblDateTime.setText(_translate("mainWidget", "13:00 Monday, May 04,  2020"))
         self.label_5.setText(_translate("mainWidget", "LOG"))
         self.label_6.setText(_translate("mainWidget", "MESSAGE CENTER"))
