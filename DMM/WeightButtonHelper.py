@@ -3,7 +3,6 @@ import sqlite3
 from sqlite3 import Error
 from WeightReadingRS232Thread import WeightReadingRs232Thread
 
-
 class WeightButtonHelper:
     def __init__(self, GUI):
         self.GUI = GUI

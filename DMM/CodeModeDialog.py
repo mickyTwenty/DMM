@@ -16,7 +16,6 @@ class CodeModeDialog(QtWidgets.QDialog):
         self.btnCodeBar.clicked.connect(self.slotCodeBarcode)
         self.btnCodeQr.clicked.connect(self.slotCodeQrcode)
 
-
     def slotCodeNone(self):
         _App._Settings.WEIGHTCODE = None
         self.accept()

@@ -10,7 +10,7 @@ import subprocess
 import sys
 import os
 
-from Config import _App
+from Config import _App, APP_STATE
 
 class BasicSettingsWidget(QtWidgets.QWidget):
     def __init__(self, MainWindow):
@@ -27,7 +27,7 @@ class BasicSettingsWidget(QtWidgets.QWidget):
         self.btnEmailsetup.clicked.connect(self.slotEmailClicked)
         self.btnTruckid.clicked.connect(self.slotTruckidClicked)
         self.btnSetRWT.clicked.connect(self.slotRWTClicked)
-
+        
     def slotCodeClicked(self):
         diag = CodeModeDialog.CodeModeDialog()
         diag.exec_()

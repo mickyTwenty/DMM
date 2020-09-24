@@ -35,7 +35,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.basicsettingsWidget = BasicSettingsWidget.BasicSettingsWidget(self)
         self.keyboard = KeyboardWidget.KeyboardWidget(self)
 
-        self.mainStacked.addWidget(self.mainWidget.mainWidget)
+        self.mainStacked.addWidget(self.mainWidget)
         self.mainStacked.addWidget(self.toolsWidget.toolsWidget)
         self.mainStacked.addWidget(self.basicsettingsWidget)
         #self.mainStacked.addWidget(self.keyboard)

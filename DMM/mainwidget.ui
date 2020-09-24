@@ -361,7 +361,7 @@ color: rgb(241, 187, 2);</string>
           </property>
           <property name="font">
            <font>
-            <pointsize>25</pointsize>
+            <pointsize>20</pointsize>
            </font>
           </property>
           <property name="styleSheet">
@@ -376,7 +376,29 @@ color: rgb(241, 187, 2);</string>
          </widget>
         </item>
         <item>
-         <widget class="QListWidget" name="listBarcodes"/>
+         <widget class="QListWidget" name="listBarcodes">
+          <property name="font">
+           <font>
+            <pointsize>16</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QListWidget {
+border: none;
+background: transparent;
+}
+
+QListWidget::item{
+	color: white;
+}</string>
+          </property>
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>

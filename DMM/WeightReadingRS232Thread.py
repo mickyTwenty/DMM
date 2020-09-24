@@ -132,7 +132,7 @@ class WeightReadingRs232Thread(threading.Thread):
                     #self.GUI.updateWeightText("NO LOAD", "")
                     #self.GUI.updateNoneCodeImage()
                     _App.APPSTATE = APP_STATE.STATE_BEGIN_LIFT
-                    self.GUI.setAppState()
+                    self.GUI.changeAppState()
                     return
 
                 self.OLDWEIGHT = weight
@@ -144,14 +144,14 @@ class WeightReadingRs232Thread(threading.Thread):
                 elif 'LB' in response:
                     weightmode = 'LBS'
 
-                _App._Settings.WEIGHTMODE = weightmode
+                #_App._Settings.WEIGHTMODE = weightmode
                 print("weight: " + weight + weightmode)
 
                 EAN = barcode.get_barcode_class('code128')
                 ean = EAN(weight, writer=ImageWriter())
                 fullname = ean.save('./res/img/barcode')
 
-                if _App._Settings.WEIGHTMODE == 'KGS':
+                if weightmode == 'KGS':
                     fimg = Image.open("./res/img/kg.jpg")
                 else:
                     fimg = Image.open("./res/img/lbs.jpg")

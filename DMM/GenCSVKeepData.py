@@ -21,7 +21,7 @@ class GenCSVKeepData:
         data = []
         try:
             conn = sqlite3.connect('./res/db/weightrpi.db')
-            sql = 'SELECT twi.recorded, twi.truckid, twi.weight, twi.measurement, twi.barcode FROM tbl_weight_info AS twi'
+            sql = 'SELECT twi.DATETIME, twi.TRUCK_ID, twi.FB_WEIGHT, twi.UOM, twi.FB_ITEM_BARCODE FROM tbl_weight_info AS twi'
             cur = conn.cursor()
             cur.execute(sql)
             data = cur.fetchall()
