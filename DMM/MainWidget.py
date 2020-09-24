@@ -277,9 +277,9 @@ class MainWidget(QtWidgets.QWidget):
         new_fbitem = barcode
 
         if self.insertNewFBItem(self.CURRENT_LID, new_fbitem):
-            self.listBarcodes.addItem("{}\t(New Scan)".format(new_fbitem))
+            self.listBarcodes.addItem("{}\t(New Item)".format(new_fbitem))
         else:
-            self.listBarcodes.addItem("{}\t(Already Scan)".format(new_fbitem))
+            self.listBarcodes.addItem("{}\t(Already Scanned)".format(new_fbitem))
         self.listBarcodes.scrollToBottom()
         
             
