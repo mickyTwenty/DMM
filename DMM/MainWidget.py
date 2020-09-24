@@ -50,6 +50,8 @@ class MainWidget(QtWidgets.QWidget):
         self.CURRENT_LID = ''
         self.CURRENT_SID = ''
 
+        self.message_queue = []
+
         self.setFont()
 
         self.icon_login = QtGui.QPixmap("res/gui/button_login.png")
@@ -257,20 +259,33 @@ class MainWidget(QtWidgets.QWidget):
 
 
     def setNewLift(self, weight, weightmode):
-        self.CURRENT_WEIGHT = weight
-        self.CURRENT_UOM = weightmode
-        self.updateWeightText(str(weight), weightmode)
-        self.generateLID()
+        if self.CURRENT_LID != "":
+            print("Call API")
+            self.message_queue.append(self.CURRENT_LID)
+        
+        if weight == 0:
+            self.CURRENT_WEIGHT = 0
+            self.CURRENT_UOM = ""
+            self.CURRENT_LID = ""
 
-        _App.APPSTATE = APP_STATE.STATE_SCAN_BARCODE
-        self.changeAppState()
-        #self.setAppState()
+            _App.APPSTATE = APP_STATE.STATE_BEGIN_LIFT
+            self.changeAppState()
+            
+        else:
+            self.CURRENT_WEIGHT = weight
+            self.CURRENT_UOM = weightmode
+            self.updateWeightText(str(weight), weightmode)
+            self.generateLID()
+
+            _App.APPSTATE = APP_STATE.STATE_SCAN_BARCODE
+            self.changeAppState()
+
+        self.listBarcodes.clear()
     
     def generateLID(self):
         datetime = _App.getDateTimeStamp("%Y%m%d%H%M%S")
         self.CURRENT_LID = "{}-{}".format(_App._Settings.TRUCK_ID, datetime)
         #self.setLiftIDText(self.CURRENT_LID)
-        self.listBarcodes.clear()
         #self.setActiveLiftText(self.CURRENT_LID)
 
     def addFBItem(self, barcode):
@@ -281,5 +296,9 @@ class MainWidget(QtWidgets.QWidget):
         else:
             self.listBarcodes.addItem("{}\t(Already Scanned)".format(new_fbitem))
         self.listBarcodes.scrollToBottom()
+
+    def setAPICallLog(self, LID):
+        self.listLog.addItem(LID)
+        self.listLog.scrollToBottom()
         
             

@@ -131,8 +131,9 @@ class WeightReadingRs232Thread(threading.Thread):
                 if float(weight) < _App._Settings.WEIGHTTHRESHOLD:
                     #self.GUI.updateWeightText("NO LOAD", "")
                     #self.GUI.updateNoneCodeImage()
-                    _App.APPSTATE = APP_STATE.STATE_BEGIN_LIFT
-                    self.GUI.changeAppState()
+                    self.GUI.setNewLift(0, "")
+                    #_App.APPSTATE = APP_STATE.STATE_BEGIN_LIFT
+                    #self.GUI.changeAppState()
                     return
 
                 self.OLDWEIGHT = weight

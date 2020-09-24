@@ -96,6 +96,7 @@ class App:
         self.LoginID = ''
 
         self.CHECKERSTAT = True
+        self.APICALLSTAT = True
         self.TIMESTAT = True
         self.HX711STAT = True
         self.RS232STAT = True

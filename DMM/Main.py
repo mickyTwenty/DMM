@@ -8,6 +8,7 @@ from MainWidget import MainWidget
 from ToolsWidget import ToolsWidget
 import BasicSettingsWidget
 import AppcheckerHelper
+import APICallHelper
 import ClockHelper
 import WeightButtonHelper
 import BarcodeScannerHelper
@@ -62,6 +63,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def initHelperClass(self):
         AppcheckerHelper.AppcheckerThread(self.mainWidget).start()
+        APICallHelper.APICallThread(self.mainWidget).start()
         ClockHelper.ClockHelper(self.mainWidget).startClock()
         BarcodeScannerHelper.BarcodeScannerHelper(self.mainWidget).startScan()
         WirelessHelper.WirelessThread(self.mainWidget).start()
@@ -105,6 +107,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
             print('Exiting Program Loop')
             _App.CHECKERSTAT = False
+            _App.APICALLSTAT = False
             _App.HX711STAT = False
             _App.RS232STAT = False
             _App.BCSCANSTAT = False

@@ -719,7 +719,23 @@ color: rgb(162, 162, 162);</string>
            <number>6</number>
           </property>
           <item>
-           <widget class="QListWidget" name="listLog"/>
+           <widget class="QListWidget" name="listLog">
+            <property name="font">
+             <font>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QListWidget {
+border: none;
+background: transparent;
+}
+
+QListWidget::item{
+	color: white;
+}</string>
+            </property>
+           </widget>
           </item>
           <item>
            <layout class="QVBoxLayout" name="verticalLayout_7">
