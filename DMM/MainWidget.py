@@ -316,7 +316,7 @@ class MainWidget(QtWidgets.QWidget):
             self.setMessageText("Already Scanned Item")
         self.listBarcodes.scrollToBottom()
 
-    @QtCore.pyqtSlot(object)
+    @QtCore.pyqtSlot(str, object)
     def setNewTransaction(self, LID, data):
         print(data)
 
