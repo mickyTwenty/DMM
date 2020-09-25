@@ -79,7 +79,7 @@ class APICallThread(threading.Thread):
                     
                 
             
-            if status != 200:
+            if status != 200 and status != 400:
                 return False
             
             return response
