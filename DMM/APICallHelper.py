@@ -2,6 +2,7 @@ import time
 import threading
 import requests
 import json
+import random
 
 from Config import _App
 from Config import APP_STATE
@@ -26,7 +27,10 @@ class APICallThread(threading.Thread):
 
                 res = self.send_request(FB)
                 print("res: ", res)
+                print("res type: ", type(res))
 
+                self.GUI.newTransactionSet(LID, res)
+                '''
                 if res is False:
                     self.GUI.setAPICallLog(LID + "\tFailed")
                 else:
@@ -34,6 +38,7 @@ class APICallThread(threading.Thread):
                         self.GUI.setAPICallLog(LID + "\tOK")
                     else:
                         self.GUI.setAPICallLog(LID + "\tScenario: {}".format(res["WeightApplication"]))
+                '''
 
                 self.GUI.message_mutex.lock()
 
@@ -57,8 +62,11 @@ class APICallThread(threading.Thread):
                 {'IsSuccess': True, 'FreightBill': 'F2470280', 'ErrorMessage': None, 'WeightApplication': 2},
                 {'IsSuccess': False, 'FreightBill': 'F2470285', 'ErrorMessage': 'Deferring update, not all barcodes for bill have been submitted.', 'WeightApplication': 3},
                 {'IsSuccess': False, 'FreightBill': None, 'ErrorMessage': "Couldn't find specified barcode.", 'WeightApplication': 0},
-                {"IsSuccess": True, "BillNumber": "T00001", "WeightApplication": 1}
+                {"IsSuccess": True, "BillNumber": "T00001", "WeightApplication": 1},
+                False
             ]
+            rval = random.randint(0, 4)
+            return res[rval]
         else:
             status = 0
             try_no = 0
@@ -77,8 +85,6 @@ class APICallThread(threading.Thread):
                 finally:
                     try_no += 1
                     
-                
-            
             if status != 200 and status != 400:
                 return False
             

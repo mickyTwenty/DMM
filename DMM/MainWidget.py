@@ -26,6 +26,7 @@ class SignalTrigger(QObject):
     chanage_app_state = pyqtSignal()
     new_item_scanned = pyqtSignal(str)
     new_lift_set = pyqtSignal(float, str)
+    new_transaction_set = pyqtSignal(str, object)
 
     def connect_and_emit_trigger(self):
         # Connect the trigger signal to a slot.
@@ -51,7 +52,7 @@ class MainWidget(QtWidgets.QWidget):
         self.CURRENT_WEIGHT = 0
         self.CURRENT_UOM = ''
         self.CURRENT_LID = ''
-        self.CURRENT_SID = ''
+        self.CURRENT_FBID = ''
 
         self.message_queue = []
         self.message_mutex = QMutex()
@@ -75,6 +76,7 @@ class MainWidget(QtWidgets.QWidget):
         self.signals.chanage_app_state.connect(self.setAppState)
         self.signals.new_item_scanned.connect(self.addFBItem)
         self.signals.new_lift_set.connect(self.setNewLift)
+        self.signals.new_transaction_set.connect(self.setNewTransaction)
 
     def changeAppState(self):
         self.signals.chanage_app_state.emit()
@@ -84,6 +86,9 @@ class MainWidget(QtWidgets.QWidget):
 
     def newLiftSet(self, weight, uom):
         self.signals.new_lift_set.emit(weight, uom)
+
+    def newTransactionSet(self, LID, data):
+        self.signals.new_transaction_set.emit(LID, data)
 
     @QtCore.pyqtSlot()
     def setAppState(self):
@@ -114,7 +119,7 @@ class MainWidget(QtWidgets.QWidget):
         if _App.APPSTATE == APP_STATE.STATE_SCAN_BARCODE:
             self.setMessageText("PLEASE SCAN BARCODE OF ITEMS")
             #self.setActiveLiftText("")
-            self.setLiftIDText(self.CURRENT_LID)
+            self.setLiftIDText(self.CURRENT_FBID)
             self.btnLogin.setVisible(True)
             self.btnSetRWT.setVisible(False)
 
@@ -261,6 +266,7 @@ class MainWidget(QtWidgets.QWidget):
             self.CURRENT_WEIGHT = 0
             self.CURRENT_UOM = ""
             self.CURRENT_LID = ""
+            self.CURRENT_FBID = ""
 
             _App.APPSTATE = APP_STATE.STATE_BEGIN_LIFT
             #self.changeAppState()
@@ -270,7 +276,11 @@ class MainWidget(QtWidgets.QWidget):
             self.CURRENT_WEIGHT = weight
             self.CURRENT_UOM = weightmode
             self.updateWeightText(str(weight), weightmode)
-            self.generateLID()
+            
+            self.CURRENT_LID = self.generateLID()
+            self.CURRENT_FBID = ''
+
+            _DB.insertNewLift([_App._Settings.TRUCK_ID, self.CURRENT_LID, self.CURRENT_FBID, self.CURRENT_WEIGHT, self.CURRENT_UOM, _App.LoginID, _App.getDateTimeStamp("%m/%d/%Y %H:%M:%S")])
 
             _App.APPSTATE = APP_STATE.STATE_SCAN_BARCODE
             #self.changeAppState()
@@ -280,7 +290,7 @@ class MainWidget(QtWidgets.QWidget):
     
     def generateLID(self):
         datetime = _App.getDateTimeStamp("%Y%m%d%H%M%S")
-        self.CURRENT_LID = "{}-{}".format(_App._Settings.TRUCK_ID, datetime)
+        return "{}-{}".format(_App._Settings.TRUCK_ID, datetime)
         #self.setLiftIDText(self.CURRENT_LID)
         #self.setActiveLiftText(self.CURRENT_LID)
 
@@ -288,14 +298,27 @@ class MainWidget(QtWidgets.QWidget):
     def addFBItem(self, barcode):
         new_fbitem = barcode
         
+        new_fbid = new_fbitem.split("-")[0]
+
+        if self.CURRENT_FBID == "":
+            self.CURRENT_FBID = new_fbid
+            self.setLiftIDText(new_fbid)
+            _DB.setFBId(self.CURRENT_LID, self.CURRENT_FBID)
+        
         SCAN_ID = "{}-{}".format(_App._Settings.TRUCK_ID, new_fbitem)
 
         #if self.insertNewFBItem(self.CURRENT_LID, new_fbitem):
-        if _DB.insertNewFBItem([_App._Settings.TRUCK_ID, self.CURRENT_LID, SCAN_ID, new_fbitem, self.CURRENT_WEIGHT, self.CURRENT_UOM, _App.LoginID, _App.getDateTimeStamp("%m/%d/%Y %H:%M:%S")]):
-            self.listBarcodes.addItem("{}\t(New Item)".format(new_fbitem))
+        if _DB.insertNewFBItem([self.CURRENT_LID, SCAN_ID, new_fbitem, _App.getDateTimeStamp("%m/%d/%Y %H:%M:%S")]):
+            self.listBarcodes.addItem(new_fbitem)
+            self.setMessageText("PLEASE SCAN BARCODE OF ITEMS")
         else:
-            self.listBarcodes.addItem("{}\t(Already Scanned)".format(new_fbitem))
+            #self.listBarcodes.addItem("{}\t(Already Scanned)".format(new_fbitem))
+            self.setMessageText("Already Scanned Item")
         self.listBarcodes.scrollToBottom()
+
+    @QtCore.pyqtSlot(object)
+    def setNewTransaction(self, LID, data):
+        print(data)
 
     def setAPICallLog(self, LID):
         self.listLog.addItem(LID)
