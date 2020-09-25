@@ -31,6 +31,8 @@ class AppSettings:
         self.SMTP_PWD = None
         self.SMTP_CCEMAIL = None
 
+        self.CLIENT_HOST = ''
+
         self.load()
         self.loadSMTPConfig()
     
@@ -45,6 +47,8 @@ class AppSettings:
         self.WEIGHTMODE = config['Settings']['WEIGHTMODE']
         self.WEIGHTCODE = config['Settings']['WEIGHTCODE']
 
+        self.CLIENT_HOST = config['Settings']['CLIENT_HOST']
+
         if self.WEIGHTTHRESHOLD is None:
             self.WEIGHTTHRESHOLD = default_rwt
 
@@ -57,6 +61,8 @@ class AppSettings:
         config.set('Settings', 'SERIALMODE', self.SERIALMODE)
         config.set('Settings', 'WEIGHTMODE', self.WEIGHTMODE)
         config.set('Settings', 'WEIGHTCODE', self.WEIGHTCODE)
+
+        config.set('Settings', 'CLIENT_HOST', self.CLIENT_HOST)
 
         with open(config_file, 'w') as configfile:
             config.write(configfile)

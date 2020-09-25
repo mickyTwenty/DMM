@@ -12,6 +12,18 @@ import os
 
 from Config import _App, APP_STATE
 
+def validate_ip(s):
+    a = s.split('.')
+    if len(a) != 4:
+        return False
+    for x in a:
+        if not x.isdigit():
+            return False
+        i = int(x)
+        if i < 0 or i > 255:
+            return False
+    return True
+
 class BasicSettingsWidget(QtWidgets.QWidget):
     def __init__(self, MainWindow):
         super(BasicSettingsWidget, self).__init__()
@@ -27,6 +39,7 @@ class BasicSettingsWidget(QtWidgets.QWidget):
         self.btnEmailsetup.clicked.connect(self.slotEmailClicked)
         self.btnTruckid.clicked.connect(self.slotTruckidClicked)
         self.btnSetRWT.clicked.connect(self.slotRWTClicked)
+        self.btnSetClientHost.clicked.connect(self.slotClientHostClicked)
         
     def slotCodeClicked(self):
         diag = CodeModeDialog.CodeModeDialog()
@@ -74,6 +87,14 @@ class BasicSettingsWidget(QtWidgets.QWidget):
             else:
                 _App._Settings.WEIGHTTHRESHOLD = int(_App.KEYBOARD_TEXT[0])
 
+    def slotClientHostClicked(self):
+        r = self.MainWindow.showKeyboard(str(_App._Settings.CLIENT_HOST), "Enter Client Host Address")
+        if r:
+            if _App.KEYBOARD_TEXT[0] == ''  or validate_ip(_App.KEYBOARD_TEXT[0]) == False:
+                QMessageBox.warning(None, "Input Error", "Please input valid ip address")
+            else:
+                _App._Settings.CLIENT_HOST = _App.KEYBOARD_TEXT[0]
+
     def paintEvent(self, event):
         self.drawButtons()
 
@@ -83,6 +104,7 @@ class BasicSettingsWidget(QtWidgets.QWidget):
         self.drawTruckidButton()
         self.drawRWTButton()
         self.drawMWTButton()
+        self.drawClientHostButton()
         
     def drawWifiButton(self):
         html = ""
@@ -130,6 +152,15 @@ class BasicSettingsWidget(QtWidgets.QWidget):
     def drawMWTButton(self):
         html = "<div style='text-align: center;color: #a2e28d;font-size: 22px;font-weight: 500;'>MATCH</div><div style='text-align: center;color: #d5d58c;font-size: 16px;font-weight: 500;'>WEIGHT THRESHOLD</div><div style='text-align: center;color: #b51a00;font-size: 26px;font-weight: 500;margin-top: 5px;'>NOT SET</div>"
         self.drawContents(self.btnSetMWT, html)
+
+    def drawClientHostButton(self):
+        html = ""
+        if _App._Settings.CLIENT_HOST == '':
+            html = "<div style='text-align: center;color: #d5d58c;font-size: 24px;font-weight: 500;'>Weight as Code</div><div style='text-align: center;color: #b51a00;font-size: 26px;font-weight: 500;margin-top: 10px;'>NOT SET</div>"
+        else:
+            html = "<div style='text-align: center;color: #d5d58c;font-size: 24px;font-weight: 500;'>Weight as Code</div><div style='text-align: center;color: #00c421;font-size: 16px;font-weight: 500;margin-top: 20px;'>{}</div>".format(_App._Settings.CLIENT_HOST)
+
+        self.drawContents(self.btnSetClientHost, html)
 
 
     def drawContents(self, button, html):

@@ -8,7 +8,7 @@
 import os
 
 from PyQt5 import Qt, QtCore, QtGui, QtWidgets, uic
-from PyQt5.QtCore import pyqtSignal, QObject
+from PyQt5.QtCore import pyqtSignal, QObject, QMutex
 from PyQt5.QtGui import QFontDatabase, QFont
 from PyQt5.QtWidgets import QMessageBox
 import sqlite3
@@ -54,6 +54,7 @@ class MainWidget(QtWidgets.QWidget):
         self.CURRENT_SID = ''
 
         self.message_queue = []
+        self.message_mutex = QMutex()
 
         self.setFont()
 
@@ -250,7 +251,11 @@ class MainWidget(QtWidgets.QWidget):
     def setNewLift(self, weight, weightmode):
         if self.CURRENT_LID != "":
             print("Call API")
+            self.message_mutex.lock()
+            data = _DB.getFBItems(self.CURRENT_LID)
             self.message_queue.append(self.CURRENT_LID)
+            self.message_queue.append(data)
+            self.message_mutex.unlock()
         
         if weight == 0:
             self.CURRENT_WEIGHT = 0
@@ -286,7 +291,7 @@ class MainWidget(QtWidgets.QWidget):
         SCAN_ID = "{}-{}".format(_App._Settings.TRUCK_ID, new_fbitem)
 
         #if self.insertNewFBItem(self.CURRENT_LID, new_fbitem):
-        if _DB.insertNewFBItem([_App._Settings.TRUCK_ID, self.CURRENT_LID, SCAN_ID, new_fbitem, self.CURRENT_WEIGHT, self.CURRENT_UOM, _App.getDateTimeStamp("%m/%d/%Y %H:%M:%S")]):
+        if _DB.insertNewFBItem([_App._Settings.TRUCK_ID, self.CURRENT_LID, SCAN_ID, new_fbitem, self.CURRENT_WEIGHT, self.CURRENT_UOM, _App.LoginID, _App.getDateTimeStamp("%m/%d/%Y %H:%M:%S")]):
             self.listBarcodes.addItem("{}\t(New Item)".format(new_fbitem))
         else:
             self.listBarcodes.addItem("{}\t(Already Scanned)".format(new_fbitem))
