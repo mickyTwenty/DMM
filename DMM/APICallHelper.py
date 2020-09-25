@@ -63,7 +63,8 @@ class APICallThread(threading.Thread):
         else:
             status = 0
             try_no = 0
-            while status != 200 and try_no < 3:
+            status = 0
+            while status != 200 and status != 400 and try_no < 3:
                 try:
                     response = requests.post(url, data = json_data)
                     status = response.status_code
