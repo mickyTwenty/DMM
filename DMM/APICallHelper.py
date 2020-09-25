@@ -26,7 +26,7 @@ class APICallThread(threading.Thread):
 
                 res = self.send_request(FB)
 
-                #print("res: ", res)
+                print("res: ", res)
 
                 if res is False:
                     self.GUI.setAPICallLog(LID + "\tFailed")
