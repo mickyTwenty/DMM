@@ -24,7 +24,7 @@ class APICallThread(threading.Thread):
                 LID = self.GUI.message_queue[0]
                 FB = self.GUI.message_queue[1]
 
-                res = self.send_request(FB)
+                res = json.load(self.send_request(FB))
 
                 print("res: ", res)
 
@@ -85,4 +85,4 @@ class APICallThread(threading.Thread):
             if status != 200 and status != 400:
                 return False
             
-            return response
+            return response.json()
