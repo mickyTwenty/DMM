@@ -73,7 +73,7 @@ class APICallThread(threading.Thread):
                 finally:
                     try_no += 1
                     
-                print(response)
+                print(response.json())
                 
             
             if status != 200:
