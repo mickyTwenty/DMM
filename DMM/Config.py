@@ -39,15 +39,19 @@ class AppSettings:
     def load(self):
         print('loading config.ini...')
         config = configparser.ConfigParser()
-        config.read(config_file)
 
-        self.TRUCK_ID = config['Settings']['TRUCKID']
-        self.WEIGHTTHRESHOLD = config['Settings'].getint('WEIGHTTHRESHOLD')
-        self.SERIALMODE = config['Settings']['SERIALMODE']
-        self.WEIGHTMODE = config['Settings']['WEIGHTMODE']
-        self.WEIGHTCODE = config['Settings']['WEIGHTCODE']
+        try:
+            config.read(config_file)
 
-        self.CLIENT_HOST = config['Settings']['CLIENT_HOST']
+            self.TRUCK_ID = config['Settings']['TRUCKID']
+            self.WEIGHTTHRESHOLD = config['Settings'].getint('WEIGHTTHRESHOLD')
+            self.SERIALMODE = config['Settings']['SERIALMODE']
+            self.WEIGHTMODE = config['Settings']['WEIGHTMODE']
+            self.WEIGHTCODE = config['Settings']['WEIGHTCODE']
+
+            self.CLIENT_HOST = config['Settings']['CLIENT_HOST']
+        except NoSectionError:
+            print("Config loading error...")
 
         if self.WEIGHTTHRESHOLD is None:
             self.WEIGHTTHRESHOLD = default_rwt
