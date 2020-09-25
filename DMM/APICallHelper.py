@@ -26,7 +26,7 @@ class APICallThread(threading.Thread):
 
                 res = self.send_request(FB)
 
-                print("res: ", res)
+                #print("res: ", res)
 
                 if res is False:
                     self.GUI.setAPICallLog(LID + "\tFailed")
@@ -66,6 +66,7 @@ class APICallThread(threading.Thread):
             status = 0
             try_no = 0
             status = 0
+            response = None
             while status != 200 and status != 400 and try_no < 3:
                 try:
                     response = requests.post(url, data = json_data)
