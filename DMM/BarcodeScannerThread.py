@@ -54,4 +54,5 @@ class BarcodeScannerThread(threading.Thread):
 
     
     def doProcessing(self, barcode):
-        self.GUI.addFBItem(barcode)
+        #self.GUI.addFBItem(barcode)
+        self.GUI.newItemScanned(barcode)

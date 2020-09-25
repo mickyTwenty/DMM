@@ -17,12 +17,15 @@ import subprocess
 
 from Config import _App
 from Config import APP_STATE
+from DBHelper import _DB
 
 
 class SignalTrigger(QObject):
 
     # Define a new signal called 'trigger' that has no arguments.
     chanage_app_state = pyqtSignal()
+    new_item_scanned = pyqtSignal(str)
+    new_lift_set = pyqtSignal(float, str)
 
     def connect_and_emit_trigger(self):
         # Connect the trigger signal to a slot.
@@ -69,10 +72,17 @@ class MainWidget(QtWidgets.QWidget):
 
         self.signals = SignalTrigger()
         self.signals.chanage_app_state.connect(self.setAppState)
+        self.signals.new_item_scanned.connect(self.addFBItem)
+        self.signals.new_lift_set.connect(self.setNewLift)
 
-    #@QtCore.pyqtSlot(APP_STATE)
     def changeAppState(self):
         self.signals.chanage_app_state.emit()
+
+    def newItemScanned(self, barcode):
+        self.signals.new_item_scanned.emit(barcode)
+
+    def newLiftSet(self, weight, uom):
+        self.signals.new_lift_set.emit(weight, uom)
 
     @QtCore.pyqtSlot()
     def setAppState(self):
@@ -212,27 +222,6 @@ class MainWidget(QtWidgets.QWidget):
         elif _App.WIFI_CONNECTION is False:
             self.lblWifi.setPixmap(QtGui.QPixmap("res/gui/wifi-disabled.png"))
 
-    def insertDB(self, data):
-        if _App.LoginState == False or _App._Settings.TRUCK_ID == '':
-            return
-
-        stat = False
-        try:
-            conn = sqlite3.connect('./res/db/weightrpi.db')
-            sql = 'INSERT INTO tbl_weight_info(truckid, weight, measurement, barcode, scantype, recorded) VALUES (?,?,?,?,?,?)'
-            cur = conn.cursor()
-            cur.execute(sql, data)
-            conn.commit()
-            stat = True
-        except Error as e:
-            print(e)
-            stat = False
-        finally:
-            conn.close()
-
-        print('Data Stored')
-        return stat
-
     def insertNewFBItem(self, LID, FB_ID):
         is_new = False
 
@@ -257,7 +246,7 @@ class MainWidget(QtWidgets.QWidget):
             conn.close
             return is_new
 
-
+    @QtCore.pyqtSlot(float, str)
     def setNewLift(self, weight, weightmode):
         if self.CURRENT_LID != "":
             print("Call API")
@@ -269,7 +258,8 @@ class MainWidget(QtWidgets.QWidget):
             self.CURRENT_LID = ""
 
             _App.APPSTATE = APP_STATE.STATE_BEGIN_LIFT
-            self.changeAppState()
+            #self.changeAppState()
+            self.setAppState()
             
         else:
             self.CURRENT_WEIGHT = weight
@@ -278,7 +268,8 @@ class MainWidget(QtWidgets.QWidget):
             self.generateLID()
 
             _App.APPSTATE = APP_STATE.STATE_SCAN_BARCODE
-            self.changeAppState()
+            #self.changeAppState()
+            self.setAppState()
 
         self.listBarcodes.clear()
     
@@ -288,10 +279,14 @@ class MainWidget(QtWidgets.QWidget):
         #self.setLiftIDText(self.CURRENT_LID)
         #self.setActiveLiftText(self.CURRENT_LID)
 
+    @QtCore.pyqtSlot(str)
     def addFBItem(self, barcode):
         new_fbitem = barcode
+        
+        SCAN_ID = "{}-{}".format(_App._Settings.TRUCK_ID, new_fbitem)
 
-        if self.insertNewFBItem(self.CURRENT_LID, new_fbitem):
+        #if self.insertNewFBItem(self.CURRENT_LID, new_fbitem):
+        if _DB.insertNewFBItem([_App._Settings.TRUCK_ID, self.CURRENT_LID, SCAN_ID, new_fbitem, self.CURRENT_WEIGHT, self.CURRENT_UOM, _App.getDateTimeStamp("%m/%d/%Y %H:%M:%S")]):
             self.listBarcodes.addItem("{}\t(New Item)".format(new_fbitem))
         else:
             self.listBarcodes.addItem("{}\t(Already Scanned)".format(new_fbitem))

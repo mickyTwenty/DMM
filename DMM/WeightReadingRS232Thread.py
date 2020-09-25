@@ -131,7 +131,8 @@ class WeightReadingRs232Thread(threading.Thread):
                 if float(weight) < _App._Settings.WEIGHTTHRESHOLD:
                     #self.GUI.updateWeightText("NO LOAD", "")
                     #self.GUI.updateNoneCodeImage()
-                    self.GUI.setNewLift(0, "")
+                    #self.GUI.setNewLift(0, "")
+                    self.GUI.newLiftSet(0, "")
                     #_App.APPSTATE = APP_STATE.STATE_BEGIN_LIFT
                     #self.GUI.changeAppState()
                     return
@@ -178,7 +179,8 @@ class WeightReadingRs232Thread(threading.Thread):
                 qrimg = qrimg.resize((160, 160), Image.ANTIALIAS)
                 #qrimg.save('./res/img/qrcode_resized.jpg')
 
-                self.GUI.setNewLift(float(weight), weightmode)
+                #self.GUI.setNewLift(float(weight), weightmode)
+                self.GUI.newLiftSet(float(weight), weightmode)
 
                 if _App._Settings.WEIGHTCODE == 'BARCODE':
                     self.GUI.updateBarCodeImage(barimg)
@@ -186,10 +188,6 @@ class WeightReadingRs232Thread(threading.Thread):
                     self.GUI.updateQrCodeImage(qrimg)
                 else:
                     self.GUI.updateNoneCodeImage()
-
-                #now = datetime.now()
-                #date_time = now.strftime("%m/%d/%Y %H:%M:%S")
-                #self.GUI.insertDB([_App._Settings.TRUCK_ID, weight, weightmode, "NO DATA", "SINGLE", date_time])
 
             else:
                 print('Response contains M')

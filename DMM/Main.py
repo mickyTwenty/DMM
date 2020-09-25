@@ -16,6 +16,7 @@ import KeyboardWidget
 import WirelessHelper
 
 from Config import _App
+from DBHelper import _DB
 
 class CurrentWidget(enum.Enum):
     NONE                    = -1
@@ -113,6 +114,7 @@ class MainWindow(QtWidgets.QMainWindow):
             _App.BCSCANSTAT = False
             _App.TIMESTAT = False
             _App.WIFISTAT = False
+            _DB.closeDB()
             _App._Settings.save()
             
     
