@@ -25,16 +25,17 @@ class APICallThread(threading.Thread):
                 FB = self.GUI.message_queue[1]
 
                 res = self.send_request(FB)
+                print("res1: ", res)
 
                 if res is False:
                     self.GUI.setAPICallLog(LID + "\tFailed")
                 else:
-                    res = json.load(res)
-                    print("res: ", res)
-                    if res["isSuccess"] is True:
+                    data = json.loads(res)
+                    print("res2: ", data)
+                    if data["isSuccess"] is True:
                         self.GUI.setAPICallLog(LID + "\tOK")
                     else:
-                        self.GUI.setAPICallLog(LID + "\t{}".format(res["ErrorMessage"]))
+                        self.GUI.setAPICallLog(LID + "\t{}".format(data["ErrorMessage"]))
 
 
 
