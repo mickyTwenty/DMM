@@ -50,7 +50,7 @@ class AppSettings:
             self.WEIGHTCODE = config['Settings']['WEIGHTCODE']
 
             self.CLIENT_HOST = config['Settings']['CLIENT_HOST']
-        except NoSectionError:
+        except configparser.NoSectionError:
             print("Config loading error...")
 
         if self.WEIGHTTHRESHOLD is None:
