@@ -67,13 +67,15 @@ class APICallThread(threading.Thread):
                 try:
                     response = requests.post(url, data = json_data)
                     status = response.status_code
+
+                    print('Status code: ', response.status_code)
+                    print(response.json())
                 except requests.exceptions.RequestException as e:
                     print(e)
                     break
                 finally:
                     try_no += 1
                     
-                print(response.json())
                 
             
             if status != 200:
