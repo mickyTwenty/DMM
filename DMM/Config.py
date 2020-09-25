@@ -100,7 +100,7 @@ class App:
         self.TIMESTAT = True
         self.HX711STAT = True
         self.RS232STAT = True
-        self.BCSCANSTAT = False
+        self.BCSCANSTAT = True
         self.WIFISTAT = True
         self.WIFICONNECTING = False
 
