@@ -72,6 +72,8 @@ class APICallThread(threading.Thread):
                     break
                 finally:
                     try_no += 1
+                    
+                print(response)
                 
             
             if status != 200:
