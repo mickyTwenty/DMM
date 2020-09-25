@@ -31,9 +31,7 @@ class APICallThread(threading.Thread):
                 if res is False:
                     self.GUI.setAPICallLog(LID + "\tFailed")
                 else:
-                    data = json.loads(res)
-                    print("res2: ", data)
-                    if data["isSuccess"] is True:
+                    if res["IsSuccess"] is True:
                         self.GUI.setAPICallLog(LID + "\tOK")
                     else:
                         self.GUI.setAPICallLog(LID + "\t{}".format(data["ErrorMessage"]))
