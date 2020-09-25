@@ -34,7 +34,7 @@ class APICallThread(threading.Thread):
                     if res["IsSuccess"] is True:
                         self.GUI.setAPICallLog(LID + "\tOK")
                     else:
-                        self.GUI.setAPICallLog(LID + "\t{}".format(data["ErrorMessage"]))
+                        self.GUI.setAPICallLog(LID + "\t{}".format(res["ErrorMessage"]))
 
 
 
