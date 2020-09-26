@@ -328,7 +328,7 @@ class MainWidget(QtWidgets.QWidget):
 
         if self.CURRENT_FBID != new_fbid:
             self.showMessage("Alert", "LIFT AGAIN", 5)
-            self.setNewLift
+            self.setNewLift(0, "")
         
         SCAN_ID = "{}-{}".format(_App._Settings.TRUCK_ID, new_fbitem)
 
