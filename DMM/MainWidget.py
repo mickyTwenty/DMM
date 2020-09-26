@@ -329,7 +329,8 @@ class MainWidget(QtWidgets.QWidget):
             self.setMessageText("PLEASE SCAN BARCODE OF ITEMS")
         else:
             #self.listBarcodes.addItem("{}\t(Already Scanned)".format(new_fbitem))
-            self.setMessageText("Already Scanned Item")
+            #self.setMessageText("Already Scanned Item")
+            print("Already Scanned")
         self.listBarcodes.scrollToBottom()
 
     @QtCore.pyqtSlot(str, object)
@@ -373,7 +374,7 @@ class MainWidget(QtWidgets.QWidget):
             self.LOG_SCROLL_ITEM += 1
         self.logScroll()
 
-        if self.listLog.count() > 8:
+        if self.listLog.count() > 100:
             if self.LOG_SCROLL_ITEM == self.listLog.count():
                 self.LOG_SCROLL_ITEM -= 1
             self.listLog.takeItem(0)
@@ -400,7 +401,7 @@ class MainWidget(QtWidgets.QWidget):
     def drawLogoutButton(self):
         html = ""
         if _App.LoginState == True:
-            html = "<div></div><div style='text-align: left;color: #b51a00;font-size: 22px;margin-top: 10px;margin-left: 5px;padding-top: 30px;font-weight: 400;'>{}</div>".format(_App.LoginID)
+            html = "<div>&nbsp;</div><div style='text-align: left;color: #b51a00;font-size: 22px;margin-top: 0px;margin-left: 5px;font-weight: 500;'>{}</div>".format(_App.LoginID)
 
         self.drawContents(self.btnLogin, html)
 
