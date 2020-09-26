@@ -25,7 +25,7 @@ class SignalTrigger(QObject):
     # Define a new signal called 'trigger' that has no arguments.
     chanage_app_state = pyqtSignal()
     new_item_scanned = pyqtSignal(str)
-    new_lift_set = pyqtSignal(float, str)
+    new_lift_set = pyqtSignal(int, str)
     new_transaction_set = pyqtSignal(str, object)
 
     def connect_and_emit_trigger(self):
@@ -252,7 +252,7 @@ class MainWidget(QtWidgets.QWidget):
             conn.close
             return is_new
 
-    @QtCore.pyqtSlot(float, str)
+    @QtCore.pyqtSlot(int, str)
     def setNewLift(self, weight, weightmode):
         if self.CURRENT_LID != "":
             print("Call API")
@@ -318,7 +318,15 @@ class MainWidget(QtWidgets.QWidget):
 
     @QtCore.pyqtSlot(str, object)
     def setNewTransaction(self, LID, data):
-        print(data)
+        if data is False:
+            self.listLog.addItem(LID + "\tFailed")
+        else:
+            if data["IsSuccess"] is True:
+                self.listLog.addItem(LID + "\tOK")
+            else:
+                self.listLog.addItem(LID + "\tScenario: {}".format(data["WeightApplication"]))
+
+        self.listLog.scrollToBottom()
 
     def setAPICallLog(self, LID):
         self.listLog.addItem(LID)

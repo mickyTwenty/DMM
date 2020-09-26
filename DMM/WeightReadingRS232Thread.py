@@ -104,7 +104,8 @@ class WeightReadingRs232Thread(threading.Thread):
         try:
             value = (float)(re.findall(r"[-+]?\d*\.\d+|\d+", response)[0])
             # print(response)
-            value = "{0:.4f}".format(value)
+            #value = "{0:.4f}".format(value)
+            value = int(value)
             value = self.dropzeros(value)
         except:
             value = -1
@@ -180,7 +181,7 @@ class WeightReadingRs232Thread(threading.Thread):
                 #qrimg.save('./res/img/qrcode_resized.jpg')
 
                 #self.GUI.setNewLift(float(weight), weightmode)
-                self.GUI.newLiftSet(float(weight), weightmode)
+                self.GUI.newLiftSet(int(weight), weightmode)
 
                 if _App._Settings.WEIGHTCODE == 'BARCODE':
                     self.GUI.updateBarCodeImage(barimg)
