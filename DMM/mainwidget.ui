@@ -1035,15 +1035,20 @@ color: white;</string>
            </item>
            <item>
             <widget class="QToolButton" name="btnLogin">
-             <property name="icon">
-              <iconset>
-               <normaloff>res/gui/button_login.png</normaloff>res/gui/button_login.png</iconset>
-             </property>
-             <property name="iconSize">
+             <property name="minimumSize">
               <size>
-               <width>159</width>
-               <height>118</height>
+               <width>163</width>
+               <height>122</height>
               </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>163</width>
+               <height>122</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-image: url(&quot;res/gui/button_login.png&quot;)</string>
              </property>
             </widget>
            </item>

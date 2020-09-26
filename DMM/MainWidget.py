@@ -8,8 +8,8 @@
 import os
 
 from PyQt5 import Qt, QtCore, QtGui, QtWidgets, uic
-from PyQt5.QtCore import pyqtSignal, QObject, QMutex
-from PyQt5.QtGui import QFontDatabase, QFont, QColor
+from PyQt5.QtCore import pyqtSignal, QObject, QMutex, QSize, QRect
+from PyQt5.QtGui import QFontDatabase, QFont, QColor, QFontMetrics, QPainter, QTextDocument, QPixmap
 from PyQt5.QtWidgets import QMessageBox, QListWidgetItem
 import sqlite3
 from sqlite3 import Error
@@ -18,6 +18,8 @@ import subprocess
 from Config import _App
 from Config import APP_STATE
 from DBHelper import _DB
+
+LOG_PAGE_SIZE = 5
 
 
 class SignalTrigger(QObject):
@@ -57,13 +59,17 @@ class MainWidget(QtWidgets.QWidget):
         self.message_queue = []
         self.message_mutex = QMutex()
 
+        self.LOG_SCROLL_ITEM = 0
+
         self.setFont()
 
-        self.icon_login = QtGui.QPixmap("res/gui/button_login.png")
-        self.icon_logout = QtGui.QPixmap("res/gui/button_logout.png")
+        #self.icon_login = QtGui.QPixmap("res/gui/button_login.png")
+        #self.icon_logout = QtGui.QPixmap("res/gui/button_logout.png")
 
         try:
             self.btnLogin.clicked.disconnect()
+            self.btnLogup.clicked.disconnect()
+            self.btnLogdown.clicked.disconnect()
         except:
             pass
 
@@ -71,6 +77,9 @@ class MainWidget(QtWidgets.QWidget):
         self.btnSetup.clicked.connect(self.MainWindow.setBasicSettingWidget)     
         self.btnLogin.clicked.connect(self.on_btnLogin_clicked)
         self.btnSetRWT.clicked.connect(self.on_btnRwt_clicked)
+
+        self.btnLogup.clicked.connect(self.on_btnLogup_clicked)
+        self.btnLogdown.clicked.connect(self.on_btnLogdown_clicked)
 
         self.signals = SignalTrigger()
         self.signals.chanage_app_state.connect(self.setAppState)
@@ -135,13 +144,15 @@ class MainWidget(QtWidgets.QWidget):
         if _App.LoginState == True:
             _App.LoginID = ''
             _App.LoginState = False
-            self.btnLogin.setIcon(QtGui.QIcon(self.icon_login))
+            #self.btnLogin.setIcon(QtGui.QIcon(self.icon_login))
+            self.btnLogin.setStyleSheet("background-image: url('res/gui/button_login.png')")
         else:
             r = self.MainWindow.showKeyboard(_App.LoginID, "Input your Login ID")
             if r and _App.KEYBOARD_TEXT[0] != '':
                 _App.LoginID = _App.KEYBOARD_TEXT[0]
                 _App.LoginState = True
-                self.btnLogin.setIcon(QtGui.QIcon(self.icon_logout))
+                #self.btnLogin.setIcon(QtGui.QIcon(self.icon_logout))
+                self.btnLogin.setStyleSheet("background-image: url('res/gui/button_logout.png')")
 
                 _App.APPSTATE = APP_STATE.STATE_BEGIN_LIFT
                 self.changeAppState()
@@ -352,19 +363,57 @@ class MainWidget(QtWidgets.QWidget):
             i.setBackground(QColor("#c00000"))
         elif item[1] == 3:
             i.setText("FB # {}\t{}".format(item[0], "WAITING"))
-            i.setBackground(QColor("#ea700d"))
+            i.setBackground(QColor("#ffa500"))
         elif item[1] == 404:
             i.setText("FB # {}\t{}".format(item[0], "FAILED"))
             i.setBackground(QColor("#c00000"))
 
         self.listLog.addItem(i)
-        self.listLog.scrollToBottom()
+        if self.LOG_SCROLL_ITEM == self.listLog.count() - 1:
+            self.LOG_SCROLL_ITEM += 1
+        self.logScroll()
 
-        if self.listLog.count() > 100:
+        if self.listLog.count() > 8:
+            if self.LOG_SCROLL_ITEM == self.listLog.count():
+                self.LOG_SCROLL_ITEM -= 1
             self.listLog.takeItem(0)
 
-    def setAPICallLog(self, LID):
-        self.listLog.addItem(LID)
-        self.listLog.scrollToBottom()
-        
+        #if self.LOG_SCROLL_ITEM == 
+
+    def logScroll(self):
+        item = self.listLog.item(self.LOG_SCROLL_ITEM - 1)
+        self.listLog.scrollToItem(item, QtWidgets.QAbstractItemView.PositionAtBottom)
             
+    def on_btnLogup_clicked(self):
+        if self.LOG_SCROLL_ITEM > LOG_PAGE_SIZE:
+            self.LOG_SCROLL_ITEM -= 1
+        self.logScroll()
+
+    def on_btnLogdown_clicked(self):
+        if self.LOG_SCROLL_ITEM < self.listLog.count():
+            self.LOG_SCROLL_ITEM += 1
+        self.logScroll()
+
+    def paintEvent(self, event):
+        self.drawLogoutButton()
+    
+    def drawLogoutButton(self):
+        html = ""
+        if _App.LoginState == True:
+            html = "<div></div><div style='text-align: left;color: #b51a00;font-size: 22px;margin-top: 10px;margin-left: 5px;padding-top: 30px;font-weight: 400;'>{}</div>".format(_App.LoginID)
+
+        self.drawContents(self.btnLogin, html)
+
+    def drawContents(self, button, html):
+        text = QTextDocument()
+        text.setHtml(html)
+        text.setTextWidth(150)
+
+        pixmap = QPixmap(150, 100)
+        pixmap.fill( QtCore.Qt.transparent )
+        painter = QPainter(pixmap)
+        text.drawContents(painter)
+
+        button.setIcon(QtGui.QIcon(pixmap))
+        button.setIconSize(QSize(160, 120))
+        painter.end()

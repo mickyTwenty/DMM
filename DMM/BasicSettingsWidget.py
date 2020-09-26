@@ -1,7 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 from PyQt5.QtGui import QPainter, QTextDocument, QPixmap, QFont, QFontMetrics
 from PyQt5.QtWidgets import QMessageBox
-from PyQt5.QtCore import QSizeF, QSize, QRectF, QRect
+from PyQt5.QtCore import QSize, QRect
 import CodeModeDialog
 import WifiConfigDialog
 import EmailSetupDialog
