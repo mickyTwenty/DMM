@@ -722,7 +722,9 @@ color: rgb(162, 162, 162);</string>
            <widget class="QListWidget" name="listLog">
             <property name="font">
              <font>
-              <pointsize>12</pointsize>
+              <pointsize>18</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
              </font>
             </property>
             <property name="styleSheet">
@@ -734,6 +736,12 @@ background: transparent;
 QListWidget::item{
 	color: white;
 }</string>
+            </property>
+            <property name="verticalScrollBarPolicy">
+             <enum>Qt::ScrollBarAlwaysOff</enum>
+            </property>
+            <property name="horizontalScrollBarPolicy">
+             <enum>Qt::ScrollBarAlwaysOff</enum>
             </property>
            </widget>
           </item>

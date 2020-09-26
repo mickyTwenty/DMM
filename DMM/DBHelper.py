@@ -28,7 +28,7 @@ class DBHelper():
             self.mutex.lock()
             cur = self.conn.cursor()
 
-            cur.execute("INSERT INTO tbl_lift_info(truck_id, lift_id, fb_id, lift_weight, uom, user_id, datetime) VALUES (?,?,?,?,?,?,?)", data)
+            cur.execute("INSERT INTO tbl_lift_info(truck_id, lift_id, fb_id, lift_weight, uom, user_id, transaction_id, datetime) VALUES (?,?,?,?,?,?,?,?)", data)
             self.conn.commit()
         except Error as e:
             print(e)
@@ -46,6 +46,31 @@ class DBHelper():
             print(e)
         finally:
             self.mutex.unlock()
+
+    def setLiftTransaction(self, LID, data):
+        lift = []
+        try:
+            self.mutex.lock()
+            cur = self.conn.cursor()
+
+            if data == False:
+                cur.execute("UPDATE tbl_lift_info SET res_success=:SUCCESS, res_message=:MESSAGE, res_code=:CODE WHERE lift_id=:LID", {"SUCCESS": str(False), "MESSAGE": "Connection Problem", "CODE": 404, "LID": LID})
+            else:
+                cur.execute("UPDATE tbl_lift_info SET res_success=:SUCCESS, res_message=:MESSAGE, res_code=:CODE WHERE lift_id=:LID", {"SUCCESS": str(data["IsSuccess"]), "MESSAGE": data["ErrorMessage"], "CODE": data["WeightApplication"], "LID": LID})
+
+            cur.execute("SELECT * FROM tbl_lift_info WHERE lift_id=:LID", {"LID": LID})
+            row = cur.fetchone()
+
+            lift.append(row[3])
+            lift.append(row[11])
+
+
+        except Error as e:
+            print(e)
+        finally:
+            self.mutex.unlock()
+
+        return lift
 
     def insertNewFBItem(self, data):
         is_new = False

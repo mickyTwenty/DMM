@@ -9,8 +9,8 @@ import os
 
 from PyQt5 import Qt, QtCore, QtGui, QtWidgets, uic
 from PyQt5.QtCore import pyqtSignal, QObject, QMutex
-from PyQt5.QtGui import QFontDatabase, QFont
-from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtGui import QFontDatabase, QFont, QColor
+from PyQt5.QtWidgets import QMessageBox, QListWidgetItem
 import sqlite3
 from sqlite3 import Error
 import subprocess
@@ -278,9 +278,10 @@ class MainWidget(QtWidgets.QWidget):
             self.updateWeightText(str(weight), weightmode)
             
             self.CURRENT_LID = self.generateLID()
+
             self.CURRENT_FBID = ''
 
-            _DB.insertNewLift([_App._Settings.TRUCK_ID, self.CURRENT_LID, self.CURRENT_FBID, self.CURRENT_WEIGHT, self.CURRENT_UOM, _App.LoginID, _App.getDateTimeStamp("%m/%d/%Y %H:%M:%S")])
+            _DB.insertNewLift([_App._Settings.TRUCK_ID, self.CURRENT_LID, self.CURRENT_FBID, self.CURRENT_WEIGHT, self.CURRENT_UOM, _App.LoginID, self.generateTID(), _App.getDateTimeStamp("%m/%d/%Y %H:%M:%S")])
 
             _App.APPSTATE = APP_STATE.STATE_SCAN_BARCODE
             #self.changeAppState()
@@ -293,6 +294,10 @@ class MainWidget(QtWidgets.QWidget):
         return "{}-{}".format(_App._Settings.TRUCK_ID, datetime)
         #self.setLiftIDText(self.CURRENT_LID)
         #self.setActiveLiftText(self.CURRENT_LID)
+
+    def generateTID(self):
+        datetime = _App.getDateTimeStamp("%Y%m%d%H%M%S")
+        return "TRANS-{}-{}".format(_App._Settings.TRUCK_ID, datetime)
 
     @QtCore.pyqtSlot(str)
     def addFBItem(self, barcode):
@@ -318,15 +323,45 @@ class MainWidget(QtWidgets.QWidget):
 
     @QtCore.pyqtSlot(str, object)
     def setNewTransaction(self, LID, data):
+        if data != False:
+            lift = _DB.setLiftTransaction(LID, data)
+            self.addLogItem(lift)
+        '''
         if data is False:
-            self.listLog.addItem(LID + "\tFailed")
+            #self.listLog.addItem(data["FreightBill"] + "\tFailed")
+            print("Connection problem")
+            
         else:
             if data["IsSuccess"] is True:
-                self.listLog.addItem(LID + "\tOK")
+                #self.listLog.addItem(data["FreightBill"] + "\tOK")
+                self.addLogItem(data)
             else:
-                self.listLog.addItem(LID + "\tScenario: {}".format(data["WeightApplication"]))
+                #self.listLog.addItem(data["FreightBill"] + "\tScenario: {}".format(data["WeightApplication"]))
+                self.addLogItem(data)
 
         self.listLog.scrollToBottom()
+        '''
+
+    def addLogItem(self, item):
+        i = QListWidgetItem()
+        if item[1] == 1 or item[1] == 2:
+            i.setText("FB # {}\t{}".format(item[0], "OK"))
+            i.setBackground(QColor("#00b050"))
+        elif item[1] == 0:
+            i.setText("FB # {}\t{}".format(item[0], "RETRY"))
+            i.setBackground(QColor("#c00000"))
+        elif item[1] == 3:
+            i.setText("FB # {}\t{}".format(item[0], "WAITING"))
+            i.setBackground(QColor("#ea700d"))
+        elif item[1] == 404:
+            i.setText("FB # {}\t{}".format(item[0], "FAILED"))
+            i.setBackground(QColor("#c00000"))
+
+        self.listLog.addItem(i)
+        self.listLog.scrollToBottom()
+
+        if self.listLog.count() > 100:
+            self.listLog.takeItem(0)
 
     def setAPICallLog(self, LID):
         self.listLog.addItem(LID)

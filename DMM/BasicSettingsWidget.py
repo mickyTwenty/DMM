@@ -156,9 +156,9 @@ class BasicSettingsWidget(QtWidgets.QWidget):
     def drawClientHostButton(self):
         html = ""
         if _App._Settings.CLIENT_HOST == '':
-            html = "<div style='text-align: center;color: #d5d58c;font-size: 24px;font-weight: 500;'>Weight as Code</div><div style='text-align: center;color: #b51a00;font-size: 26px;font-weight: 500;margin-top: 10px;'>NOT SET</div>"
+            html = "<div style='text-align: center;color: #d5d58c;font-size: 24px;font-weight: 500;'>API</div><div style='text-align: center;color: #b51a00;font-size: 26px;font-weight: 500;margin-top: 40px;'>NOT SET</div>"
         else:
-            html = "<div style='text-align: center;color: #d5d58c;font-size: 24px;font-weight: 500;'>Weight as Code</div><div style='text-align: center;color: #00c421;font-size: 16px;font-weight: 500;margin-top: 20px;'>{}</div>".format(_App._Settings.CLIENT_HOST)
+            html = "<div style='text-align: center;color: #d5d58c;font-size: 24px;font-weight: 500;'>API</div><div style='text-align: center;color: #00c421;font-size: 16px;font-weight: 500;margin-top: 50px;'>{}</div>".format(_App._Settings.CLIENT_HOST)
 
         self.drawContents(self.btnSetClientHost, html)
 
