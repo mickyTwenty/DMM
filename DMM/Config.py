@@ -120,6 +120,11 @@ class App:
         self.DEBUG = True
         self.KEYBOARD_TEXT = ['']
 
+        self.MESSAGE_ON = False
+        self.MESSAGE_TYPE = ''
+        self.MESSAGE_TEXT = ''
+        self.MESSAGE_DURATION = 0
+
         self._Settings = AppSettings()
 
     def getDateTimeStamp(self, format):

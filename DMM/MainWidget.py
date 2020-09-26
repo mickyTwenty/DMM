@@ -186,7 +186,12 @@ class MainWidget(QtWidgets.QWidget):
                     print('Hostname Edit Failed')
     
     def setMessageText(self, message):
-        self.lblMessage.setText(message)
+        if _App.MESSAGE_ON is True:
+            self.lblMessage.setStyleSheet("color: rgb(255, 30, 30);")
+            self.lblMessage.setText(_App.MESSAGE_TEXT)
+        else:
+            self.lblMessage.setStyleSheet("color: rgb(255, 228, 30);")
+            self.lblMessage.setText(message)
 
     def setActiveLiftText(self, message):
         self.lblActiveLift.setVisible(True)
@@ -320,16 +325,21 @@ class MainWidget(QtWidgets.QWidget):
             self.CURRENT_FBID = new_fbid
             self.setLiftIDText(new_fbid)
             _DB.setFBId(self.CURRENT_LID, self.CURRENT_FBID)
+
+        if self.CURRENT_FBID != new_fbid:
+            self.showMessage("Alert", "LIFT AGAIN", 5)
+            self.setNewLift
         
         SCAN_ID = "{}-{}".format(_App._Settings.TRUCK_ID, new_fbitem)
 
         #if self.insertNewFBItem(self.CURRENT_LID, new_fbitem):
         if _DB.insertNewFBItem([self.CURRENT_LID, SCAN_ID, new_fbitem, _App.getDateTimeStamp("%m/%d/%Y %H:%M:%S")]):
             self.listBarcodes.addItem(new_fbitem)
-            self.setMessageText("PLEASE SCAN BARCODE OF ITEMS")
+            #self.setMessageText("PLEASE SCAN BARCODE OF ITEMS")
         else:
             #self.listBarcodes.addItem("{}\t(Already Scanned)".format(new_fbitem))
             #self.setMessageText("Already Scanned Item")
+            self.showMessage("Warning", "Already Scanned Item", 2)
             print("Already Scanned")
         self.listBarcodes.scrollToBottom()
 
@@ -401,7 +411,7 @@ class MainWidget(QtWidgets.QWidget):
     def drawLogoutButton(self):
         html = ""
         if _App.LoginState == True:
-            html = "<div>&nbsp;</div><div style='text-align: left;color: #b51a00;font-size: 22px;margin-top: 0px;margin-left: 5px;font-weight: 500;'>{}</div>".format(_App.LoginID)
+            html = "<div>&nbsp;</div><div style='text-align: left;color: #b51a00;font-size: 22px;margin-top: 0px;margin-left: 5px;font-weight: 600;'>{}</div>".format(_App.LoginID)
 
         self.drawContents(self.btnLogin, html)
 
@@ -418,3 +428,9 @@ class MainWidget(QtWidgets.QWidget):
         button.setIcon(QtGui.QIcon(pixmap))
         button.setIconSize(QSize(160, 120))
         painter.end()
+
+    def showMessage(self, msg_type, msg_text, duration):
+        _App.MESSAGE_ON = True
+        _App.MESSAGE_TYPE = msg_type
+        _App.MESSAGE_TEXT = msg_text
+        _App.MESSAGE_DURATION = duration

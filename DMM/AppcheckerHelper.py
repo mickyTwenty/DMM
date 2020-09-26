@@ -17,8 +17,15 @@ class AppcheckerThread(threading.Thread):
                 _App.APPSTATE = APP_STATE.STATE_NEED_TRUCKID
             elif _App.LoginState is False:
                 _App.APPSTATE = APP_STATE.STATE_NEED_LOGIN
+
+            if _App.MESSAGE_DURATION > 0:
+                _App.MESSAGE_DURATION -= 1
             
-            self.GUI.setAppState()
+            if _App.MESSAGE_DURATION <= 0:
+                _App.MESSAGE_DURATION = 0
+                _App.MESSAGE_ON = False
+            
+            self.GUI.changeAppState()
 
             time.sleep(1)
 

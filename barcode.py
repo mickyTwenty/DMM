@@ -23,7 +23,7 @@ while not done:
 			##  we are done looking for characters
 			if int(ord(c)) == 40:
 				done = True
-				break;
+				break
 
 			##  If we are shifted then we have to 
 			##  use the hid2 characters.
@@ -51,4 +51,4 @@ while not done:
 				else:
 					ss += hid[ int(ord(c)) ]
 			
-print ss
+print(ss)
