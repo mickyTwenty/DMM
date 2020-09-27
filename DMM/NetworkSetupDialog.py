@@ -128,6 +128,9 @@ class NetworkSetupDialog(QtWidgets.QDialog):
             if self.net_ipaddr != "":
                 subprocess.run(["sudo", "ifconfig", "wlan0", self.net_ipaddr, "up"])
 
+            if self.net_mask != "":
+                subprocess.run(["sudo", "ifconfig", "wlan0", "netmask", self.net_mask])
+
             #call(["ifconfig", "eth0", self.net_ipaddr, "netmask", self.net_mask, "broadcast", "192.168.2.255"])
 
         self.accept()
