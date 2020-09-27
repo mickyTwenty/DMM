@@ -156,6 +156,7 @@ class KeyboardWidget(QtWidgets.QDialog):
         self.key_accept.clicked.connect(self.accept_pressed)
         self.key_reject.clicked.connect(self.reject_pressed)
 
+        self.lineEdit.returnPressed.connect(self.accept_pressed)
 
     def key_pressed(self, index):
         key_to_add = self.key_list[self.Capslock | self.Shift][index]

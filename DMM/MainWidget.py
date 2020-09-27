@@ -126,7 +126,10 @@ class MainWidget(QtWidgets.QWidget):
             self.btnSetRWT.setVisible(False)
         
         if _App.APPSTATE == APP_STATE.STATE_SCAN_BARCODE:
-            self.setMessageText("PLEASE SCAN BARCODE OF ITEMS")
+            if self.CURRENT_FBID == '':
+                self.setMessageText("Please SCAN FIRST item")
+            else:
+                self.setMessageText("Please SCAN next item(s)")
             #self.setActiveLiftText("")
             self.setLiftIDText(self.CURRENT_FBID)
             self.btnLogin.setVisible(True)
@@ -143,17 +146,18 @@ class MainWidget(QtWidgets.QWidget):
     def on_btnLogin_clicked(self):
         if _App.LoginState == True:
             if self.isMessageEmpty() is True:
-                _App.LoginID = ''
+                #_App.LoginID = ''
                 _App.LoginState = False
                 #self.btnLogin.setIcon(QtGui.QIcon(self.icon_login))
                 self.btnLogin.setStyleSheet("background-image: url('res/gui/button_login.png')")
             else:
-                self.showMessage("info", "PENDING LIFTS, PLEASE WAIT...", 3)
+                self.showMessage("Info", "PENDING LIFTS, PLEASE WAIT...", 3)
 
         else:
             r = self.MainWindow.showKeyboard(_App.LoginID, "Input your Login ID")
             if r and _App.KEYBOARD_TEXT[0] != '':
                 _App.LoginID = _App.KEYBOARD_TEXT[0]
+                _App._Settings.SAVED_USER = _App.LoginID
                 _App.LoginState = True
                 #self.btnLogin.setIcon(QtGui.QIcon(self.icon_logout))
                 self.btnLogin.setStyleSheet("background-image: url('res/gui/button_logout.png')")
@@ -191,10 +195,13 @@ class MainWidget(QtWidgets.QWidget):
     
     def setMessageText(self, message):
         if _App.MESSAGE_ON is True:
-            self.lblMessage.setStyleSheet("color: rgb(255, 30, 30);")
+            if _App.MESSAGE_TYPE == "Alert":
+                self.lblMessage.setStyleSheet("color: rgb(255, 30, 30); font-size: 15px")
+            else:
+                self.lblMessage.setStyleSheet("color: rgb(255, 30, 30); font-size: 24px")
             self.lblMessage.setText(_App.MESSAGE_TEXT)
         else:
-            self.lblMessage.setStyleSheet("color: rgb(255, 228, 30);")
+            self.lblMessage.setStyleSheet("color: rgb(255, 228, 30); font-size: 24px")
             self.lblMessage.setText(message)
 
     def setActiveLiftText(self, message):
@@ -247,30 +254,6 @@ class MainWidget(QtWidgets.QWidget):
             self.lblWifi.setPixmap(QtGui.QPixmap("res/gui/wifi.png"))
         elif _App.WIFI_CONNECTION is False:
             self.lblWifi.setPixmap(QtGui.QPixmap("res/gui/wifi-disabled.png"))
-
-    def insertNewFBItem(self, LID, FB_ID):
-        is_new = False
-
-        try:
-            conn = sqlite3.connect('./res/db/weightrpi.db')
-            cur = conn.cursor()
-
-            cur.execute("SELECT COUNT(*) FROM tbl_weight_info WHERE lift_id=:LID AND fb_item_barcode=:BARCODE", {"LID": LID, "BARCODE": FB_ID})
-            exist_one = cur.fetchone()
-
-            if exist_one[0] == 0:
-                is_new = True
-                SCAN_ID = "{}-{}".format(_App._Settings.TRUCK_ID, FB_ID)
-                data = [_App._Settings.TRUCK_ID, LID, SCAN_ID, FB_ID, self.CURRENT_WEIGHT, self.CURRENT_UOM, _App.getDateTimeStamp("%m/%d/%Y %H:%M:%S")]
-                cur.execute("INSERT INTO tbl_weight_info(truck_id, lift_id, scan_id, fb_item_barcode, fb_weight, uom, datetime) VALUES (?,?,?,?,?,?,?)", data)
-                conn.commit()
-
-        except Error as e:
-            print(e)
-            return is_new
-        finally:
-            conn.close
-            return is_new
 
     @QtCore.pyqtSlot(int, str)
     def setNewLift(self, weight, weightmode):
