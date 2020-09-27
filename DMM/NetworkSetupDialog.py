@@ -82,7 +82,7 @@ class NetworkSetupDialog(QtWidgets.QDialog):
                 r = self.parent.MainWindow.showKeyboard(str(self.net_mask), "Enter Subnet Mask")
                 if r:
                     if validate_ip(_App.KEYBOARD_TEXT[0]) is True:
-                        self.net_mask = int(_App.KEYBOARD_TEXT[0])
+                        self.net_mask = _App.KEYBOARD_TEXT[0]
                         self.editMask.setText(str(self.net_mask))
                     else:
                         QMessageBox.warning(None, "Input Error", "Please input valid ip address")
