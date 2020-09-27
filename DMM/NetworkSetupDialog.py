@@ -121,7 +121,7 @@ class NetworkSetupDialog(QtWidgets.QDialog):
     def on_btnSave_clicked(self):
         if self.net_type == 0:
             print("SET DHCP")
-            subprocess.run("sudo dhclient -r wlan0")
+            os.system("sudo dhclient -r wlan0")
         elif self.net_type == 1:
             print("SET STATIC IP")
             if self.net_ipaddr != "":
