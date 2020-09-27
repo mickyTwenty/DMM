@@ -276,9 +276,6 @@ QPushButton:pressed {
        <property name="enabled">
         <bool>false</bool>
        </property>
-       <property name="echoMode">
-        <enum>QLineEdit::Password</enum>
-       </property>
       </widget>
      </item>
      <item row="5" column="0">
