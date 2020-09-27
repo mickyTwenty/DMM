@@ -70,7 +70,7 @@ class NetworkSetupDialog(QtWidgets.QDialog):
     def eventFilter(self, obj, event):
         if event.type() == event.MouseButtonPress:
             if obj == self.editIpaddr and self.net_type == 1:
-                r = self.parent.MainWindow.showKeyboard(self.net_ipaddr, "Enter SMTP Server")
+                r = self.parent.MainWindow.showKeyboard(self.net_ipaddr, "Enter IP Address")
                 if r:
                     if validate_ip(_App.KEYBOARD_TEXT[0]) is True:
                         self.net_ipaddr = _App.KEYBOARD_TEXT[0]
@@ -78,7 +78,7 @@ class NetworkSetupDialog(QtWidgets.QDialog):
                     else:
                         QMessageBox.warning(None, "Input Error", "Please input valid ip address")
             elif obj == self.editMask and self.net_type == 1:
-                r = self.parent.MainWindow.showKeyboard(str(self.net_mask), "Enter SMTP Port")
+                r = self.parent.MainWindow.showKeyboard(str(self.net_mask), "Enter Subnet Mask")
                 if r:
                     if validate_ip(_App.KEYBOARD_TEXT[0]) is True:
                         self.net_mask = int(_App.KEYBOARD_TEXT[0])
@@ -86,7 +86,7 @@ class NetworkSetupDialog(QtWidgets.QDialog):
                     else:
                         QMessageBox.warning(None, "Input Error", "Please input valid ip address")
             elif obj == self.editGateway and self.net_type == 1:
-                r = self.parent.MainWindow.showKeyboard(self.net_gateway, "Enter Your Email")
+                r = self.parent.MainWindow.showKeyboard(self.net_gateway, "Enter Default Gateway")
                 if r:
                     if validate_ip(_App.KEYBOARD_TEXT[0]) is True:
                         self.net_gateway = _App.KEYBOARD_TEXT[0]
@@ -94,7 +94,7 @@ class NetworkSetupDialog(QtWidgets.QDialog):
                     else:
                         QMessageBox.warning(None, "Input Error", "Please input valid ip address")
             elif obj == self.editDns1 and self.net_type == 1:
-                r = self.parent.MainWindow.showKeyboard(self.net_dns1, "Enter Email Password", QtWidgets.QLineEdit.Password)
+                r = self.parent.MainWindow.showKeyboard(self.net_dns1, "Enter DNS1")
                 if r:
                     if validate_ip(_App.KEYBOARD_TEXT[0]) is True:
                         self.net_dns1 = _App.KEYBOARD_TEXT[0]
@@ -102,7 +102,7 @@ class NetworkSetupDialog(QtWidgets.QDialog):
                     else:
                         QMessageBox.warning(None, "Input Error", "Please input valid ip address")
             elif obj == self.editDns2 and self.net_type == 1:
-                r = self.parent.MainWindow.showKeyboard(self.net_dns2, "Enter Recipient Email")
+                r = self.parent.MainWindow.showKeyboard(self.net_dns2, "Enter DNS2")
                 if r:
                     if validate_ip(_App.KEYBOARD_TEXT[0]) is True:
                         self.net_dns2 = _App.KEYBOARD_TEXT[0]
