@@ -1,7 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 from PyQt5.QtWidgets import QMessageBox
 
-from subprocess import call
+import subprocess
 from Config import _App
 
 def validate_ip(s):
@@ -121,8 +121,12 @@ class NetworkSetupDialog(QtWidgets.QDialog):
     def on_btnSave_clicked(self):
         if self.net_type == 0:
             print("SET DHCP")
+            subprocess.run("sudo dhclient -r wlan0")
         elif self.net_type == 1:
             print("SET STATIC IP")
-            call(["ifconfig", "eth0", self.net_ipaddr, "netmask", self.net_mask, "broadcast", "192.168.2.255"])
+            if self.net_ipaddr != "":
+                subprocess.run(["sudo", "ifconfig", "wlan0", self.net_ipaddr, "up"])
+
+            #call(["ifconfig", "eth0", self.net_ipaddr, "netmask", self.net_mask, "broadcast", "192.168.2.255"])
 
         self.accept()
