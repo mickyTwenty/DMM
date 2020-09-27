@@ -1,6 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 from PyQt5.QtWidgets import QMessageBox
 
+import os
 import subprocess
 from Config import _App
 
