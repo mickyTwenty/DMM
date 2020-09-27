@@ -126,16 +126,16 @@ class NetworkSetupDialog(QtWidgets.QDialog):
         elif self.net_type == 1:
             print("SET STATIC IP")
             if self.net_ipaddr != "":
-                subprocess.run("sudo ifconfig wlan0 {} up".format(self.net_ipaddr))
+                subprocess.run(["sudo", "ifconfig", "wlan0", self.net_ipaddr, "up"])
 
             if self.net_mask != "":
                 subprocess.run(["sudo", "ifconfig", "wlan0", "netmask", self.net_mask])
 
             if self.net_gateway != "":
-                subprocess.run(["sudo", "route", "add", "default", "gw", self.net_gateway])
+                subprocess.run(["sudo", "route", "add", self.net_gateway, "wlan0"])
 
             if self.net_dns1 != "":
-                subprocess.run("echo 'nameserver {}' > /etc/resolv.conf".format(self.net_dns1))
+                subprocess.run(["sudo", "echo", "'nameserver {}'".format(self.net_dns1), ">", "/etc/resolv.conf"])
 
             #call(["ifconfig", "eth0", self.net_ipaddr, "netmask", self.net_mask, "broadcast", "192.168.2.255"])
 
