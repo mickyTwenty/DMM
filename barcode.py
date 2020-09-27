@@ -17,6 +17,9 @@ while not done:
 	## Get the character from the HID
 	buffer = fp.read(8)
 	for c in buffer:
+		if type(c) == int:
+            c = chr(c)
+			
 		if ord(c) > 0:
 
 			##  40 is carriage return which signifies
