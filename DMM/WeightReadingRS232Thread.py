@@ -191,7 +191,7 @@ class WeightReadingRs232Thread(threading.Thread):
                     self.GUI.updateNoneCodeImage()
 
             else:
-                print('Response contains M')
+                #print('Response contains M')
                 return
 
         except Exception as e:
