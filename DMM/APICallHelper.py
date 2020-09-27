@@ -26,9 +26,6 @@ class APICallThread(threading.Thread):
                 FB = self.GUI.message_queue[1]
 
                 res = self.send_request(FB)
-                print("res: ", res)
-                print("res type: ", type(res))
-
                 self.GUI.newTransactionSet(LID, res)
                 '''
                 if res is False:
@@ -57,7 +54,7 @@ class APICallThread(threading.Thread):
 
         json_data = dict(zip(["Barcodes", "ForkliftId", "Weight", "UOM", "ActiveUser", "ScanTime"], data))
 
-        if _App.DEBUG == False:
+        if _App.DEBUG == True:
             res = [
                 {'IsSuccess': True, 'FreightBill': 'F2470280', 'ErrorMessage': None, 'WeightApplication': 2},
                 {'IsSuccess': False, 'FreightBill': 'F2470285', 'ErrorMessage': 'Deferring update, not all barcodes for bill have been submitted.', 'WeightApplication': 3},

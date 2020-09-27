@@ -121,6 +121,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def keyPressEvent(self, event):
         if event.key() == QtCore.Qt.Key_Escape:
             if self.mainWidget.isMessageEmpty() is False:
+                self.mainWidget.showMessage("Warning", "PENDING LIFTS, PLEASE WAIT...", 3)
                 event.ignore()
                 return
 
