@@ -5,6 +5,7 @@ from PyQt5.QtCore import QSize, QRect
 import CodeModeDialog
 import WifiConfigDialog
 import EmailSetupDialog
+import NetworkSetupDialog
 
 import subprocess
 import sys
@@ -40,6 +41,7 @@ class BasicSettingsWidget(QtWidgets.QWidget):
         self.btnTruckid.clicked.connect(self.slotTruckidClicked)
         self.btnSetRWT.clicked.connect(self.slotRWTClicked)
         self.btnSetClientHost.clicked.connect(self.slotClientHostClicked)
+        self.btnNetworkSetup.clicked.connect(self.slotNetSetupClicked)
         
     def slotCodeClicked(self):
         diag = CodeModeDialog.CodeModeDialog()
@@ -51,6 +53,10 @@ class BasicSettingsWidget(QtWidgets.QWidget):
 
     def slotEmailClicked(self):
         diag = EmailSetupDialog.EmailSetupDialog(self)
+        diag.exec_()
+
+    def slotNetSetupClicked(self):
+        diag = NetworkSetupDialog.NetworkSetupDialog(self)
         diag.exec_()
 
     def slotTruckidClicked(self):

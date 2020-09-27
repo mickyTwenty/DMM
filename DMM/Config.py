@@ -33,6 +33,13 @@ class AppSettings:
 
         self.CLIENT_HOST = ''
 
+        self.NETWORK_TYPE = 0
+        self.NETWORK_IPADDR = ''
+        self.NETWORK_SUBNETMASK = ''
+        self.NETWORK_GATEWAY = ''
+        self.NETWORK_DNS1 = ''
+        self.NETWORK_DNS2 = ''
+
         self.load()
         self.loadSMTPConfig()
     
@@ -50,6 +57,13 @@ class AppSettings:
 
         self.CLIENT_HOST = config['Settings']['CLIENT_HOST']
 
+        self.NETWORK_TYPE = config['Network'].getint('TYPE')
+        self.NETWORK_IPADDR = config['Network']['IPADDR']
+        self.NETWORK_SUBNETMASK = config['Network']['SUBNETMASK']
+        self.NETWORK_GATEWAY = config['Network']['GATEWAY']
+        self.NETWORK_DNS1 = config['Network']['DNS1']
+        self.NETWORK_DNS2 = config['Network']['DNS2']
+
         if self.WEIGHTTHRESHOLD is None:
             self.WEIGHTTHRESHOLD = default_rwt
 
@@ -64,6 +78,14 @@ class AppSettings:
         config.set('Settings', 'WEIGHTCODE', self.WEIGHTCODE)
 
         config.set('Settings', 'CLIENT_HOST', self.CLIENT_HOST)
+
+        config.add_section('Network')
+        config.set('Network', 'TYPE', self.NETWORK_TYPE)
+        config.set('Network', 'IPADDR', self.NETWORK_IPADDR)
+        config.set('Network', 'SUBNETMASK', self.NETWORK_SUBNETMASK)
+        config.set('Network', 'GATEWAY', self.NETWORK_GATEWAY)
+        config.set('Network', 'DNS1', self.NETWORK_DNS1)
+        config.set('Network', 'DNS2', self.NETWORK_DNS2)
 
         with open(config_file, 'w') as configfile:
             config.write(configfile)
