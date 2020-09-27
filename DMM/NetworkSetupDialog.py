@@ -135,7 +135,12 @@ class NetworkSetupDialog(QtWidgets.QDialog):
                 subprocess.run(["sudo", "route", "add", self.net_gateway, "wlan0"])
 
             if self.net_dns1 != "":
-                subprocess.run(["sudo", "echo", "'nameserver {}'".format(self.net_dns1), ">", "/etc/resolv.conf"])
+                #subprocess.run(["sudo", "echo", "'nameserver {}'".format(self.net_dns1), ">", "/etc/resolv.conf"])
+                subprocess.call(['sh', './set_dns.sh', self.net_dns1])
+
+            if self.net_dns2 != "":
+                #subprocess.run(["sudo", "echo", "'nameserver {}'".format(self.net_dns1), ">", "/etc/resolv.conf"])
+                subprocess.call(['sh', './set_dns.sh', self.net_dns2])
 
             #call(["ifconfig", "eth0", self.net_ipaddr, "netmask", self.net_mask, "broadcast", "192.168.2.255"])
 

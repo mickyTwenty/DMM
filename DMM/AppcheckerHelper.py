@@ -12,7 +12,7 @@ class AppcheckerThread(threading.Thread):
         print('Entering Into App State Checker Thread')
 
         while _App.CHECKERSTAT:
-            print("App State Checking")
+            #print("App State Checking")
             if _App._Settings.TRUCK_ID == '':
                 _App.APPSTATE = APP_STATE.STATE_NEED_TRUCKID
             elif _App.LoginState is False:
