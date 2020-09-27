@@ -142,10 +142,14 @@ class MainWidget(QtWidgets.QWidget):
 
     def on_btnLogin_clicked(self):
         if _App.LoginState == True:
-            _App.LoginID = ''
-            _App.LoginState = False
-            #self.btnLogin.setIcon(QtGui.QIcon(self.icon_login))
-            self.btnLogin.setStyleSheet("background-image: url('res/gui/button_login.png')")
+            if self.isMessageEmpty() is True:
+                _App.LoginID = ''
+                _App.LoginState = False
+                #self.btnLogin.setIcon(QtGui.QIcon(self.icon_login))
+                self.btnLogin.setStyleSheet("background-image: url('res/gui/button_login.png')")
+            else:
+                self.showMessage("info", "PENDING LIFTS, PLEASE WAIT...", 3)
+
         else:
             r = self.MainWindow.showKeyboard(_App.LoginID, "Input your Login ID")
             if r and _App.KEYBOARD_TEXT[0] != '':
@@ -270,7 +274,7 @@ class MainWidget(QtWidgets.QWidget):
 
     @QtCore.pyqtSlot(int, str)
     def setNewLift(self, weight, weightmode):
-        if self.CURRENT_LID != "":
+        if self.CURRENT_LID != "" and self.CURRENT_FBID != "":
             print("Call API")
             self.message_mutex.lock()
             data = _DB.getFBItems(self.CURRENT_LID)
@@ -434,3 +438,11 @@ class MainWidget(QtWidgets.QWidget):
         _App.MESSAGE_TYPE = msg_type
         _App.MESSAGE_TEXT = msg_text
         _App.MESSAGE_DURATION = duration
+
+    def isMessageEmpty(self):
+        ret = True
+        self.message_mutex.lock()
+        if len(self.message_queue) > 0:
+            ret = False
+        self.message_mutex.unlock()
+        return ret

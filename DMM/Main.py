@@ -97,6 +97,10 @@ class MainWindow(QtWidgets.QMainWindow):
         self.mainStacked.setCurrentIndex(self.currentWidget)
 
     def closeEvent(self, event):
+        if self.mainWidget.isMessageEmpty() is False:
+            event.ignore()
+            return
+        
         result = QtWidgets.QMessageBox.question(self,
                       "Confirm Exit...",
                       "Are you sure you want to exit ?",
