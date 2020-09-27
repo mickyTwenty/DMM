@@ -327,7 +327,7 @@ class MainWidget(QtWidgets.QWidget):
             _DB.setFBId(self.CURRENT_LID, self.CURRENT_FBID)
 
         if self.CURRENT_FBID != new_fbid:
-            self.showMessage("Alert", "LIFT AGAIN", 5)
+            self.showMessage("Alert", "MULTIPLE FRIEGHT BILLS NOT ALLOWED. PLEASE RE-LIFT", 5)
             self.setNewLift(0, "")
         
         SCAN_ID = "{}-{}".format(_App._Settings.TRUCK_ID, new_fbitem)
