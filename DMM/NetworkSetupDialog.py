@@ -129,10 +129,10 @@ class NetworkSetupDialog(QtWidgets.QDialog):
                 subprocess.run(["sudo", "ifconfig", "wlan0", self.net_ipaddr, "up"])
 
             if self.net_mask != "":
-                subprocess.run(["sudo ifconfig wlan0 netmask", self.net_mask])
+                subprocess.run(["sudo", "ifconfig", "wlan0", "netmask", self.net_mask])
 
             if self.net_gateway != "":
-                subprocess.run(["route add default gw", self.net_gateway])
+                subprocess.run(["sudo", "route", "add", "default", "gw", self.net_gateway])
 
             #call(["ifconfig", "eth0", self.net_ipaddr, "netmask", self.net_mask, "broadcast", "192.168.2.255"])
 
