@@ -9,10 +9,8 @@ import os
 
 from PyQt5 import Qt, QtCore, QtGui, QtWidgets, uic
 from PyQt5.QtCore import pyqtSignal, QObject, QMutex, QSize, QRect
-from PyQt5.QtGui import QFontDatabase, QFont, QColor, QFontMetrics, QPainter, QTextDocument, QPixmap
+from PyQt5.QtGui import QFontDatabase, QFont, QColor, QFontMetrics, QPainter, QTextDocument, QPixmap, QImage
 from PyQt5.QtWidgets import QMessageBox, QListWidgetItem
-import sqlite3
-from sqlite3 import Error
 import subprocess
 
 from Config import _App
@@ -27,8 +25,9 @@ class SignalTrigger(QObject):
     # Define a new signal called 'trigger' that has no arguments.
     chanage_app_state = pyqtSignal()
     new_item_scanned = pyqtSignal(str)
-    new_lift_set = pyqtSignal(int, str)
+    new_lift_set = pyqtSignal(str, str, object, object)
     new_transaction_set = pyqtSignal(str, object)
+    code_mode_changed = pyqtSignal()
 
     def connect_and_emit_trigger(self):
         # Connect the trigger signal to a slot.
@@ -51,8 +50,11 @@ class MainWidget(QtWidgets.QWidget):
 
         self.MainWindow = MainWindow
 
-        self.CURRENT_WEIGHT = 0
+        self.CURRENT_WEIGHT = ''
         self.CURRENT_UOM = ''
+        self.CURRENT_BARIMG = None
+        self.CURRENT_QRIMG = None
+
         self.CURRENT_LID = ''
         self.CURRENT_FBID = ''
 
@@ -86,6 +88,7 @@ class MainWidget(QtWidgets.QWidget):
         self.signals.new_item_scanned.connect(self.addFBItem)
         self.signals.new_lift_set.connect(self.setNewLift)
         self.signals.new_transaction_set.connect(self.setNewTransaction)
+        self.signals.code_mode_changed.connect(self.updateWeightImage)
 
     def changeAppState(self):
         self.signals.chanage_app_state.emit()
@@ -93,11 +96,14 @@ class MainWidget(QtWidgets.QWidget):
     def newItemScanned(self, barcode):
         self.signals.new_item_scanned.emit(barcode)
 
-    def newLiftSet(self, weight, uom):
-        self.signals.new_lift_set.emit(weight, uom)
+    def newLiftSet(self, weight, uom, barimg, qrimg):
+        self.signals.new_lift_set.emit(weight, uom, barimg, qrimg)
 
     def newTransactionSet(self, LID, data):
         self.signals.new_transaction_set.emit(LID, data)
+
+    def changeCodeMode(self):
+        self.signals.code_mode_changed.emit()
 
     @QtCore.pyqtSlot()
     def setAppState(self):
@@ -105,7 +111,7 @@ class MainWidget(QtWidgets.QWidget):
             self.setMessageText("PLEASE SET TRUCK ID")
             self.setActiveLiftText("SET TRUCK ID")
             self.updateWeightText("TRUCKID", "")
-            self.updateNoneCodeImage()
+            #self.updateNoneCodeImage()
             self.btnLogin.setVisible(False)
             self.btnSetRWT.setVisible(True)
         
@@ -113,7 +119,7 @@ class MainWidget(QtWidgets.QWidget):
             self.setMessageText("PLEASE LOGIN")
             self.setActiveLiftText("PLEASE LOGIN")
             self.updateWeightText("LOGIN", "")
-            self.updateNoneCodeImage()
+            #self.updateNoneCodeImage()
             self.btnLogin.setVisible(True)
             self.btnSetRWT.setVisible(False)
 
@@ -121,7 +127,7 @@ class MainWidget(QtWidgets.QWidget):
             self.setMessageText("PLEASE BEGIN LIFT")
             self.setActiveLiftText("NO LOAD")
             self.updateWeightText("NO LOAD", "")
-            self.updateNoneCodeImage()
+            #self.updateNoneCodeImage()
             self.btnLogin.setVisible(True)
             self.btnSetRWT.setVisible(False)
         
@@ -146,7 +152,7 @@ class MainWidget(QtWidgets.QWidget):
     def on_btnLogin_clicked(self):
         if _App.LoginState == True:
             if self.isMessageEmpty() is True:
-                #_App.LoginID = ''
+                _App.LoginID = ''
                 _App.LoginState = False
                 #self.btnLogin.setIcon(QtGui.QIcon(self.icon_login))
                 self.btnLogin.setStyleSheet("background-image: url('res/gui/button_login.png')")
@@ -157,15 +163,14 @@ class MainWidget(QtWidgets.QWidget):
             r = self.MainWindow.showKeyboard(_App.LoginID, "Input your Login ID")
             if r and _App.KEYBOARD_TEXT[0] != '':
                 _App.LoginID = _App.KEYBOARD_TEXT[0]
-                _App._Settings.SAVED_USER = _App.LoginID
+                #_App._Settings.SAVED_USER = _App.LoginID
                 _App.LoginState = True
                 #self.btnLogin.setIcon(QtGui.QIcon(self.icon_logout))
                 self.btnLogin.setStyleSheet("background-image: url('res/gui/button_logout.png')")
 
                 _App.APPSTATE = APP_STATE.STATE_BEGIN_LIFT
-                self.changeAppState()
-                #self.setAppState()
-                #self.updateWeightText("", "")
+                #self.changeAppState()
+                self.setAppState()
 
     def on_btnRwt_clicked(self):
         r = self.MainWindow.showKeyboard('', "Enter Truck ID")
@@ -224,23 +229,31 @@ class MainWidget(QtWidgets.QWidget):
     def updateWeightText(self, weight, unit):
         self.lblWeight.setText(weight)
         self.lblUnit.setText(unit)
+        self.updateWeightImage()
+
+    @QtCore.pyqtSlot()
+    def updateWeightImage(self):
+        if self.CURRENT_WEIGHT == "" or self.CURRENT_UOM == "" or _App._Settings.WEIGHTCODE is None:
+            self.lblBarcode.clear()
+        elif _App._Settings.WEIGHTCODE == 'BARCODE':
+            self.lblBarcode.setPixmap(self.CURRENT_BARIMG)
+        elif _App._Settings.WEIGHTCODE == 'QRCODE':
+            self.lblBarcode.setPixmap(self.CURRENT_QRIMG)
+        '''
+        if _App._Settings.WEIGHTCODE == 'BARCODE':
+            self.GUI.updateBarCodeImage(barimg)
+        elif _App._Settings.WEIGHTCODE == 'QRCODE':
+            self.GUI.updateQrCodeImage(qrimg)
+        else:
+            self.GUI.updateNoneCodeImage()
+        '''
 
     def updateBarCodeImage(self, img):
-        im = img.convert("RGB")
-        data = im.tobytes("raw", "RGB")
-        qim = QtGui.QImage(data, im.size[0], im.size[1], QtGui.QImage.Format_RGB888)
-        pixmap = QtGui.QPixmap.fromImage(qim)
-        # pixmap = QPixmap('./res/img/barcode_resized.jpg')
-        self.lblBarcode.setPixmap(pixmap)
+        self.lblBarcode.setPixmap(img)
 
     def updateQrCodeImage(self, img):
-        im = img.convert("RGB")
-        data = im.tobytes("raw", "RGB")
-        qim = QtGui.QImage(data, im.size[0], im.size[1], QtGui.QImage.Format_RGB888)
-        pixmap = QtGui.QPixmap.fromImage(qim)
-        # pixmap = QPixmap('./res/img/qrcode_resized.jpg')
-        self.lblBarcode.setPixmap(pixmap)
-    
+        self.lblBarcode.setPixmap(img)
+
     def updateNoneCodeImage(self):
         self.lblBarcode.clear()
 
@@ -255,8 +268,8 @@ class MainWidget(QtWidgets.QWidget):
         elif _App.WIFI_CONNECTION is False:
             self.lblWifi.setPixmap(QtGui.QPixmap("res/gui/wifi-disabled.png"))
 
-    @QtCore.pyqtSlot(int, str)
-    def setNewLift(self, weight, weightmode):
+    @QtCore.pyqtSlot(str, str, object, object)
+    def setNewLift(self, weight, weightmode, barimg=None, qrimg=None):
         if self.CURRENT_LID != "" and self.CURRENT_FBID != "":
             print("Call API")
             self.message_mutex.lock()
@@ -266,8 +279,11 @@ class MainWidget(QtWidgets.QWidget):
             self.message_mutex.unlock()
         
         if weight == 0:
-            self.CURRENT_WEIGHT = 0
+            self.CURRENT_WEIGHT = ""
             self.CURRENT_UOM = ""
+            self.CURRENT_BARIMG = None
+            self.CURRENT_QRIMG = None
+
             self.CURRENT_LID = ""
             self.CURRENT_FBID = ""
 
@@ -278,7 +294,9 @@ class MainWidget(QtWidgets.QWidget):
         else:
             self.CURRENT_WEIGHT = weight
             self.CURRENT_UOM = weightmode
-            self.updateWeightText(str(weight), weightmode)
+            self.CURRENT_BARIMG = barimg
+            self.CURRENT_QRIMG = qrimg
+            self.updateWeightText(weight, weightmode)
             
             self.CURRENT_LID = self.generateLID()
 

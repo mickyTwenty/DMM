@@ -13,18 +13,6 @@ import os
 
 from Config import _App, APP_STATE
 
-def validate_ip(s):
-    a = s.split('.')
-    if len(a) != 4:
-        return False
-    for x in a:
-        if not x.isdigit():
-            return False
-        i = int(x)
-        if i < 0 or i > 255:
-            return False
-    return True
-
 class BasicSettingsWidget(QtWidgets.QWidget):
     def __init__(self, MainWindow):
         super(BasicSettingsWidget, self).__init__()
@@ -45,7 +33,9 @@ class BasicSettingsWidget(QtWidgets.QWidget):
         
     def slotCodeClicked(self):
         diag = CodeModeDialog.CodeModeDialog()
-        diag.exec_()
+        r = diag.exec_()
+        if r:
+            self.MainWindow.mainWidget.changeCodeMode()
 
     def slotWifiClicked(self):
         diag = WifiConfigDialog.WifiConfigDialog(self)
@@ -96,7 +86,7 @@ class BasicSettingsWidget(QtWidgets.QWidget):
     def slotClientHostClicked(self):
         r = self.MainWindow.showKeyboard(str(_App._Settings.CLIENT_HOST), "Enter Client Host Address")
         if r:
-            if _App.KEYBOARD_TEXT[0] == ''  or validate_ip(_App.KEYBOARD_TEXT[0]) == False:
+            if _App.KEYBOARD_TEXT[0] == ''  or NetworkSetupDialog.validate_ip(_App.KEYBOARD_TEXT[0]) == False:
                 QMessageBox.warning(None, "Input Error", "Please input valid ip address")
             else:
                 _App._Settings.CLIENT_HOST = _App.KEYBOARD_TEXT[0]

@@ -44,7 +44,6 @@ class APICallThread(threading.Thread):
 
                 self.GUI.message_mutex.unlock()
 
-
             time.sleep(1)
 
         print('Exiting From API CALL Thread')

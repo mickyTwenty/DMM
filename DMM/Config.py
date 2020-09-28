@@ -157,7 +157,7 @@ class App:
 
         self._Settings = AppSettings()
 
-        self.LoginID = self._Settings.SAVED_USER
+        #self.LoginID = self._Settings.SAVED_USER
 
     def getDateTimeStamp(self, format):
         now = datetime.now()

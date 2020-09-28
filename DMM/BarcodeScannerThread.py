@@ -17,7 +17,7 @@ class BarcodeScannerThread(threading.Thread):
         self.GUI = GUI
 
         if _App.DEBUG is False:
-            self.fp = open("/dev/hidraw1", "rb")
+            self.fp = open("/dev/hidraw0", "rb")
         else:
             fb = open("barcodes.txt")
 
@@ -36,7 +36,6 @@ class BarcodeScannerThread(threading.Thread):
                 time.sleep(1)
                 continue
 
-
             if _App.DEBUG is True:
                 rval = random.randint(0, self.count - 1)
                 barcode_in = self.list_barcodes[rval]
@@ -51,13 +50,11 @@ class BarcodeScannerThread(threading.Thread):
                 self.doProcessing(barcode_in)
                 time.sleep(0.1)
 
-
         if _App.DEBUG is False:
             self.fp.close()
 
         print("Exiting Barcode Scan Thread")
 
-    
     def doProcessing(self, barcode):
         #self.GUI.addFBItem(barcode)
         self.GUI.newItemScanned(barcode)

@@ -10,8 +10,13 @@ from datetime import datetime
 from SerialConfig import SerialConfig
 import qrcode
 from PIL import Image
+from PIL.ImageQt import ImageQt
 import numpy as np
 import random
+import io
+
+from PyQt5.QtGui import QPixmap, QImage
+
 from RS232Serial import RS232Serial
 from Config import _App
 from Config import APP_STATE
@@ -133,7 +138,7 @@ class WeightReadingRs232Thread(threading.Thread):
                     #self.GUI.updateWeightText("NO LOAD", "")
                     #self.GUI.updateNoneCodeImage()
                     #self.GUI.setNewLift(0, "")
-                    self.GUI.newLiftSet(0, "")
+                    self.GUI.newLiftSet("", "", None, None)
                     #_App.APPSTATE = APP_STATE.STATE_BEGIN_LIFT
                     #self.GUI.changeAppState()
                     return
@@ -148,51 +153,54 @@ class WeightReadingRs232Thread(threading.Thread):
                     weightmode = 'LBS'
 
                 #_App._Settings.WEIGHTMODE = weightmode
-                print("weight: " + weight + weightmode)
+                weight_code = weight + ' ' + weightmode
+                print("weight: ", weight_code)
 
                 EAN = barcode.get_barcode_class('code128')
-                ean = EAN(weight, writer=ImageWriter())
-                fullname = ean.save('./res/img/barcode')
+                ean = EAN(weight_code, writer = ImageWriter())
+                bar = ean.render()
+                barimg = bar.resize((240, 160), Image.ANTIALIAS)
+                pix_bar = QPixmap.fromImage(self.convert_barimg(barimg))
 
-                if weightmode == 'KGS':
-                    fimg = Image.open("./res/img/kg.jpg")
-                else:
-                    fimg = Image.open("./res/img/lbs.jpg")
-                bar = Image.open("./res/img/barcode.png")
-                basewidth, height = bar.size
-                # wpercent = (basewidth / float(fimg.size[0]))
-                # hsize = int((float(fimg.size[1]) * float(wpercent)))
-                fimg = fimg.resize((basewidth, 50), Image.ANTIALIAS)
-                img_merge = np.vstack((np.asarray(bar), np.asarray(fimg)))
-                img_merge = Image.fromarray(img_merge)
-                barimg = img_merge.resize((240, 160), Image.ANTIALIAS)
-                #barimg.save('./res/img/barcode_resized.jpg')
-
-                qr = qrcode.QRCode(version=1,
-                                    error_correction=qrcode.constants.ERROR_CORRECT_L,
-                                    box_size=50,
-                                    border=1,)
-                qr.add_data(weight + ' ' + weightmode)
-                qr.make(fit=True)
-                qrimg = qr.make_image(fill_color="black", back_color="white")
-                #qrimg.save('./res/img/qrcode.png')
-                #qrimg = Image.open("./res/img/qrcode.png")
-                qrimg = qrimg.resize((160, 160), Image.ANTIALIAS)
-                #qrimg.save('./res/img/qrcode_resized.jpg')
+                qr = qrcode.QRCode(version = 1,
+                                    error_correction = qrcode.constants.ERROR_CORRECT_L,
+                                    box_size = 7,
+                                    border = 1,)
+                qr.add_data(weight_code)
+                qr.make(fit = True)
+                qrimg = qr.make_image(fill_color = "black", back_color = "white")
+                pix_qr = QPixmap.fromImage(self.convert_qrimg(qrimg))
 
                 #self.GUI.setNewLift(float(weight), weightmode)
-                self.GUI.newLiftSet(int(weight), weightmode)
+                self.GUI.newLiftSet(weight, weightmode, pix_bar, pix_qr)
 
+                '''
                 if _App._Settings.WEIGHTCODE == 'BARCODE':
-                    self.GUI.updateBarCodeImage(barimg)
+                    self.GUI.updateBarCodeImage(pix_bar)
                 elif _App._Settings.WEIGHTCODE == 'QRCODE':
-                    self.GUI.updateQrCodeImage(qrimg)
+                    self.GUI.updateQrCodeImage(pix_qr)
                 else:
                     self.GUI.updateNoneCodeImage()
-
+                '''
+                
             else:
                 #print('Response contains M')
                 return
 
         except Exception as e:
             print('Data Processing Error:', e)
+
+    def convert_qrimg(self, pilimage):
+        """converts a PIL image to QImage"""
+        imageq = ImageQt(pilimage) #convert PIL image to a PIL.ImageQt object
+        qimage = QImage(imageq) #cast PIL.ImageQt object to QImage object -that´s the trick!!!
+        return qimage
+
+    def convert_barimg(self, image):
+        bytes_img = io.BytesIO()
+        image.save(bytes_img, format='JPEG')
+
+        qimg = QImage()
+        qimg.loadFromData(bytes_img.getvalue())
+
+        return qimg
