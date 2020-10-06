@@ -140,6 +140,18 @@ class MainWidget(QtWidgets.QWidget):
             self.setLiftIDText(self.CURRENT_FBID)
             self.btnLogin.setVisible(True)
             self.btnSetRWT.setVisible(False)
+        
+        if len(self.message_queue) == 0 and _App.CLIENT_HOST_ALIVE is True:
+            pending_lift = _DB.getPendingLift()
+            if pending_lift is not None:
+                #print("Processing Pending Lifts...")
+                print("Call API for Pending Lift")
+                self.message_mutex.lock()
+                data = _DB.getFBItems(pending_lift)
+                self.message_queue.append(pending_lift)
+                self.message_queue.append(data)
+                self.message_mutex.unlock()
+                self.showMessage("info", "Processing Pending Lifts", 3)
 
     def setFont(self):
         QFontDatabase.addApplicationFont("./res/font/DJB Get Digital.ttf")
@@ -350,9 +362,9 @@ class MainWidget(QtWidgets.QWidget):
 
     @QtCore.pyqtSlot(str, object)
     def setNewTransaction(self, LID, data):
-        if data != False:
-            lift = _DB.setLiftTransaction(LID, data)
-            self.addLogItem(lift)
+        #if data != False:
+        lift = _DB.setLiftTransaction(LID, data)
+        self.addLogItem(lift)
         '''
         if data is False:
             #self.listLog.addItem(data["FreightBill"] + "\tFailed")

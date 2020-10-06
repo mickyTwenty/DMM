@@ -20,7 +20,11 @@ class APICallThread(threading.Thread):
 
         while _App.APICALLSTAT:
 
-            if len(self.GUI.message_queue) > 0:
+            self.GUI.message_mutex.lock()
+            count = len(self.GUI.message_queue)
+            self.GUI.message_mutex.unlock()
+
+            if count > 0:
 
                 LID = self.GUI.message_queue[0]
                 FB = self.GUI.message_queue[1]
@@ -43,7 +47,7 @@ class APICallThread(threading.Thread):
                 self.GUI.message_queue.pop(0)
 
                 self.GUI.message_mutex.unlock()
-
+            
             time.sleep(1)
 
         print('Exiting From API CALL Thread')
@@ -51,7 +55,7 @@ class APICallThread(threading.Thread):
     def send_request(self, data):
         url = "http://{}/api/FreightBillWeight".format(_App._Settings.CLIENT_HOST)
 
-        json_data = dict(zip(["Barcodes", "ForkliftId", "Weight", "UOM", "ActiveUser", "ScanTime"], data))
+        json_data = dict(zip(["Barcodes", "ForkliftId", "Weight", "UOM", "ActiveUser", "TransactionId", "ScanTime"], data))
 
         if _App.DEBUG == True:
             res = [

@@ -145,6 +145,8 @@ class App:
         self.WIFI_SSID = ''
         self.WIFI_PWD = ''
 
+        self.CLIENT_HOST_ALIVE = False
+
         self.APP_PATH = os.getcwd()
 
         self.DEBUG = False

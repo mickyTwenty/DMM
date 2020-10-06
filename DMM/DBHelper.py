@@ -110,7 +110,7 @@ class DBHelper():
 
             data.append(items)
 
-            cur.execute("SELECT truck_id, lift_weight, uom, user_id, datetime FROM tbl_lift_info WHERE lift_id=:LID", {"LID": LID})
+            cur.execute("SELECT truck_id, lift_weight, uom, user_id, transaction_id, datetime FROM tbl_lift_info WHERE lift_id=:LID", {"LID": LID})
             rs = cur.fetchone()
 
             data += rs
@@ -123,6 +123,24 @@ class DBHelper():
 
         return data
 
+    def getPendingLift(self):
+        pending_lift = None
+        try:
+            self.mutex.lock()
+            cur = self.conn.cursor()
+
+            cur.execute("SELECT lift_id FROM tbl_lift_info WHERE res_code = 404 OR res_code IS NULL ORDER BY lift_id ASC")
+            rs = cur.fetchone()
+
+            if rs is not None:
+                pending_lift = rs[0]
+
+        except Error as e:
+            print(e)
+        finally:
+            self.mutex.unlock()
+        
+        return pending_lift
 
     
 
