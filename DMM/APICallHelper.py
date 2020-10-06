@@ -66,6 +66,16 @@ class APICallThread(threading.Thread):
                 False
             ]
             rval = random.randint(0, 4)
+            response = res[rval]
+
+            if response == False:
+                return response
+
+            if response['TransactionId'] == json_data['TransactionId']:
+                response['IsSuccess'] = True
+            else:
+                response['IsSuccess'] = False
+
             return res[rval]
         else:
             status = 0
@@ -79,6 +89,10 @@ class APICallThread(threading.Thread):
 
                     print('Status code: ', response.status_code)
                     print(response.json())
+
+                    if response['TransactionId'] != json_data['TransactionId']:
+                        return False
+
                 except requests.exceptions.RequestException as e:
                     print(e)
                     break
