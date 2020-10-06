@@ -131,7 +131,7 @@ class BasicSettingsWidget(QtWidgets.QWidget):
             fm = QFontMetrics(font)
             pixelsWide = fm.width(_App._Settings.TRUCK_ID)
 
-            if pixelsWide <= 200:
+            if pixelsWide <= 190:
                 html = "<div style='text-align: center;color: #d5d58c;font-size: 24px;font-weight: 500;'>TRUCK ID</div><div style='text-align: center;color: #00c421;font-size: 22px;font-weight: 500;margin-top: 40px;'>{}</div>".format(_App._Settings.TRUCK_ID)
             else:
                 html = "<div style='text-align: center;color: #d5d58c;font-size: 24px;font-weight: 500;'>TRUCK ID</div><div style='text-align: center;color: #00c421;font-size: 22px;font-weight: 500;margin-top: 10px;'>{}</div>".format(_App._Settings.TRUCK_ID)
