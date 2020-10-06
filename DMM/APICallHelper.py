@@ -91,7 +91,8 @@ class APICallThread(threading.Thread):
                     print(response.json())
 
                     if response['TransactionId'] != json_data['TransactionId']:
-                        return False
+                        response['IsSuccess'] = False
+                        response['ErrorMessage'] = 'TransactionID verification failed.'
 
                 except requests.exceptions.RequestException as e:
                     print(e)
