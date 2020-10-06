@@ -90,7 +90,7 @@ class APICallThread(threading.Thread):
                     print('Status code: ', response.status_code)
                     print(response.json())
 
-                    if response != False and response['TransactionId'] != json_data['TransactionId']:
+                    if response['TransactionId'] != json_data['TransactionId']:
                         return False
 
                 except requests.exceptions.RequestException as e:
