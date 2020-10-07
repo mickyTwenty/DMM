@@ -89,7 +89,7 @@ class APICallThread(threading.Thread):
             json_response = {}
 
             try:
-                response = requests.post(url, json = json_data, auth=(username, password), headers = newHeaders)
+                response = requests.post(url, json = json.dumps(json_data), auth=(username, password), headers = newHeaders)
                 status = response.status_code
 
                 print('Status code: ', status)
