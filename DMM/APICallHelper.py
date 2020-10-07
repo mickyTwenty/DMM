@@ -59,11 +59,10 @@ class APICallThread(threading.Thread):
         url = "http://{}/api/FreightBillWeight".format(_App._Settings.CLIENT_HOST)
 
         json_data = dict(zip(["Barcodes", "ForkliftId", "Weight", "UOM", "ActiveUser", "TransactionId", "ScanTime"], data))
-        #json_data = dict(zip(["Barcodes", "ForkliftId", "Weight", "UOM", "ActiveUser", "ScanTime"], data))
 
         print("request data: ", json_data)
 
-        if _App.DEBUG == False:
+        if _App.DEBUG == True:
             res = [
                 {'IsSuccess': True, 'FreightBill': 'F2470280', 'ErrorMessage': None, 'WeightApplication': 2},
                 {'IsSuccess': False, 'FreightBill': 'F2470285', 'ErrorMessage': 'Deferring update, not all barcodes for bill have been submitted.', 'WeightApplication': 3},
@@ -100,7 +99,7 @@ class APICallThread(threading.Thread):
 
                     json_response = response.json()
 
-                    if json_response['Message'] == 'The request is invalid.':
+                    if json_response['ErrorMessage'] == 'The request is invalid.':
                         json_response['IsSuccess'] = False
                         json_response['WeightApplication'] = 4
                         break
