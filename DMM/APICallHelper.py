@@ -8,7 +8,10 @@ from Config import _App
 from Config import APP_STATE
 from DBHelper import _DB
 
+username = "WeighPointAPI"
+password = "dsfg9jsjWE0sjvm"
 
+newHeaders = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 
 class APICallThread(threading.Thread):
     def __init__(self, GUI):
@@ -86,7 +89,7 @@ class APICallThread(threading.Thread):
             response = None
             while status != 200 and status != 400 and try_no < 3:
                 try:
-                    response = requests.post(url, data = json_data)
+                    response = requests.post(url, data = json_data, auth=(username, password), headers = newHeaders)
                     status = response.status_code
 
                     print('Status code: ', response.status_code)
