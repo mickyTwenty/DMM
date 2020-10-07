@@ -112,7 +112,8 @@ class DBHelper():
 
             data.append(items)
 
-            cur.execute("SELECT truck_id, lift_weight, uom, user_id, transaction_id, datetime FROM tbl_lift_info WHERE lift_id=:LID", {"LID": LID})
+            #cur.execute("SELECT truck_id, lift_weight, uom, user_id, transaction_id, datetime FROM tbl_lift_info WHERE lift_id=:LID", {"LID": LID})
+            cur.execute("SELECT truck_id, lift_weight, uom, user_id, datetime FROM tbl_lift_info WHERE lift_id=:LID", {"LID": LID})
             rs = cur.fetchone()
 
             data += rs

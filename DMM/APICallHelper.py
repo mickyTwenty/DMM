@@ -58,7 +58,8 @@ class APICallThread(threading.Thread):
     def send_request(self, data):
         url = "http://{}/api/FreightBillWeight".format(_App._Settings.CLIENT_HOST)
 
-        json_data = dict(zip(["Barcodes", "ForkliftId", "Weight", "UOM", "ActiveUser", "TransactionId", "ScanTime"], data))
+        #json_data = dict(zip(["Barcodes", "ForkliftId", "Weight", "UOM", "ActiveUser", "TransactionId", "ScanTime"], data))
+        json_data = dict(zip(["Barcodes", "ForkliftId", "Weight", "UOM", "ActiveUser", "ScanTime"], data))
 
         print("request data: ", json_data)
 
