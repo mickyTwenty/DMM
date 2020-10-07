@@ -99,12 +99,12 @@ class APICallThread(threading.Thread):
 
                     json_response = response.json()
 
-                    if json_response['ErrorMessage'] == 'The request is invalid.':
+                    if json_response.has_key("Message") and json_response['ErrorMessage'] == 'The request is invalid.':
                         json_response['IsSuccess'] = False
                         json_response['WeightApplication'] = 4
                         break
 
-                    if json_response['TransactionId'] != json_data['TransactionId']:
+                    if json_response.has_key('TransactionId') and json_response['TransactionId'] != json_data['TransactionId']:
                         json_response['IsSuccess'] = False
                         json_response['ErrorMessage'] = 'TransactionID verification failed.'
 
