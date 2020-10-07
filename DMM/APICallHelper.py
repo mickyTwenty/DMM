@@ -57,6 +57,8 @@ class APICallThread(threading.Thread):
 
         json_data = dict(zip(["Barcodes", "ForkliftId", "Weight", "UOM", "ActiveUser", "TransactionId", "ScanTime"], data))
 
+        print("request data: ", json_data)
+
         if _App.DEBUG == True:
             res = [
                 {'IsSuccess': True, 'FreightBill': 'F2470280', 'ErrorMessage': None, 'WeightApplication': 2},
