@@ -97,14 +97,16 @@ class APICallThread(threading.Thread):
 
                     # Add handle invalid request
 
-                    if response['Message'] == 'The request is invalid.':
-                        response['IsSuccess'] = False
-                        response['WeightApplication'] = 4
+                    json_response = response.json()
+
+                    if json_response['Message'] == 'The request is invalid.':
+                        json_response['IsSuccess'] = False
+                        json_response['WeightApplication'] = 4
                         break
 
-                    if response['TransactionId'] != json_data['TransactionId']:
-                        response['IsSuccess'] = False
-                        response['ErrorMessage'] = 'TransactionID verification failed.'
+                    if json_response['TransactionId'] != json_data['TransactionId']:
+                        json_response['IsSuccess'] = False
+                        json_response['ErrorMessage'] = 'TransactionID verification failed.'
 
                 except requests.exceptions.RequestException as e:
                     print(e)
@@ -115,4 +117,4 @@ class APICallThread(threading.Thread):
             if status != 200 and status != 400:
                 return False
             
-            return response.json()
+            return json_response
