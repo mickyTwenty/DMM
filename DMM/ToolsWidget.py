@@ -18,6 +18,7 @@ from Config import _App
 import GenCSVKeepData
 import EmailSetup
 from Calculator import Calculator
+import AboutDialog
 
 class ToolsWidget(object):
     def __init__(self, MainWindow):
@@ -31,6 +32,7 @@ class ToolsWidget(object):
         self.btnCopy.clicked.connect(self.slotCopyCsvClicked)
         self.btnEmail.clicked.connect(self.slotEmailCsvClicked)
         self.btnCalc.clicked.connect(self.slotCalcClicked)
+        self.btnInfo.clicked.connect(self.slotInfoClicked)
 
     def getSDPath(self):
         path = '/media/pi/*/'
@@ -101,6 +103,10 @@ class ToolsWidget(object):
         calc = Calculator()
         calc.show()
         calc.exec_()
+
+    def slotInfoClicked(self):
+        diag = AboutDialog.AboutDialog(self)
+        diag.exec_()
 
     def setupUi(self, ToolsWidget):
         ToolsWidget.setObjectName("ToolsWidget")

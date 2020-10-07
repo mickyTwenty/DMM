@@ -92,6 +92,11 @@ class APICallThread(threading.Thread):
 
                     # Add handle invalid request
 
+                    if response['Message'] == 'The request is invalid.':
+                        response['IsSuccess'] = False
+                        response['WeightApplication'] = 4
+                        break
+
                     if response['TransactionId'] != json_data['TransactionId']:
                         response['IsSuccess'] = False
                         response['ErrorMessage'] = 'TransactionID verification failed.'
