@@ -59,7 +59,7 @@ class APICallThread(threading.Thread):
 
         print("request data: ", json_data)
 
-        if _App.DEBUG == True:
+        if _App.DEBUG == False:
             res = [
                 {'IsSuccess': True, 'FreightBill': 'F2470280', 'ErrorMessage': None, 'WeightApplication': 2},
                 {'IsSuccess': False, 'FreightBill': 'F2470285', 'ErrorMessage': 'Deferring update, not all barcodes for bill have been submitted.', 'WeightApplication': 3},
