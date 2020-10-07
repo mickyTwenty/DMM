@@ -84,38 +84,34 @@ class APICallThread(threading.Thread):
             return res[rval]
         else:
             status = 0
-            try_no = 0
             status = 0
             response = None
-            while status != 200 and status != 400 and try_no < 3:
-                try:
-                    response = requests.post(url, json = json_data, auth=(username, password), headers = newHeaders)
-                    status = response.status_code
+            json_response = {}
 
-                    print('Status code: ', response.status_code)
-                    print(response.json())
+            try:
+                response = requests.post(url, json = json_data, auth=(username, password), headers = newHeaders)
+                status = response.status_code
 
-                    # Add handle invalid request
+                print('Status code: ', status)
 
-                    json_response = response.json()
+                if status != 200 and status != 400:
+                    return False
 
-                    if ("Message" in json_response) and (json_response['ErrorMessage'] == 'The request is invalid.'):
-                        json_response['IsSuccess'] = False
-                        json_response['WeightApplication'] = 4
-                        json_response['TransactionId'] = ''
-                        break
+                json_response = response.json()
+                print(json_response)
 
-                    if json_response['TransactionId'] != json_data['TransactionId']:
-                        json_response['IsSuccess'] = False
-                        json_response['ErrorMessage'] = 'TransactionID verification failed.'
+                # Add handle invalid request
 
-                except requests.exceptions.RequestException as e:
-                    print(e)
-                    break
-                finally:
-                    try_no += 1
+                if ("Message" in json_response) and (json_response['ErrorMessage'] == 'The request is invalid.'):
+                    json_response['IsSuccess'] = False
+                    json_response['WeightApplication'] = 4
+                    json_response['TransactionId'] = ''
+
+                if json_response['TransactionId'] != json_data['TransactionId']:
+                    json_response['IsSuccess'] = False
+                    json_response['ErrorMessage'] = 'TransactionID verification failed.'
+
+            except requests.exceptions.RequestException as e:
+                print(e)
                     
-            if status != 200 and status != 400:
-                return False
-            
             return json_response
