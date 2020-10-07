@@ -58,8 +58,8 @@ class APICallThread(threading.Thread):
     def send_request(self, data):
         url = "http://{}/api/FreightBillWeight".format(_App._Settings.CLIENT_HOST)
 
-        #json_data = dict(zip(["Barcodes", "ForkliftId", "Weight", "UOM", "ActiveUser", "TransactionId", "ScanTime"], data))
-        json_data = dict(zip(["Barcodes", "ForkliftId", "Weight", "UOM", "ActiveUser", "ScanTime"], data))
+        json_data = dict(zip(["Barcodes", "ForkliftId", "Weight", "UOM", "ActiveUser", "TransactionId", "ScanTime"], data))
+        #json_data = dict(zip(["Barcodes", "ForkliftId", "Weight", "UOM", "ActiveUser", "ScanTime"], data))
 
         print("request data: ", json_data)
 
@@ -90,7 +90,7 @@ class APICallThread(threading.Thread):
             response = None
             while status != 200 and status != 400 and try_no < 3:
                 try:
-                    response = requests.post(url, data = json_data, auth=(username, password), headers = newHeaders)
+                    response = requests.post(url, json = json_data, auth=(username, password), headers = newHeaders)
                     status = response.status_code
 
                     print('Status code: ', response.status_code)
