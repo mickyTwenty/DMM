@@ -141,7 +141,6 @@ class MainWidget(QtWidgets.QWidget):
             self.btnLogin.setVisible(True)
             self.btnSetRWT.setVisible(False)
         
-        '''
         if len(self.message_queue) == 0 and _App.CLIENT_HOST_ALIVE is True:
             pending_lift = _DB.getPendingLift()
             if pending_lift is not None:
@@ -153,7 +152,6 @@ class MainWidget(QtWidgets.QWidget):
                 self.message_queue.append(data)
                 self.message_mutex.unlock()
                 self.showMessage("info", "Processing Pending Lifts", 3)
-        '''
 
     def setFont(self):
         QFontDatabase.addApplicationFont("./res/font/DJB Get Digital.ttf")
@@ -400,7 +398,7 @@ class MainWidget(QtWidgets.QWidget):
 
         if item[1] == 4:
             return
-            
+
         self.listLog.addItem(i)
         if self.LOG_SCROLL_ITEM == self.listLog.count() - 1:
             self.LOG_SCROLL_ITEM += 1
