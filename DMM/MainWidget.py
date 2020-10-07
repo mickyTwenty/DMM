@@ -398,6 +398,9 @@ class MainWidget(QtWidgets.QWidget):
             i.setText("FB # {}\t{}".format(item[0], "FAILED"))
             i.setBackground(QColor("#c00000"))
 
+        if item[1] == 4:
+            return
+            
         self.listLog.addItem(i)
         if self.LOG_SCROLL_ITEM == self.listLog.count() - 1:
             self.LOG_SCROLL_ITEM += 1
