@@ -102,7 +102,7 @@ class APICallThread(threading.Thread):
 
                 # Add handle invalid request
 
-                if ("Message" in json_response) and (json_response['ErrorMessage'] == 'The request is invalid.'):
+                if ("Message" in json_response) and (json_response['Message'] == 'The request is invalid.'):
                     json_response['IsSuccess'] = False
                     json_response['WeightApplication'] = 4
                     json_response['TransactionId'] = ''
