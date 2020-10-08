@@ -26,6 +26,9 @@ class WeightReadingRs232Thread(threading.Thread):
         threading.Thread.__init__(self)
         self.GUI = GUI
         self.OLDWEIGHT = '0'
+        self.TRY_LIMIT = 10
+        self.WCOUNT = 0
+        self.WSTAT = False
 
     def decodeSerialRes(self, res):
         try:
@@ -134,56 +137,66 @@ class WeightReadingRs232Thread(threading.Thread):
         #weight = self.weightConversion(weight)
         try:
                 
-            if 'M' not in response and weight != self.OLDWEIGHT:
-                if float(weight) < _App._Settings.WEIGHTTHRESHOLD:
-                    #self.GUI.updateWeightText("NO LOAD", "")
-                    #self.GUI.updateNoneCodeImage()
-                    #self.GUI.setNewLift(0, "")
-                    self.GUI.newLiftSet("", "", None, None)
-                    #_App.APPSTATE = APP_STATE.STATE_BEGIN_LIFT
-                    #self.GUI.changeAppState()
-                    return
+            if 'M' not in response:
+                if weight != self.OLDWEIGHT:
+                    self.WCOUNT = 0
+                    self.OLDWEIGHT = weight
+                    self.WSTAT = True
+                elif weight == self.OLDWEIGHT:
+                    if self.WCOUNT >= self.TRY_LIMIT and self.WSTAT == True:
+                        self.WSTAT = False
+                        self.WCOUNT = 0
 
-                self.OLDWEIGHT = weight
+                        if float(weight) < _App._Settings.WEIGHTTHRESHOLD:
+                            #self.GUI.updateWeightText("NO LOAD", "")
+                            #self.GUI.updateNoneCodeImage()
+                            #self.GUI.setNewLift(0, "")
+                            self.GUI.newLiftSet("", "", None, None)
+                            #_App.APPSTATE = APP_STATE.STATE_BEGIN_LIFT
+                            #self.GUI.changeAppState()
+                            return
 
-                weightmode = ''
+                        self.OLDWEIGHT = weight
 
-                if 'KG' in response:
-                    weightmode = 'KGS'
-                elif 'LB' in response:
-                    weightmode = 'LBS'
+                        weightmode = ''
 
-                #_App._Settings.WEIGHTMODE = weightmode
-                weight_code = weight + ' ' + weightmode
-                print("weight: ", weight_code)
+                        if 'KG' in response:
+                            weightmode = 'KGS'
+                        elif 'LB' in response:
+                            weightmode = 'LBS'
 
-                EAN = barcode.get_barcode_class('code128')
-                ean = EAN(weight_code, writer = ImageWriter())
-                bar = ean.render()
-                barimg = bar.resize((240, 160), Image.ANTIALIAS)
-                pix_bar = QPixmap.fromImage(self.convert_barimg(barimg))
+                        #_App._Settings.WEIGHTMODE = weightmode
+                        weight_code = weight + ' ' + weightmode
+                        print("weight: ", weight_code)
 
-                qr = qrcode.QRCode(version = 1,
-                                    error_correction = qrcode.constants.ERROR_CORRECT_L,
-                                    box_size = 7,
-                                    border = 1,)
-                qr.add_data(weight_code)
-                qr.make(fit = True)
-                qrimg = qr.make_image(fill_color = "black", back_color = "white")
-                pix_qr = QPixmap.fromImage(self.convert_qrimg(qrimg))
+                        EAN = barcode.get_barcode_class('code128')
+                        ean = EAN(weight_code, writer = ImageWriter())
+                        bar = ean.render()
+                        barimg = bar.resize((240, 160), Image.ANTIALIAS)
+                        pix_bar = QPixmap.fromImage(self.convert_barimg(barimg))
 
-                #self.GUI.setNewLift(float(weight), weightmode)
-                self.GUI.newLiftSet(weight, weightmode, pix_bar, pix_qr)
+                        qr = qrcode.QRCode(version = 1,
+                                            error_correction = qrcode.constants.ERROR_CORRECT_L,
+                                            box_size = 7,
+                                            border = 1,)
+                        qr.add_data(weight_code)
+                        qr.make(fit = True)
+                        qrimg = qr.make_image(fill_color = "black", back_color = "white")
+                        pix_qr = QPixmap.fromImage(self.convert_qrimg(qrimg))
 
-                '''
-                if _App._Settings.WEIGHTCODE == 'BARCODE':
-                    self.GUI.updateBarCodeImage(pix_bar)
-                elif _App._Settings.WEIGHTCODE == 'QRCODE':
-                    self.GUI.updateQrCodeImage(pix_qr)
-                else:
-                    self.GUI.updateNoneCodeImage()
-                '''
-                
+                        #self.GUI.setNewLift(float(weight), weightmode)
+                        self.GUI.newLiftSet(weight, weightmode, pix_bar, pix_qr)
+
+                        '''
+                        if _App._Settings.WEIGHTCODE == 'BARCODE':
+                            self.GUI.updateBarCodeImage(pix_bar)
+                        elif _App._Settings.WEIGHTCODE == 'QRCODE':
+                            self.GUI.updateQrCodeImage(pix_qr)
+                        else:
+                            self.GUI.updateNoneCodeImage()
+                        '''
+                    else:
+                        self.WCOUNT = self.WCOUNT + 1
             else:
                 #print('Response contains M')
                 return

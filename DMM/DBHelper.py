@@ -6,6 +6,13 @@ global _DB
 
 db_file = "./res/db/weightrpi.db"
 
+'''
+RES_CODE
+    0~3 : Scenario0 ~ 3
+    4   : The request is invalid
+    5   : Ignored Request(No FB Items)
+'''
+
 class DBHelper():
     def __init__(self):
         self.mutex = QMutex()
@@ -29,6 +36,18 @@ class DBHelper():
             cur = self.conn.cursor()
 
             cur.execute("INSERT INTO tbl_lift_info(truck_id, lift_id, fb_id, lift_weight, uom, user_id, transaction_id, datetime) VALUES (?,?,?,?,?,?,?,?)", data)
+            self.conn.commit()
+        except Error as e:
+            print(e)
+        finally:
+            self.mutex.unlock()
+
+    def setIgnoreLift(self, LID):
+        try:
+            self.mutex.lock()
+            cur = self.conn.cursor()
+
+            cur.execute("UPDATE tbl_lift_info SET res_success=:SUCCESS, res_message=:MESSAGE, res_code=:CODE WHERE lift_id=:LID", {"SUCCESS": str(False), "MESSAGE": "Ignored request(No FB Items)", "CODE": 5, "LID": LID})
             self.conn.commit()
         except Error as e:
             print(e)

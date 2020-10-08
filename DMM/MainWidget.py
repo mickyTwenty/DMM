@@ -289,6 +289,9 @@ class MainWidget(QtWidgets.QWidget):
             self.message_queue.append(self.CURRENT_LID)
             self.message_queue.append(data)
             self.message_mutex.unlock()
+        elif self.CURRENT_LID != ""  and self.CURRENT_FBID == "":
+            print("Set Ignored Lift: ", self.CURRENT_LID)
+            _DB.setIgnoreLift(self.CURRENT_LID)
         
         if weight == 0:
             self.CURRENT_WEIGHT = ""
