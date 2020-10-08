@@ -17,7 +17,7 @@ class BarcodeScannerThread(threading.Thread):
         self.GUI = GUI
 
         if _App.DEBUG is False:
-            self.fp = open("/dev/hidraw1", "rb")
+            self.fp = open("/dev/hidraw0", "rb")
         else:
             fb = open("barcodes.txt")
 
