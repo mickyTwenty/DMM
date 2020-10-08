@@ -82,7 +82,7 @@ class WeightReadingRs232Thread(threading.Thread):
                 try:
                     if self.rsserial.isOpen():
                         response = self.rsserial.readline()
-                        print("raw data: ", response)
+                        #print("raw data: ", response)
                         if len(response) > 5:
                             response = self.rsserial.readline().decode('UTF-8')
                             # response = self.rsserial.readline().decode('UTF-8')
