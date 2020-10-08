@@ -8,6 +8,7 @@ db_file = "./res/db/weightrpi.db"
 
 '''
 RES_CODE
+    -1  : New Lift
     0~3 : Scenario0 ~ 3
     4   : The request is invalid
     5   : Ignored Request(No FB Items)

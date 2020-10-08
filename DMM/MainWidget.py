@@ -293,7 +293,7 @@ class MainWidget(QtWidgets.QWidget):
             print("Set Ignored Lift: ", self.CURRENT_LID)
             _DB.setIgnoreLift(self.CURRENT_LID)
         
-        if weight == 0:
+        if weight == "":
             self.CURRENT_WEIGHT = ""
             self.CURRENT_UOM = ""
             self.CURRENT_BARIMG = None
@@ -348,7 +348,7 @@ class MainWidget(QtWidgets.QWidget):
 
         if self.CURRENT_FBID != new_fbid:
             self.showMessage("Alert", "MULTIPLE FRIEGHT BILLS NOT ALLOWED. PLEASE RE-LIFT", 5)
-            self.setNewLift(0, "")
+            self.setNewLift("", "")
         
         SCAN_ID = "{}-{}".format(_App._Settings.TRUCK_ID, new_fbitem)
 
