@@ -105,6 +105,7 @@ class BarcodeScannerThread(threading.Thread):
 
                         ## if not a 2 then lookup the mapping
                         else:
+                            print("key: ", int(ord(c)))
                             ss += hid[ int(ord(c)) ]
                     
         return ss
