@@ -17,7 +17,7 @@ class BarcodeScannerThread(threading.Thread):
         self.GUI = GUI
 
         if _App.DEBUG is False:
-            self.fp = open("/dev/hidraw0", "rb")
+            self.fp = open("/dev/hidraw1", "rb")
         else:
             fb = open("barcodes.txt")
 
@@ -74,42 +74,42 @@ class BarcodeScannerThread(threading.Thread):
                     c = chr(c)
                     
                 if ord(c) > 0:
-                    #try:
+                    try:
 
-                    ##  40 is carriage return which signifies
-                    ##  we are done looking for characters
-                    if int(ord(c)) == 40:
-                        done = True
-                        break
+                        ##  40 is carriage return which signifies
+                        ##  we are done looking for characters
+                        if int(ord(c)) == 40:
+                            done = True
+                            break
 
-                    ##  If we are shifted then we have to 
-                    ##  use the hid2 characters.
-                    if shift: 
+                        ##  If we are shifted then we have to 
+                        ##  use the hid2 characters.
+                        if shift: 
 
-                        ## If it is a '2' then it is the shift key
-                        if int(ord(c)) == 2 :
-                            shift = True
+                            ## If it is a '2' then it is the shift key
+                            if int(ord(c)) == 2 :
+                                shift = True
 
-                        ## if not a 2 then lookup the mapping
+                            ## if not a 2 then lookup the mapping
+                            else:
+                                ss += hid2[ int(ord(c)) ]
+                                shift = False
+
+                        ##  If we are not shifted then use
+                        ##  the hid characters
+
                         else:
-                            ss += hid2[ int(ord(c)) ]
-                            shift = False
 
-                    ##  If we are not shifted then use
-                    ##  the hid characters
+                            ## If it is a '2' then it is the shift key
+                            if int(ord(c)) == 2 :
+                                shift = True
 
-                    else:
-
-                        ## If it is a '2' then it is the shift key
-                        if int(ord(c)) == 2 :
-                            shift = True
-
-                        ## if not a 2 then lookup the mapping
-                        else:
-                            print("key: ", int(ord(c)))
-                            ss += hid[ int(ord(c)) ]
-                    #except KeyError:
-                    #    print("Key error: ", int(ord(c)))
-                    #    ss += ""
+                            ## if not a 2 then lookup the mapping
+                            else:
+                                print("key: ", int(ord(c)))
+                                ss += hid[ int(ord(c)) ]
+                    except KeyError:
+                        print("Key error: ", int(ord(c)))
+                        ss += ""
                     
         return ss
