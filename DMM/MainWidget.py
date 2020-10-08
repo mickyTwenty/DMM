@@ -317,7 +317,7 @@ class MainWidget(QtWidgets.QWidget):
 
             self.CURRENT_FBID = ''
 
-            _DB.insertNewLift([_App._Settings.TRUCK_ID, self.CURRENT_LID, self.CURRENT_FBID, self.CURRENT_WEIGHT, self.CURRENT_UOM, _App.LoginID, self.generateTID(), _App.getDateTimeStamp("%m/%d/%Y %H:%M:%S")])
+            _DB.insertNewLift([_App._Settings.TRUCK_ID, self.CURRENT_LID, self.CURRENT_FBID, self.CURRENT_WEIGHT, self.CURRENT_UOM, _App.LoginID, self.generateTID(), _App.getDateTimeStamp("%m/%d/%Y %H:%M:%S"), -1])
 
             _App.APPSTATE = APP_STATE.STATE_SCAN_BARCODE
             #self.changeAppState()

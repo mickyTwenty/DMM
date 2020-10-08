@@ -35,7 +35,7 @@ class DBHelper():
             self.mutex.lock()
             cur = self.conn.cursor()
 
-            cur.execute("INSERT INTO tbl_lift_info(truck_id, lift_id, fb_id, lift_weight, uom, user_id, transaction_id, datetime) VALUES (?,?,?,?,?,?,?,?)", data)
+            cur.execute("INSERT INTO tbl_lift_info(truck_id, lift_id, fb_id, lift_weight, uom, user_id, transaction_id, datetime, res_code) VALUES (?,?,?,?,?,?,?,?,?)", data)
             self.conn.commit()
         except Error as e:
             print(e)
