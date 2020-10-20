@@ -166,6 +166,7 @@ class MainWidget(QtWidgets.QWidget):
             if self.isMessageEmpty() is True:
                 _App.LoginID = ''
                 _App.LoginState = False
+                self.CURRENT_WEIGHT = ''
                 #self.btnLogin.setIcon(QtGui.QIcon(self.icon_login))
                 self.btnLogin.setStyleSheet("background-image: url('res/gui/button_login.png')")
             else:

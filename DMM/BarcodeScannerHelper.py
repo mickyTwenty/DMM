@@ -7,7 +7,3 @@ class BarcodeScannerHelper:
 
     def startScan(self):
         self.t.start()
-
-    def stopScan(self):
-        if not self.t.isAlive():
-            print('Barcode Scanner Thread killed.')
