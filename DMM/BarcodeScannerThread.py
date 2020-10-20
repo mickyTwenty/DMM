@@ -29,53 +29,35 @@ class BarcodeScannerThread(threading.Thread):
                 self.list_barcodes.append(bc)
                 self.count += 1
 
-    def get_id(self): 
-        # returns id of the respective thread 
-        if hasattr(self, '_thread_id'): 
-            return self._thread_id 
-        for id, thread in threading._active.items(): 
-            if thread is self: 
-                return id
-
-    def raise_exception(self): 
-        thread_id = self.get_id() 
-        res = ctypes.pythonapi.PyThreadState_SetAsyncExc(thread_id, ctypes.py_object(SystemExit)) 
-        print('aa')
-        if res > 1: 
-            ctypes.pythonapi.PyThreadState_SetAsyncExc(thread_id, 0) 
-            print('Exception raise failure') 
-
     def run(self):
         print('Entering Barcode Scan Thread')
 
-        try:
-            while _App.BCSCANSTAT:
-                if _App.DEBUG_OUTPUT:
-                    print('Barcode Scanner Thread: running...')
-                
-                if _App.APPSTATE != APP_STATE.STATE_SCAN_BARCODE:
-                    time.sleep(1)
-                    continue
+        while _App.BCSCANSTAT:
+            if _App.DEBUG_OUTPUT:
+                print('Barcode Scanner Thread: running...')
+            
+            if _App.APPSTATE != APP_STATE.STATE_SCAN_BARCODE:
+                time.sleep(1)
+                continue
 
-                if _App.DEBUG is True:
-                    rval = random.randint(0, self.count - 1)
-                    barcode_in = self.list_barcodes[rval]
-                    print("Scan Barcode: ", barcode_in)
+            if _App.DEBUG is True:
+                rval = random.randint(0, self.count - 1)
+                barcode_in = self.list_barcodes[rval]
+                print("Scan Barcode: ", barcode_in)
 
-                    self.doProcessing(barcode_in)
-                    time.sleep(1)
-                else:
-                    barcode_in = self.scan()
-                    print("Scan Barcode: ", barcode_in)
+                self.doProcessing(barcode_in)
+                time.sleep(1)
+            else:
+                barcode_in = self.scan()
+                print("Scan Barcode: ", barcode_in)
 
-                    self.doProcessing(barcode_in)
-                    time.sleep(0.1)
-        finally:
-            print('ba')
-            if _App.DEBUG is False:
-                self.fp.close()
+                self.doProcessing(barcode_in)
+                time.sleep(0.1)
 
-            print("Exiting Barcode Scan Thread")
+        if _App.DEBUG is False:
+            self.fp.close()
+
+        print("Exiting Barcode Scan Thread")
 
     def doProcessing(self, barcode):
         #self.GUI.addFBItem(barcode)

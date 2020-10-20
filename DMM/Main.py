@@ -119,7 +119,6 @@ class MainWindow(QtWidgets.QMainWindow):
             #self.BSHelper.stopScan()
             _DB.closeDB()
             _App._Settings.save()
-            sys.exit()
             
     
     def keyPressEvent(self, event):
