@@ -2,7 +2,7 @@ import sys
 import threading
 import time
 import random
-import ctypes 
+import readchar
 
 from Config import _App
 from Config import APP_STATE
@@ -71,7 +71,14 @@ class BarcodeScannerThread(threading.Thread):
 
         while not done:
             ## Get the character from the HID
-            buffer = self.fp.read(8)
+            #buffer = self.fp.read(8)
+            buffer = ''
+            while ( len(buffer) != 8 and _App.BCSCANSTAT ):
+                buffer += str(readchar.readchar())
+
+            if not _App.BCSCANSTAT:
+                break
+            
             for c in buffer:
                 if type(c) == int:
                     c = chr(c)

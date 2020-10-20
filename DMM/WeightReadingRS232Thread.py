@@ -60,6 +60,7 @@ class WeightReadingRs232Thread(threading.Thread):
             if _App.APPSTATE.value < APP_STATE.STATE_BEGIN_LIFT.value:
                 self.OLDWEIGHT = ''
                 self.TEMPWEIGHT = ''
+                self.WSTAT = False
                 time.sleep(1)
                 continue
 
