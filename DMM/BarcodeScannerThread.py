@@ -74,6 +74,7 @@ class BarcodeScannerThread(threading.Thread):
             #buffer = self.fp.read(8)
             buffer = ''
             while ( len(buffer) != 8 and _App.BCSCANSTAT ):
+                print('readchar.readchar()')
                 buffer += str(readchar.readchar())
 
             if not _App.BCSCANSTAT:
