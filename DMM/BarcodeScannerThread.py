@@ -67,8 +67,9 @@ class BarcodeScannerThread(threading.Thread):
         shift = False
 
         done = False
+        print('****scan barcode****')
 
-        while ( not done ) and _App.BCSCANSTAT:
+        while not done:
             print('*****scan barcode*****')
 
             ## Get the character from the HID
