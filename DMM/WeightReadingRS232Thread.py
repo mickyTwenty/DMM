@@ -144,6 +144,48 @@ class WeightReadingRs232Thread(threading.Thread):
         #weight = self.weightConversion(weight)
         try:
             if 'M' not in response:
+                if _App.DEBUG is True:
+                    if float(weight) < _App._Settings.WEIGHTTHRESHOLD:
+                        #self.GUI.updateWeightText("NO LOAD", "")
+                        #self.GUI.updateNoneCodeImage()
+                        #self.GUI.setNewLift(0, "")
+                        self.GUI.newLiftSet("", "", None, None)
+                        #_App.APPSTATE = APP_STATE.STATE_BEGIN_LIFT
+                        #self.GUI.changeAppState()
+                        return
+
+                    self.OLDWEIGHT = weight
+
+                    weightmode = ''
+
+                    if 'KG' in response:
+                        weightmode = 'KGS'
+                    elif 'LB' in response:
+                        weightmode = 'LBS'
+
+                    #_App._Settings.WEIGHTMODE = weightmode
+                    weight_code = weight + ' ' + weightmode
+                    print("weight: ", weight_code)
+
+                    EAN = barcode.get_barcode_class('code128')
+                    ean = EAN(weight_code, writer = ImageWriter())
+                    bar = ean.render()
+                    barimg = bar.resize((240, 160), Image.ANTIALIAS)
+                    pix_bar = QPixmap.fromImage(self.convert_barimg(barimg))
+
+                    qr = qrcode.QRCode(version = 1,
+                                        error_correction = qrcode.constants.ERROR_CORRECT_L,
+                                        box_size = 7,
+                                        border = 1,)
+                    qr.add_data(weight_code)
+                    qr.make(fit = True)
+                    qrimg = qr.make_image(fill_color = "black", back_color = "white")
+                    pix_qr = QPixmap.fromImage(self.convert_qrimg(qrimg))
+
+                    #self.GUI.setNewLift(float(weight), weightmode)
+                    self.GUI.newLiftSet(weight, weightmode, pix_bar, pix_qr)
+                    return
+
                 if weight != self.OLDWEIGHT and self.WSTAT == False:
                     self.WCOUNT = 0
                     self.TEMPWEIGHT = weight

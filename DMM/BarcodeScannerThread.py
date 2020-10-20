@@ -71,7 +71,8 @@ class BarcodeScannerThread(threading.Thread):
 
         while not done:
             ## Get the character from the HID
-            #buffer = self.fp.read(8)
+            buffer = self.fp.read(8)
+            '''
             buffer = ''
             while ( len(buffer) != 8 and _App.BCSCANSTAT ):
                 print('readchar.readchar()')
@@ -80,7 +81,7 @@ class BarcodeScannerThread(threading.Thread):
 
             if not _App.BCSCANSTAT:
                 break
-            
+            '''
             for c in buffer:
                 if type(c) == int:
                     c = chr(c)

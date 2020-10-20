@@ -61,6 +61,7 @@ class MainWidget(QtWidgets.QWidget):
         self.message_queue = []
         self.message_mutex = QMutex()
 
+        self.LOG_ITEM = None
         self.LOG_SCROLL_ITEM = 0
 
         self.setFont()
@@ -285,11 +286,7 @@ class MainWidget(QtWidgets.QWidget):
     def setNewLift(self, weight, weightmode, barimg=None, qrimg=None):
         if self.CURRENT_LID != "" and self.CURRENT_FBID != "":
             print("Call API")
-            self.message_mutex.lock()
-            data = _DB.getFBItems(self.CURRENT_LID)
-            self.message_queue.append(self.CURRENT_LID)
-            self.message_queue.append(data)
-            self.message_mutex.unlock()
+            self.callApi(self.CURRENT_LID)
         elif self.CURRENT_LID != ""  and self.CURRENT_FBID == "":
             print("Set Ignored Lift: ", self.CURRENT_LID)
             _DB.setIgnoreLift(self.CURRENT_LID)
@@ -350,12 +347,14 @@ class MainWidget(QtWidgets.QWidget):
         if self.CURRENT_FBID != new_fbid:
             self.showMessage("Alert", "MULTIPLE FRIEGHT BILLS NOT ALLOWED. PLEASE RE-LIFT", 5)
             self.setNewLift("", "")
+            return
         
         SCAN_ID = "{}-{}".format(_App._Settings.TRUCK_ID, new_fbitem)
 
         #if self.insertNewFBItem(self.CURRENT_LID, new_fbitem):
         if _DB.insertNewFBItem([self.CURRENT_LID, SCAN_ID, new_fbitem, _App.getDateTimeStamp("%m/%d/%Y %H:%M:%S")]):
             self.listBarcodes.addItem(new_fbitem)
+            self.callApi(self.CURRENT_LID)
             #self.setMessageText("PLEASE SCAN BARCODE OF ITEMS")
         else:
             #self.listBarcodes.addItem("{}\t(Already Scanned)".format(new_fbitem))
@@ -364,11 +363,18 @@ class MainWidget(QtWidgets.QWidget):
             print("Already Scanned")
         self.listBarcodes.scrollToBottom()
 
+    def callApi(self, LID):
+        self.message_mutex.lock()
+        data = _DB.getFBItems(LID)
+        self.message_queue.append(LID)
+        self.message_queue.append(data)
+        self.message_mutex.unlock()
+
     @QtCore.pyqtSlot(str, object)
     def setNewTransaction(self, LID, data):
         #if data != False:
         lift = _DB.setLiftTransaction(LID, data)
-        self.addLogItem(lift)
+        self.addLogItem(LID, lift)
         '''
         if data is False:
             #self.listLog.addItem(data["FreightBill"] + "\tFailed")
@@ -385,25 +391,31 @@ class MainWidget(QtWidgets.QWidget):
         self.listLog.scrollToBottom()
         '''
 
-    def addLogItem(self, item):
-        i = QListWidgetItem()
-        if item[1] == 1 or item[1] == 2:
-            i.setText("FB # {}\t{}".format(item[0], "OK"))
-            i.setBackground(QColor("#00b050"))
-        elif item[1] == 0:
-            i.setText("FB # {}\t{}".format(item[0], "RETRY"))
-            i.setBackground(QColor("#c00000"))
-        elif item[1] == 3:
-            i.setText("FB # {}\t{}".format(item[0], "WAITING"))
-            i.setBackground(QColor("#ffa500"))
-        elif item[1] == 404:
-            i.setText("FB # {}\t{}".format(item[0], "FAILED"))
-            i.setBackground(QColor("#c00000"))
-
+    def addLogItem(self, LID, item):
         if item[1] == 4:
             return
 
-        self.listLog.addItem(i)
+        if ( self.LOG_ITEM is None or self.LOG_ITEM.data(QtCore.Qt.UserRole) != LID ):
+            i = QListWidgetItem()
+            i.setData(QtCore.Qt.UserRole, LID)
+
+            self.listLog.addItem(i)
+            self.LOG_ITEM = i
+
+        if item[1] == 1 or item[1] == 2:
+            self.LOG_ITEM.setText("FB # {}\t{}".format(item[0], "OK"))
+            self.LOG_ITEM.setBackground(QColor("#00b050"))
+        elif item[1] == 0:
+            self.LOG_ITEM.setText("FB # {}\t{}".format(item[0], "RETRY"))
+            self.LOG_ITEM.setBackground(QColor("#c00000"))
+        elif item[1] == 3:
+            self.LOG_ITEM.setText("FB # {}\t{}".format(item[0], "WAITING"))
+            self.LOG_ITEM.setBackground(QColor("#ffa500"))
+        elif item[1] == 404:
+            self.LOG_ITEM.setText("FB # {}\t{}".format(item[0], "FAILED"))
+            self.LOG_ITEM.setBackground(QColor("#c00000"))
+
+
         if self.LOG_SCROLL_ITEM == self.listLog.count() - 1:
             self.LOG_SCROLL_ITEM += 1
         self.logScroll()

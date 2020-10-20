@@ -67,10 +67,10 @@ class APICallThread(threading.Thread):
 
         if _App.DEBUG == True:
             res = [
-                {'IsSuccess': True, 'FreightBill': 'F2470280', 'ErrorMessage': None, 'WeightApplication': 2},
-                {'IsSuccess': False, 'FreightBill': 'F2470285', 'ErrorMessage': 'Deferring update, not all barcodes for bill have been submitted.', 'WeightApplication': 3},
-                {'IsSuccess': False, 'FreightBill': None, 'ErrorMessage': "Couldn't find specified barcode.", 'WeightApplication': 0},
-                {"IsSuccess": True, "FreightBill": "T00001", 'ErrorMessage': None, "WeightApplication": 1},
+                {'IsSuccess': True, 'FreightBill': 'F2470280', 'ErrorMessage': None, 'WeightApplication': 2, 'TransactionId': 'debug'},
+                {'IsSuccess': False, 'FreightBill': 'F2470285', 'ErrorMessage': 'Deferring update, not all barcodes for bill have been submitted.', 'WeightApplication': 3, 'TransactionId': 'debug'},
+                {'IsSuccess': False, 'FreightBill': None, 'ErrorMessage': "Couldn't find specified barcode.", 'WeightApplication': 0, 'TransactionId': 'debug'},
+                {"IsSuccess": True, "FreightBill": "T00001", 'ErrorMessage': None, "WeightApplication": 1, 'TransactionId': 'debug'},
                 False
             ]
             rval = random.randint(0, 4)
@@ -79,7 +79,7 @@ class APICallThread(threading.Thread):
             if response == False:
                 return response
 
-            if response['TransactionId'] == json_data['TransactionId']:
+            if response['TransactionId'] == json_data['TransactionId'] or ( _App.DEBUG and response['TransactionId'] == 'debug'):
                 response['IsSuccess'] = True
             else:
                 response['IsSuccess'] = False
