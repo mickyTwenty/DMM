@@ -54,12 +54,14 @@ class WeightReadingRs232Thread(threading.Thread):
             return
 
         while _App.RS232STAT:
-            if _App.APPSTATE.value < APP_STATE.STATE_BEGIN_LIFT.value:
-                time.sleep(1)
-                continue
-
             if _App.DEBUG_OUTPUT:
                 print('RS232 Thread: running...')
+
+            if _App.APPSTATE.value < APP_STATE.STATE_BEGIN_LIFT.value:
+                self.OLDWEIGHT = ''
+                self.TEMPWEIGHT = ''
+                time.sleep(1)
+                continue
 
             if _App.DEBUG is True:
                 ############ TESTING
