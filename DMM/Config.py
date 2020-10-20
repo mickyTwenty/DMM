@@ -150,7 +150,7 @@ class App:
         self.APP_PATH = os.getcwd()
 
         self.DEBUG = False
-        self.DEBUG_OUTPUT = True
+        self.DEBUG_OUTPUT = False
         self.KEYBOARD_TEXT = ['']
 
         self.MESSAGE_ON = False
