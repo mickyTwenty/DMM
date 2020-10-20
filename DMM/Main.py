@@ -116,9 +116,10 @@ class MainWindow(QtWidgets.QMainWindow):
             _App.BCSCANSTAT = False
             _App.TIMESTAT = False
             _App.WIFISTAT = False
-            self.BSHelper.stopScan()
+            #self.BSHelper.stopScan()
             _DB.closeDB()
             _App._Settings.save()
+            sys.exit()
             
     
     def keyPressEvent(self, event):
