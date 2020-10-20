@@ -40,6 +40,7 @@ class BarcodeScannerThread(threading.Thread):
     def raise_exception(self): 
         thread_id = self.get_id() 
         res = ctypes.pythonapi.PyThreadState_SetAsyncExc(thread_id, ctypes.py_object(SystemExit)) 
+        print('aa')
         if res > 1: 
             ctypes.pythonapi.PyThreadState_SetAsyncExc(thread_id, 0) 
             print('Exception raise failure') 
@@ -70,9 +71,10 @@ class BarcodeScannerThread(threading.Thread):
                     self.doProcessing(barcode_in)
                     time.sleep(0.1)
         finally:
+            print('ba')
             if _App.DEBUG is False:
                 self.fp.close()
-                
+
             print("Exiting Barcode Scan Thread")
 
     def doProcessing(self, barcode):
