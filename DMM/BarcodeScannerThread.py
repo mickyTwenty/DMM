@@ -74,6 +74,7 @@ class BarcodeScannerThread(threading.Thread):
 
             ## Get the character from the HID
             buffer = self.fp.read(8)
+            print('******scan barcode******')
             for c in buffer:
                 if type(c) == int:
                     c = chr(c)
