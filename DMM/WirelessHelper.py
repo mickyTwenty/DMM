@@ -42,5 +42,5 @@ class WirelessThread(threading.Thread):
                     
             time.sleep(10)
 
-        print('Existing Wireless Thread...')
+        print('Exiting Wireless Thread...')
         
