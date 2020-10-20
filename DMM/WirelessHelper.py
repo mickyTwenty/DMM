@@ -12,8 +12,12 @@ class WirelessThread(threading.Thread):
         self.wireless = Wireless()
 
     def run(self):
+        print('Entering Wireless Thread...')
+        
         while _App.WIFISTAT:
-            
+            if _App.DEBUG_OUTPUT:
+                print('Wireless Thread: connecting is {}'.format(_App.WIFICONNECTING))
+
             if _App.WIFICONNECTING is True:
                 try:
                     print('connecting to wifi', _App.WIFI_SSID, '---', _App.WIFI_PWD)
@@ -37,3 +41,6 @@ class WirelessThread(threading.Thread):
             self.GUI.setWifiIcon()
                     
             time.sleep(10)
+
+        print('Existing Wireless Thread...')
+        

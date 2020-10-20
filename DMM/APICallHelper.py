@@ -22,6 +22,8 @@ class APICallThread(threading.Thread):
         print('Entering Into API CALL Thread')
 
         while _App.APICALLSTAT:
+            if _App.DEBUG_OUTPUT:
+                print('API CALL Thread: message queue size {}'.format(len(self.GUI.message_queue)))
 
             self.GUI.message_mutex.lock()
             count = len(self.GUI.message_queue)
@@ -60,7 +62,8 @@ class APICallThread(threading.Thread):
 
         json_data = dict(zip(["Barcodes", "ForkliftId", "Weight", "UOM", "ActiveUser", "TransactionId", "ScanTime"], data))
 
-        print("request data: ", json_data)
+        if _App.DEBUG_OUTPUT:
+            print("request data: ", json_data)
 
         if _App.DEBUG == True:
             res = [
@@ -98,7 +101,9 @@ class APICallThread(threading.Thread):
                     return False
 
                 json_response = response.json()
-                print(json_response)
+
+                if _App.DEBUG_OUTPUT:
+                    print(json_response)
 
                 # Add handle invalid request
 

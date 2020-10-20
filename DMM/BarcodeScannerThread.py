@@ -29,9 +29,12 @@ class BarcodeScannerThread(threading.Thread):
                 self.count += 1
 
     def run(self):
-        print("Entering Barcode Scan Thread")
+        print('Entering Barcode Scan Thread')
 
         while _App.BCSCANSTAT:
+            if _App.DEBUG_OUTPUT:
+                print('Barcode Scanner Thread: running...')
+            
             if _App.APPSTATE != APP_STATE.STATE_SCAN_BARCODE:
                 time.sleep(1)
                 continue

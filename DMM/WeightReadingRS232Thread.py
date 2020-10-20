@@ -26,6 +26,7 @@ class WeightReadingRs232Thread(threading.Thread):
         threading.Thread.__init__(self)
         self.GUI = GUI
         self.OLDWEIGHT = '0'
+        self.TEMPWEIGHT = '0'
         self.TRY_LIMIT = 10
         self.WCOUNT = 0
         self.WSTAT = False
@@ -56,6 +57,9 @@ class WeightReadingRs232Thread(threading.Thread):
             if _App.APPSTATE.value < APP_STATE.STATE_BEGIN_LIFT.value:
                 time.sleep(1)
                 continue
+
+            if _App.DEBUG_OUTPUT:
+                print('RS232 Thread: running...')
 
             if _App.DEBUG is True:
                 ############ TESTING
@@ -136,13 +140,21 @@ class WeightReadingRs232Thread(threading.Thread):
     def doProcessing(self, response, weight):
         #weight = self.weightConversion(weight)
         try:
-                
             if 'M' not in response:
-                if weight != self.OLDWEIGHT:
+                if weight != self.OLDWEIGHT and self.WSTAT == False:
                     self.WCOUNT = 0
-                    self.OLDWEIGHT = weight
+                    self.TEMPWEIGHT = weight
                     self.WSTAT = True
-                elif weight == self.OLDWEIGHT:
+                elif weight != self.TEMPWEIGHT and self.WSTAT == True:
+                    if weight == self.OLDWEIGHT:
+                        self.WCOUNT = 0
+                        self.TEMPWEIGHT = '0'
+                        self.WSTAT = False
+                    else:
+                        self.WCOUNT = 0
+                        self.TEMPWEIGHT = weight
+                        self.WSTAT = True
+                elif weight == self.TEMPWEIGHT:
                     if self.WCOUNT >= self.TRY_LIMIT and self.WSTAT == True:
                         self.WSTAT = False
                         self.WCOUNT = 0
