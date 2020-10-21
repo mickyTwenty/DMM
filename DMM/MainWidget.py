@@ -71,6 +71,7 @@ class MainWidget(QtWidgets.QWidget):
 
         try:
             self.btnLogin.clicked.disconnect()
+            self.btnCancelLift.clicked.disconnect()
             self.btnLogup.clicked.disconnect()
             self.btnLogdown.clicked.disconnect()
         except:
@@ -79,6 +80,7 @@ class MainWidget(QtWidgets.QWidget):
         self.btnTools.clicked.connect(self.MainWindow.setToolsWidget)
         self.btnSetup.clicked.connect(self.MainWindow.setBasicSettingWidget)     
         self.btnLogin.clicked.connect(self.on_btnLogin_clicked)
+        self.btnCancelLift.clicked.connect(self.on_btnCancelLift_clicked)
         self.btnSetRWT.clicked.connect(self.on_btnRwt_clicked)
 
         self.btnLogup.clicked.connect(self.on_btnLogup_clicked)
@@ -114,6 +116,7 @@ class MainWidget(QtWidgets.QWidget):
             self.updateWeightText("TRUCKID", "")
             #self.updateNoneCodeImage()
             self.btnLogin.setVisible(False)
+            self.btnCancelLift.setVisible(False)
             self.btnSetRWT.setVisible(True)
         
         if _App.APPSTATE == APP_STATE.STATE_NEED_LOGIN:
@@ -122,6 +125,7 @@ class MainWidget(QtWidgets.QWidget):
             self.updateWeightText("LOGIN", "")
             #self.updateNoneCodeImage()
             self.btnLogin.setVisible(True)
+            self.btnCancelLift.setVisible(False)
             self.btnSetRWT.setVisible(False)
 
         if _App.APPSTATE == APP_STATE.STATE_BEGIN_LIFT:
@@ -130,6 +134,7 @@ class MainWidget(QtWidgets.QWidget):
             self.updateWeightText("NO LOAD", "")
             #self.updateNoneCodeImage()
             self.btnLogin.setVisible(True)
+            self.btnCancelLift.setVisible(False)
             self.btnSetRWT.setVisible(False)
         
         if _App.APPSTATE == APP_STATE.STATE_SCAN_BARCODE:
@@ -139,7 +144,8 @@ class MainWidget(QtWidgets.QWidget):
                 self.setMessageText("Please SCAN next item(s)")
             #self.setActiveLiftText("")
             self.setLiftIDText(self.CURRENT_FBID)
-            self.btnLogin.setVisible(True)
+            self.btnLogin.setVisible(False)
+            self.btnCancelLift.setVisible(True)
             self.btnSetRWT.setVisible(False)
         
         if len(self.message_queue) == 0 and _App.CLIENT_HOST_ALIVE is True:
@@ -322,6 +328,23 @@ class MainWidget(QtWidgets.QWidget):
             self.setAppState()
 
         self.listBarcodes.clear()
+
+    def on_btnCancelLift_clicked(self):
+        if self.CURRENT_LID != '':
+            print("Set Ignored Lift: ", self.CURRENT_LID)
+            _DB.setIgnoreLift(self.CURRENT_LID)
+
+        self.CURRENT_WEIGHT = ""
+        self.CURRENT_UOM = ""
+        self.CURRENT_BARIMG = None
+        self.CURRENT_QRIMG = None
+
+        self.CURRENT_LID = ""
+        self.CURRENT_FBID = ""
+
+        _App.APPSTATE = APP_STATE.STATE_BEGIN_LIFT
+        #self.changeAppState()
+        self.setAppState()
     
     def generateLID(self):
         datetime = _App.getDateTimeStamp("%Y%m%d%H%M%S")
@@ -365,6 +388,8 @@ class MainWidget(QtWidgets.QWidget):
 
     def callApi(self, LID):
         self.message_mutex.lock()
+        if LID == '':
+            print('LID NULL')
         data = _DB.getFBItems(LID)
         self.message_queue.append(LID)
         self.message_queue.append(data)

@@ -36,15 +36,6 @@ class APICallThread(threading.Thread):
 
                 res = self.send_request(FB)
                 self.GUI.newTransactionSet(LID, res)
-                '''
-                if res is False:
-                    self.GUI.setAPICallLog(LID + "\tFailed")
-                else:
-                    if res["IsSuccess"] is True:
-                        self.GUI.setAPICallLog(LID + "\tOK")
-                    else:
-                        self.GUI.setAPICallLog(LID + "\tScenario: {}".format(res["WeightApplication"]))
-                '''
 
                 self.GUI.message_mutex.lock()
 

@@ -69,7 +69,7 @@ class BarcodeScannerThread(threading.Thread):
 
         done = False
 
-        while not done:
+        while ( not done ) and _App.BCSCANSTAT:
             ## Get the character from the HID
             buffer = self.fp.read(8)
             '''

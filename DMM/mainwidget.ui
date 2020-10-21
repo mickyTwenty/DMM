@@ -1067,6 +1067,20 @@ color: white;</string>
             </widget>
            </item>
            <item>
+            <widget class="QToolButton" name="btnCancelLift">
+             <property name="icon">
+              <iconset>
+               <normaloff>res/gui/cancel_lift.png</normaloff>res/gui/cancel_lift.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>159</width>
+               <height>118</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item>
             <spacer name="horizontalSpacer_6">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
