@@ -167,4 +167,12 @@ class App:
         date_time = now.strftime(format)
         return date_time
 
+    def convertWeight(self, weight, unit, to_unit):
+        if unit == to_unit:
+            return weight
+        elif to_unit == 'KGS':
+            return int(weight / 2.20462)
+        elif to_unit == 'LBS':
+            return int(weight * 2.20462)
+
 _App = App()

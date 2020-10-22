@@ -66,8 +66,6 @@ class MainWindow(QtWidgets.QMainWindow):
         AppcheckerHelper.AppcheckerThread(self.mainWidget).start()
         APICallHelper.APICallThread(self.mainWidget).start()
         ClockHelper.ClockHelper(self.mainWidget).startClock()
-        #self.BSHelper = BarcodeScannerHelper.BarcodeScannerHelper(self.mainWidget)
-        #self.BSHelper.startScan()
         BarcodeScannerHelper.BarcodeScannerHelper(self.mainWidget).startScan()
         WirelessHelper.WirelessThread(self.mainWidget).start()
         self.WBHelper = WeightButtonHelper.WeightButtonHelper(self.mainWidget)

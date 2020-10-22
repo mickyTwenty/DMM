@@ -58,6 +58,11 @@ class MainWidget(QtWidgets.QWidget):
         self.CURRENT_LID = ''
         self.CURRENT_FBID = ''
 
+        self.LAST_LID = ''
+        self.LAST_FBID = ''
+        self.LAST_WEIGHT = ''
+        self.LAST_UOM = ''
+
         self.message_queue = []
         self.message_mutex = QMutex()
 
@@ -173,7 +178,8 @@ class MainWidget(QtWidgets.QWidget):
             if self.isMessageEmpty() is True:
                 _App.LoginID = ''
                 _App.LoginState = False
-                self.CURRENT_WEIGHT = ''
+                self.cancelLift()
+                #self.CURRENT_WEIGHT = ''
                 #self.btnLogin.setIcon(QtGui.QIcon(self.icon_login))
                 self.btnLogin.setStyleSheet("background-image: url('res/gui/button_login.png')")
             else:
@@ -259,14 +265,6 @@ class MainWidget(QtWidgets.QWidget):
             self.lblBarcode.setPixmap(self.CURRENT_BARIMG)
         elif _App._Settings.WEIGHTCODE == 'QRCODE':
             self.lblBarcode.setPixmap(self.CURRENT_QRIMG)
-        '''
-        if _App._Settings.WEIGHTCODE == 'BARCODE':
-            self.GUI.updateBarCodeImage(barimg)
-        elif _App._Settings.WEIGHTCODE == 'QRCODE':
-            self.GUI.updateQrCodeImage(qrimg)
-        else:
-            self.GUI.updateNoneCodeImage()
-        '''
 
     def updateBarCodeImage(self, img):
         self.lblBarcode.setPixmap(img)
@@ -292,10 +290,16 @@ class MainWidget(QtWidgets.QWidget):
     def setNewLift(self, weight, weightmode, barimg=None, qrimg=None):
         if self.CURRENT_LID != "" and self.CURRENT_FBID != "":
             print("Call API")
-            self.callApi(self.CURRENT_LID)
+            #self.callApi(self.CURRENT_LID)
+
+            self.LAST_LID = self.CURRENT_LID
+            self.LAST_FBID = self.CURRENT_FBID
+            self.LAST_WEIGHT = self.CURRENT_WEIGHT
+            self.LAST_UOM = self.CURRENT_UOM
+
         elif self.CURRENT_LID != ""  and self.CURRENT_FBID == "":
             print("Set Ignored Lift: ", self.CURRENT_LID)
-            _DB.setIgnoreLift(self.CURRENT_LID)
+            _DB.setLiftCode(self.CURRENT_LID, False, "Ignored request(No FB Items)", 5)
         
         if weight == "":
             self.CURRENT_WEIGHT = ""
@@ -330,9 +334,21 @@ class MainWidget(QtWidgets.QWidget):
         self.listBarcodes.clear()
 
     def on_btnCancelLift_clicked(self):
+        self.cancelLift()
+    
+    def cancelLift(self):
         if self.CURRENT_LID != '':
             print("Set Ignored Lift: ", self.CURRENT_LID)
-            _DB.setIgnoreLift(self.CURRENT_LID)
+            _DB.setLiftCode(self.CURRENT_LID, False, "Cancelled LIFT by Operator", 6)
+
+            if self.CURRENT_FBID != '' and self.LOG_ITEM is not None:
+                self.LOG_ITEM.setText("FB # {}\t{}".format(self.CURRENT_FBID, "CANCELLED"))
+                self.LOG_ITEM.setBackground(QColor("#c00000"))
+
+        self.LAST_LID = ""
+        self.LAST_FBID = ""
+        self.LAST_WEIGHT = ""
+        self.LAST_UOM = ""
 
         self.CURRENT_WEIGHT = ""
         self.CURRENT_UOM = ""
@@ -345,7 +361,28 @@ class MainWidget(QtWidgets.QWidget):
         _App.APPSTATE = APP_STATE.STATE_BEGIN_LIFT
         #self.changeAppState()
         self.setAppState()
-    
+
+    def setInvalidLift(self):
+        print("Set Ignored Lift: ", self.CURRENT_LID)
+        _DB.setLiftCode(self.CURRENT_LID, False, "Ignored request(No FB Items)", 5)
+        
+        self.LOG_ITEM.setText("FB # {}\t{}".format(self.CURRENT_FBID, "INVALID"))
+        self.LOG_ITEM.setBackground(QColor("#c00000"))
+
+        self.CURRENT_WEIGHT = ""
+        self.CURRENT_UOM = ""
+        self.CURRENT_BARIMG = None
+        self.CURRENT_QRIMG = None
+
+        self.CURRENT_LID = ""
+        self.CURRENT_FBID = ""
+
+        self.LOG_ITEM = None
+
+        _App.APPSTATE = APP_STATE.STATE_BEGIN_LIFT
+        #self.changeAppState()
+        self.setAppState()
+
     def generateLID(self):
         datetime = _App.getDateTimeStamp("%Y%m%d%H%M%S")
         return "{}-{}".format(_App._Settings.TRUCK_ID, datetime)
@@ -358,18 +395,31 @@ class MainWidget(QtWidgets.QWidget):
 
     @QtCore.pyqtSlot(str)
     def addFBItem(self, barcode):
+        if self.CURRENT_LID == '':
+            return
+
         new_fbitem = barcode
-        
         new_fbid = new_fbitem.split("-")[0]
 
         if self.CURRENT_FBID == "":
-            self.CURRENT_FBID = new_fbid
-            self.setLiftIDText(new_fbid)
-            _DB.setFBId(self.CURRENT_LID, self.CURRENT_FBID)
+            if new_fbid == self.LAST_FBID:
+                _DB.setLiftCode(self.CURRENT_LID, False, "Combined Lift", 7)
+                self.CURRENT_LID = self.LAST_LID
+                self.CURRENT_FBID = new_fbid
+                self.setLiftIDText(new_fbid)
+                self.CURRENT_WEIGHT = self.combineWeight(self.LAST_WEIGHT, self.LAST_UOM, self.CURRENT_WEIGHT, self.CURRENT_UOM)
+                print('Combined Lift Weight: {} {}'.format(self.CURRENT_WEIGHT, self.CURRENT_UOM))
+                _DB.updateCombineLift(self.CURRENT_LID, self.CURRENT_WEIGHT, self.CURRENT_UOM)
+                #_DB.setFBId(self.CURRENT_LID, self.CURRENT_FBID)
+            else:
+                self.CURRENT_FBID = new_fbid
+                self.setLiftIDText(new_fbid)
+                _DB.setFBId(self.CURRENT_LID, self.CURRENT_FBID)
 
         if self.CURRENT_FBID != new_fbid:
             self.showMessage("Alert", "MULTIPLE FRIEGHT BILLS NOT ALLOWED. PLEASE RE-LIFT", 5)
-            self.setNewLift("", "")
+            self.setInvalidLift()
+            #self.setNewLift("", "")
             return
         
         SCAN_ID = "{}-{}".format(_App._Settings.TRUCK_ID, new_fbitem)
@@ -389,11 +439,18 @@ class MainWidget(QtWidgets.QWidget):
     def callApi(self, LID):
         self.message_mutex.lock()
         if LID == '':
-            print('LID NULL')
+            print('LID NULL')                                   # bug point
+            return
         data = _DB.getFBItems(LID)
         self.message_queue.append(LID)
         self.message_queue.append(data)
         self.message_mutex.unlock()
+
+    def combineWeight(self, lw, lu, cw, cu):
+        if cw == '':
+            print('bug point')                                  # bug point
+            return lw
+        return str(int(cw) + _App.convertWeight(int(lw), lu, cu))
 
     @QtCore.pyqtSlot(str, object)
     def setNewTransaction(self, LID, data):
@@ -430,6 +487,7 @@ class MainWidget(QtWidgets.QWidget):
         if item[1] == 1 or item[1] == 2:
             self.LOG_ITEM.setText("FB # {}\t{}".format(item[0], "OK"))
             self.LOG_ITEM.setBackground(QColor("#00b050"))
+            self.btnCancelLift.setVisible(False)
         elif item[1] == 0:
             self.LOG_ITEM.setText("FB # {}\t{}".format(item[0], "RETRY"))
             self.LOG_ITEM.setBackground(QColor("#c00000"))

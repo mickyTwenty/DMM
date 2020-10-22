@@ -12,6 +12,8 @@ RES_CODE
     0~3 : Scenario0 ~ 3
     4   : The request is invalid
     5   : Ignored Request(No FB Items)
+    6   : Cancelled by operator
+    7   : Ignored Lift(Combined Lift)
 '''
 
 class DBHelper():
@@ -42,13 +44,25 @@ class DBHelper():
             print(e)
         finally:
             self.mutex.unlock()
-
-    def setIgnoreLift(self, LID):
+    
+    def updateCombineLift(self, LID, weight, uom):
         try:
             self.mutex.lock()
             cur = self.conn.cursor()
 
-            cur.execute("UPDATE tbl_lift_info SET res_success=:SUCCESS, res_message=:MESSAGE, res_code=:CODE WHERE lift_id=:LID", {"SUCCESS": str(False), "MESSAGE": "Ignored request(No FB Items)", "CODE": 5, "LID": LID})
+            cur.execute("UPDATE tbl_lift_info SET lift_weight=:WEIGHT, uom=:UOM WHERE lift_id=:LID", {"WEIGHT": weight, "UOM": uom, "LID": LID})
+            self.conn.commit()
+        except Error as e:
+            print(e)
+        finally:
+            self.mutex.unlock()
+
+    def setLiftCode(self, LID, success, msg, code):
+        try:
+            self.mutex.lock()
+            cur = self.conn.cursor()
+
+            cur.execute("UPDATE tbl_lift_info SET res_success=:SUCCESS, res_message=:MESSAGE, res_code=:CODE WHERE lift_id=:LID", {"SUCCESS": str(success), "MESSAGE": msg, "CODE": code, "LID": LID})
             self.conn.commit()
         except Error as e:
             print(e)
