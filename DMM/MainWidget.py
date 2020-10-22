@@ -377,7 +377,7 @@ class MainWidget(QtWidgets.QWidget):
         self.CURRENT_LID = ""
         self.CURRENT_FBID = ""
 
-        self.LOG_ITEM = None
+        #self.LOG_ITEM = None
 
         _App.APPSTATE = APP_STATE.STATE_BEGIN_LIFT
         #self.changeAppState()
