@@ -158,6 +158,9 @@ class App:
         self.MESSAGE_TEXT = ''
         self.MESSAGE_DURATION = 0
 
+        self.WEIGHT_TRY_ZERO = 1
+        self.WEIGHT_TRY_NONZERO = 4
+
         self._Settings = AppSettings()
 
         #self.LoginID = self._Settings.SAVED_USER
