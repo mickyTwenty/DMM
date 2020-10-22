@@ -418,7 +418,7 @@ class MainWidget(QtWidgets.QWidget):
 
         if self.CURRENT_FBID != new_fbid:
             self.showMessage("Alert", "MULTIPLE FRIEGHT BILLS NOT ALLOWED. PLEASE RE-LIFT", 5)
-            self.setInvalidLift()
+            #self.setInvalidLift()
             #self.setNewLift("", "")
             return
         
