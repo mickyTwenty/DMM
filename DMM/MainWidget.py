@@ -398,6 +398,11 @@ class MainWidget(QtWidgets.QWidget):
         if self.CURRENT_LID == '':
             return
 
+        if self.parseFBCode(barcode) is False:
+            self.showMessage("Warning", "INVALID BARCODE SCANNED", 5)
+            return
+
+
         new_fbitem = barcode
         new_fbid = new_fbitem.split("-")[0]
 
@@ -435,6 +440,16 @@ class MainWidget(QtWidgets.QWidget):
             self.showMessage("Warning", "Already Scanned Item", 2)
             print("Already Scanned")
         self.listBarcodes.scrollToBottom()
+
+    def parseFBCode(self, barcode):
+        s = barcode.split("-")
+        if len(s) != 2:
+            return False
+        
+        if s[0][0] != 'F':
+            return False
+
+        return True
 
     def callApi(self, LID):
         self.message_mutex.lock()
