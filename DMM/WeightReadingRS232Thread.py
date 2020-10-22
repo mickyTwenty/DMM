@@ -101,7 +101,7 @@ class WeightReadingRs232Thread(threading.Thread):
                             response = response.strip()
                             if _App.DEBUG_OUTPUT:
                                 print("received data: " + response)
-                            if len(response) > 0:
+                            if len(response) >= 0:
                                 currentWeight = self.extractDigit(response)
                                 if currentWeight != '-1':
                                     self.doProcessing(response, currentWeight)
