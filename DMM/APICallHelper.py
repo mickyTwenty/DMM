@@ -88,7 +88,7 @@ class APICallThread(threading.Thread):
 
                 print('Status code: ', status)
 
-                if status != 200 and status != 400:
+                if status != 200 and status != 400 and status != 500:
                     return False
 
                 json_response = response.json()
