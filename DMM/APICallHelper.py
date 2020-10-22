@@ -94,7 +94,7 @@ class APICallThread(threading.Thread):
                 json_response = response.json()
 
                 if _App.DEBUG_OUTPUT:
-                    print(json_response)
+                    print("API response: ", json_response)
 
                 # Add handle invalid request
 
