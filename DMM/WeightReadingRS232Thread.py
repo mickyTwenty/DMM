@@ -27,7 +27,7 @@ class WeightReadingRs232Thread(threading.Thread):
         self.GUI = GUI
         self.OLDWEIGHT = '0'
         self.TEMPWEIGHT = '0'
-        self.TRY_LIMIT = 10
+        self.TRY_LIMIT = 5
         self.WCOUNT = 0
         self.WSTAT = False
 
