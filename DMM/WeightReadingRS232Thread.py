@@ -200,7 +200,7 @@ class WeightReadingRs232Thread(threading.Thread):
                         self.TEMPWEIGHT = weight
                         self.WSTAT = True
                 elif weight == self.TEMPWEIGHT:
-                    if ( ( int(weight) == 0 and self.WCOUNT > _App.WEIGHT_TRY_ZERO ) or ( int(weight) > 0 and self.WCOUNT > _App.WEIGHT_TRY_NONZERO ) ) and self.WSTAT == True:
+                    if ( ( int(weight) == 0 and self.WCOUNT >= _App.WEIGHT_TRY_ZERO ) or ( int(weight) >= 0 and self.WCOUNT > _App.WEIGHT_TRY_NONZERO ) ) and self.WSTAT == True:
                         self.WSTAT = False
                         self.WCOUNT = 0
 
