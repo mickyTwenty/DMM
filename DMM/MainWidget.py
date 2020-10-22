@@ -497,6 +497,9 @@ class MainWidget(QtWidgets.QWidget):
         elif item[1] == 404:
             self.LOG_ITEM.setText("FB # {}\t{}".format(item[0], "FAILED"))
             self.LOG_ITEM.setBackground(QColor("#c00000"))
+        elif item[1] == 500:
+            self.LOG_ITEM.setText("FB # {}\t{}".format(item[0], "ERROR"))
+            self.LOG_ITEM.setBackground(QColor("#c00000"))
 
 
         if self.LOG_SCROLL_ITEM == self.listLog.count() - 1:

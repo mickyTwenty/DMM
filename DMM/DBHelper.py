@@ -89,7 +89,7 @@ class DBHelper():
 
             if data == False:
                 cur.execute("UPDATE tbl_lift_info SET res_success=:SUCCESS, res_message=:MESSAGE, res_code=:CODE WHERE lift_id=:LID", {"SUCCESS": str(False), "MESSAGE": "Connection Problem", "CODE": 404, "LID": LID})
-            elif data["WeightApplication"] == 4:
+            elif data["WeightApplication"] == 4 or data['WeightApplication'] == 500:
                 cur.execute("UPDATE tbl_lift_info SET res_success=:SUCCESS, res_message=:MESSAGE, res_code=:CODE WHERE lift_id=:LID", {"SUCCESS": str(data["IsSuccess"]), "MESSAGE": data["Message"], "CODE": data["WeightApplication"], "LID": LID})
             else:
                 cur.execute("UPDATE tbl_lift_info SET res_success=:SUCCESS, res_message=:MESSAGE, res_code=:CODE WHERE lift_id=:LID", {"SUCCESS": str(data["IsSuccess"]), "MESSAGE": data["ErrorMessage"], "CODE": data["WeightApplication"], "LID": LID})

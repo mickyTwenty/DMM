@@ -102,6 +102,10 @@ class APICallThread(threading.Thread):
                     json_response['IsSuccess'] = False
                     json_response['WeightApplication'] = 4
                     json_response['TransactionId'] = ''
+                elif status == 500: #("Message" in json_response) and (json_response['Message'] == 'The request is invalid.'):
+                    json_response['IsSuccess'] = False
+                    json_response['WeightApplication'] = 500
+                    json_response['TransactionId'] = ''
 
                 if json_response['TransactionId'] != json_data['TransactionId']:
                     json_response['IsSuccess'] = False
