@@ -502,6 +502,7 @@ class MainWidget(QtWidgets.QWidget):
         if item[1] == 1 or item[1] == 2:
             self.LOG_ITEM.setText("FB # {}\t{}".format(item[0], "OK"))
             self.LOG_ITEM.setBackground(QColor("#00b050"))
+            self.showMessage('info', 'Please SCAN FIRST item after ~5 seconds', 5)
             self.btnCancelLift.setVisible(False)
         elif item[1] == 0:
             self.LOG_ITEM.setText("FB # {}\t{}".format(item[0], "RETRY"))
