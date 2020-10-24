@@ -14,6 +14,7 @@ class APP_STATE(enum.Enum):
     STATE_NEED_TRUCKID      = 1
     STATE_BEGIN_LIFT        = 2
     STATE_SCAN_BARCODE      = 3
+    STATE_LIFT_COMPLETE     = 4
 
 global _App
 

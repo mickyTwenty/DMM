@@ -152,6 +152,11 @@ class MainWidget(QtWidgets.QWidget):
             self.btnLogin.setVisible(False)
             self.btnCancelLift.setVisible(True)
             self.btnSetRWT.setVisible(False)
+
+        if _App.APPSTATE == APP_STATE.STATE_LIFT_COMPLETE:
+            self.btnLogin.setVisible(True)
+            self.btnCancelLift.setVisible(False)
+            self.btnSetRWT.setVisible(False)
         
         if len(self.message_queue) == 0 and _App.CLIENT_HOST_ALIVE is True:
             pending_lift = _DB.getPendingLift()
@@ -503,7 +508,8 @@ class MainWidget(QtWidgets.QWidget):
             self.LOG_ITEM.setText("FB # {}\t{}".format(item[0], "OK"))
             self.LOG_ITEM.setBackground(QColor("#00b050"))
             self.showMessage('info', 'Please SCAN FIRST item after ~5 seconds', 5)
-            self.btnCancelLift.setVisible(False)
+            _App.APPSTATE = APP_STATE.STATE_LIFT_COMPLETE
+            self.setAppState()
         elif item[1] == 0:
             self.LOG_ITEM.setText("FB # {}\t{}".format(item[0], "RETRY"))
             self.LOG_ITEM.setBackground(QColor("#c00000"))
