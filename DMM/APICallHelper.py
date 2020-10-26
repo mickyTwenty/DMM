@@ -53,8 +53,8 @@ class APICallThread(threading.Thread):
 
         json_data = dict(zip(["Barcodes", "ForkliftId", "Weight", "UOM", "ActiveUser", "TransactionId", "ScanTime"], data))
 
-        if _App.DEBUG_OUTPUT:
-            print("request data: ", json_data)
+        #if _App.DEBUG_OUTPUT:
+        print("request data: ", json_data)
 
         if _App.DEBUG == True:
             res = [
@@ -93,8 +93,8 @@ class APICallThread(threading.Thread):
 
                 json_response = response.json()
 
-                if _App.DEBUG_OUTPUT:
-                    print("API response: ", json_response)
+                #if _App.DEBUG_OUTPUT:
+                print("API response: ", json_response)
 
                 # Add handle invalid request
 
