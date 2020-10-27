@@ -101,7 +101,7 @@ class WeightReadingRs232Thread(threading.Thread):
                             
                             #if _App.DEBUG_OUTPUT:
                             print("received data: " + response)
-                            
+
                             if len(response) >= 0:
                                 currentWeight = self.extractDigit(response)
                                 if currentWeight != '-1':
@@ -202,7 +202,7 @@ class WeightReadingRs232Thread(threading.Thread):
                         self.TEMPWEIGHT = weight
                         self.WSTAT = True
                 elif weight == self.TEMPWEIGHT:
-                    if ( ( int(weight) == 0 and self.WCOUNT >= _App.WEIGHT_TRY_ZERO ) or ( int(weight) > 0 and self.WCOUNT >= _App.WEIGHT_TRY_NONZERO ) ) and self.WSTAT == True and ( abs(int(weight) - int(self.OLDWEIGHT)) > _App.WEIGHT_IGNORE_CHANGES ):
+                    if ( ( int(weight) == 0 and self.WCOUNT >= _App.WEIGHT_TRY_ZERO ) or ( int(weight) > 0 and self.WCOUNT >= _App.WEIGHT_TRY_NONZERO ) ) and self.WSTAT == True:
                         self.WSTAT = False
                         self.WCOUNT = 0
 
