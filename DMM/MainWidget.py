@@ -538,6 +538,13 @@ class MainWidget(QtWidgets.QWidget):
     def logScroll(self):
         item = self.listLog.item(self.LOG_SCROLL_ITEM - 1)
         self.listLog.scrollToItem(item, QtWidgets.QAbstractItemView.PositionAtBottom)
+
+    def clearLog(self):
+        if _App.APPSTATE.value <= APP_STATE.STATE_NEED_LOGIN.value:
+            self.LOG_ITEM = None
+            self.listLog.clear()
+            return True
+        return False
             
     def on_btnLogup_clicked(self):
         if self.LOG_SCROLL_ITEM > LOG_PAGE_SIZE:

@@ -33,6 +33,7 @@ class ToolsWidget(object):
         self.btnEmail.clicked.connect(self.slotEmailCsvClicked)
         self.btnCalc.clicked.connect(self.slotCalcClicked)
         self.btnInfo.clicked.connect(self.slotInfoClicked)
+        self.btnClearLog.clicked.connect(self.slotClearLogClicked)
 
     def getSDPath(self):
         path = '/media/pi/*/'
@@ -108,6 +109,11 @@ class ToolsWidget(object):
         diag = AboutDialog.AboutDialog(self)
         diag.exec_()
 
+    def slotClearLogClicked(self):
+        if self.MainWindow.mainWidget.clearLog() is False:
+            QMessageBox.information(None, "Clear Log", "Failed! You need to logout first")
+
+
     def setupUi(self, ToolsWidget):
         ToolsWidget.setObjectName("ToolsWidget")
         ToolsWidget.resize(1024, 600)
@@ -167,6 +173,14 @@ class ToolsWidget(object):
         self.btnInfo.setIconSize(QtCore.QSize(200, 148))
         self.btnInfo.setObjectName("btnInfo")
         self.gridLayout.addWidget(self.btnInfo, 0, 3, 1, 1)
+        self.btnClearLog = QtWidgets.QToolButton(ToolsWidget)
+        self.btnClearLog.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        icon5 = QtGui.QIcon()
+        icon5.addPixmap(QtGui.QPixmap("res/gui/tools_clearlog.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.btnClearLog.setIcon(icon5)
+        self.btnClearLog.setIconSize(QtCore.QSize(200, 148))
+        self.btnClearLog.setObjectName("btnClearLog")
+        self.gridLayout.addWidget(self.btnClearLog, 1, 1, 1, 1)
         self.verticalLayout.addLayout(self.gridLayout)
         spacerItem = QtWidgets.QSpacerItem(20, 76, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem)
