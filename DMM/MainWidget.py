@@ -154,6 +154,7 @@ class MainWidget(QtWidgets.QWidget):
             self.btnSetRWT.setVisible(False)
 
         if _App.APPSTATE == APP_STATE.STATE_LIFT_COMPLETE:
+            self.setMessageText("PLEASE BEGIN NEW LIFT")
             self.btnLogin.setVisible(True)
             self.btnCancelLift.setVisible(False)
             self.btnSetRWT.setVisible(False)
