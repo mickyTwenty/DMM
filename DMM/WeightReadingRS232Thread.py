@@ -99,6 +99,7 @@ class WeightReadingRs232Thread(threading.Thread):
                             response = re.sub(r"[^a-zA-Z0-9]+", ' ', response)
                             response = response.strip()
                             #if _App.DEBUG_OUTPUT:
+                            
                             print("received data: " + response)
                             if len(response) >= 0:
                                 currentWeight = self.extractDigit(response)
