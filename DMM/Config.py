@@ -162,6 +162,9 @@ class App:
         self.WEIGHT_TRY_ZERO = 0
         self.WEIGHT_TRY_NONZERO = 4
 
+        self.WEIGHT_IGNORE_CHANGES = 3
+        self.WEIGHT_IGNORE_CHANGES_UNIT = 'LBS'
+
         self._Settings = AppSettings()
 
         #self.LoginID = self._Settings.SAVED_USER
