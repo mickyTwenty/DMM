@@ -163,7 +163,7 @@ class App:
         self.WEIGHT_TRY_NONZERO = 4
 
         self.WEIGHT_IGNORE_CHANGES = 3
-        self.WEIGHT_IGNORE_CHANGES_UNIT = 'LBS'
+        self.WEIGHT_IGNORE_CHANGES_UNIT = 'KGS'
 
         self._Settings = AppSettings()
 
