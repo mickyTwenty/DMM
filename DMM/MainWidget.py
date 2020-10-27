@@ -342,7 +342,7 @@ class MainWidget(QtWidgets.QWidget):
         self.cancelLift()
     
     def cancelLift(self):
-        if self.CURRENT_LID != '':
+        if self.CURRENT_LID != '' and _App.APPSTATE != APP_STATE.STATE_LIFT_COMPLETE:
             print("Set Ignored Lift: ", self.CURRENT_LID)
             _DB.setLiftCode(self.CURRENT_LID, False, "Cancelled LIFT by Operator", 6)
 
