@@ -2,7 +2,7 @@ import sys
 import threading
 import time
 import random
-import readchar
+#import readchar
 
 from Config import _App
 from Config import APP_STATE
