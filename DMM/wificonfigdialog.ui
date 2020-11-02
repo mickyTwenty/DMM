@@ -116,7 +116,7 @@ background: rgb(95, 111,119);
 color: white;</string>
        </property>
        <property name="text">
-        <string>Wifi Configuragion</string>
+        <string>Wifi Configuration</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
