@@ -44,6 +44,22 @@ class DBHelper():
             print(e)
         finally:
             self.mutex.unlock()
+
+    def getLiftByFB(self, fb_id):
+        lift = None
+        try:
+            self.mutex.lock()
+            cur = self.conn.cursor()
+
+            cur.execute("SELECT * FROM tbl_lift_info WHERE fb_id=:FBID ORDER BY datetime DESC", {"FBID": fb_id})
+            lift = cur.fetchone()
+
+        except Error as e:
+            print(e)
+        finally:
+            self.mutex.unlock()
+
+        return lift
     
     def updateCombineLift(self, LID, weight, uom):
         try:

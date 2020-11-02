@@ -298,10 +298,10 @@ class MainWidget(QtWidgets.QWidget):
             print("Call API")
             #self.callApi(self.CURRENT_LID)
 
-            self.LAST_LID = self.CURRENT_LID
-            self.LAST_FBID = self.CURRENT_FBID
-            self.LAST_WEIGHT = self.CURRENT_WEIGHT
-            self.LAST_UOM = self.CURRENT_UOM
+            #self.LAST_LID = self.CURRENT_LID
+            #self.LAST_FBID = self.CURRENT_FBID
+            #self.LAST_WEIGHT = self.CURRENT_WEIGHT
+            #self.LAST_UOM = self.CURRENT_UOM
 
         elif self.CURRENT_LID != ""  and self.CURRENT_FBID == "":
             print("Set Ignored Lift: ", self.CURRENT_LID)
@@ -351,10 +351,10 @@ class MainWidget(QtWidgets.QWidget):
                 self.LOG_ITEM.setText("FB # {}\t{}".format(self.CURRENT_FBID, "CANCELLED"))
                 self.LOG_ITEM.setBackground(QColor("#c00000"))
 
-        self.LAST_LID = ""
-        self.LAST_FBID = ""
-        self.LAST_WEIGHT = ""
-        self.LAST_UOM = ""
+        #self.LAST_LID = ""
+        #self.LAST_FBID = ""
+        #self.LAST_WEIGHT = ""
+        #self.LAST_UOM = ""
 
         self.CURRENT_WEIGHT = ""
         self.CURRENT_UOM = ""
@@ -408,11 +408,32 @@ class MainWidget(QtWidgets.QWidget):
             self.showMessage("Warning", "INVALID BARCODE SCANNED", 5)
             return
 
-
         new_fbitem = barcode
         new_fbid = new_fbitem.split("-")[0]
 
         if self.CURRENT_FBID == "":
+            lift = _DB.getLiftByFB(new_fbid)
+
+            if not lift or lift[11] > 3:
+                self.CURRENT_FBID = new_fbid
+                self.setLiftIDText(new_fbid)
+                _DB.setFBId(self.CURRENT_LID, self.CURRENT_FBID)
+            elif lift[11] == 3:
+                _DB.setLiftCode(self.CURRENT_LID, False, "Combined Lift", 7)
+                self.CURRENT_LID = lift[2]
+                self.CURRENT_FBID = new_fbid
+                self.setLiftIDText(new_fbid)
+                self.CURRENT_WEIGHT = self.combineWeight(lift[4], lift[5], self.CURRENT_WEIGHT, self.CURRENT_UOM)
+                print('Combined Lift Weight: {} {}'.format(self.CURRENT_WEIGHT, self.CURRENT_UOM))
+                _DB.updateCombineLift(self.CURRENT_LID, self.CURRENT_WEIGHT, self.CURRENT_UOM)
+            elif lift[11] == 1 or lift[11] == 2:
+                self.setLiftIDText(new_fbid)
+                self.showMessage("Info", "ALREADY COMPLETED LIFT", 5)
+                _App.APPSTATE = APP_STATE.STATE_LIFT_COMPLETE
+                self.setAppState()
+                return
+
+            '''
             if new_fbid == self.LAST_FBID:
                 _DB.setLiftCode(self.CURRENT_LID, False, "Combined Lift", 7)
                 self.CURRENT_LID = self.LAST_LID
@@ -426,6 +447,7 @@ class MainWidget(QtWidgets.QWidget):
                 self.CURRENT_FBID = new_fbid
                 self.setLiftIDText(new_fbid)
                 _DB.setFBId(self.CURRENT_LID, self.CURRENT_FBID)
+            '''
 
         if self.CURRENT_FBID != new_fbid:
             self.showMessage("Alert", "MULTIPLE FRIEGHT BILLS NOT ALLOWED. PLEASE RE-LIFT", 5)
