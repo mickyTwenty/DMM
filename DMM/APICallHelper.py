@@ -33,12 +33,14 @@ class APICallThread(threading.Thread):
 
                 LID = self.GUI.message_queue[0]
                 FB = self.GUI.message_queue[1]
+                FBITEM = self.GUI.message_queue[2]
 
                 res = self.send_request(FB)
-                self.GUI.newTransactionSet(LID, res)
+                self.GUI.newTransactionSet(LID, res, FBITEM)
 
                 self.GUI.message_mutex.lock()
 
+                self.GUI.message_queue.pop(0)
                 self.GUI.message_queue.pop(0)
                 self.GUI.message_queue.pop(0)
 

@@ -26,7 +26,7 @@ class SignalTrigger(QObject):
     chanage_app_state = pyqtSignal()
     new_item_scanned = pyqtSignal(str)
     new_lift_set = pyqtSignal(str, str, object, object)
-    new_transaction_set = pyqtSignal(str, object)
+    new_transaction_set = pyqtSignal(str, object, str)
     code_mode_changed = pyqtSignal()
 
     def connect_and_emit_trigger(self):
@@ -107,8 +107,8 @@ class MainWidget(QtWidgets.QWidget):
     def newLiftSet(self, weight, uom, barimg, qrimg):
         self.signals.new_lift_set.emit(weight, uom, barimg, qrimg)
 
-    def newTransactionSet(self, LID, data):
-        self.signals.new_transaction_set.emit(LID, data)
+    def newTransactionSet(self, LID, data, fbitem):
+        self.signals.new_transaction_set.emit(LID, data, fbitem)
 
     def changeCodeMode(self):
         self.signals.code_mode_changed.emit()
@@ -168,6 +168,7 @@ class MainWidget(QtWidgets.QWidget):
                 data = _DB.getFBItems(pending_lift)
                 self.message_queue.append(pending_lift)
                 self.message_queue.append(data)
+                self.message_queue.append('')
                 self.message_mutex.unlock()
                 self.showMessage("info", "Processing Pending Lifts", 3)
 
@@ -460,7 +461,7 @@ class MainWidget(QtWidgets.QWidget):
         #if self.insertNewFBItem(self.CURRENT_LID, new_fbitem):
         if _DB.insertNewFBItem([self.CURRENT_LID, SCAN_ID, new_fbitem, _App.getDateTimeStamp("%m/%d/%Y %H:%M:%S")]):
             self.listBarcodes.addItem(new_fbitem)
-            self.callApi(self.CURRENT_LID)
+            self.callApi(self.CURRENT_LID, new_fbitem)
             #self.setMessageText("PLEASE SCAN BARCODE OF ITEMS")
         else:
             #self.listBarcodes.addItem("{}\t(Already Scanned)".format(new_fbitem))
@@ -479,7 +480,7 @@ class MainWidget(QtWidgets.QWidget):
 
         return True
 
-    def callApi(self, LID):
+    def callApi(self, LID, FBITEM):
         self.message_mutex.lock()
         if LID == '':
             print('LID NULL')                                   # bug point
@@ -487,6 +488,7 @@ class MainWidget(QtWidgets.QWidget):
         data = _DB.getFBItems(LID)
         self.message_queue.append(LID)
         self.message_queue.append(data)
+        self.message_queue.append(FBITEM)
         self.message_mutex.unlock()
 
     def combineWeight(self, lw, lu, cw, cu):
@@ -495,11 +497,11 @@ class MainWidget(QtWidgets.QWidget):
             return lw
         return str(int(cw) + _App.convertWeight(int(lw), lu, cu))
 
-    @QtCore.pyqtSlot(str, object)
-    def setNewTransaction(self, LID, data):
+    @QtCore.pyqtSlot(str, object, str)
+    def setNewTransaction(self, LID, data, fbitem):
         #if data != False:
         lift = _DB.setLiftTransaction(LID, data)
-        self.addLogItem(LID, lift)
+        self.addLogItem(LID, lift, fbitem)
         '''
         if data is False:
             #self.listLog.addItem(data["FreightBill"] + "\tFailed")
@@ -516,7 +518,7 @@ class MainWidget(QtWidgets.QWidget):
         self.listLog.scrollToBottom()
         '''
 
-    def addLogItem(self, LID, item):
+    def addLogItem(self, LID, item, fbitem):
         if item[1] == 4:
             return
 
@@ -536,7 +538,7 @@ class MainWidget(QtWidgets.QWidget):
             self.LOG_ITEM.setText("FB # {}\t{}".format(item[0], "RETRY"))
             self.LOG_ITEM.setBackground(QColor("#c00000"))
         elif item[1] == 3:
-            self.LOG_ITEM.setText("FB # {}\t{}".format(item[0], "WAITING"))
+            self.LOG_ITEM.setText("FB # {}\t{}".format(fbitem, "WAITING"))
             self.LOG_ITEM.setBackground(QColor("#ffa500"))
         elif item[1] == 404:
             self.LOG_ITEM.setText("FB # {}\t{}".format(item[0], "FAILED"))
