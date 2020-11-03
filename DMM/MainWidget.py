@@ -415,7 +415,7 @@ class MainWidget(QtWidgets.QWidget):
         if self.CURRENT_FBID == "":
             lift = _DB.getLiftByFB(new_fbid)
 
-            if not lift or lift[11] > 3:
+            if not lift or lift[11] > 3 or lift[11] == 1 or lift[11] == 2:
                 self.CURRENT_FBID = new_fbid
                 self.setLiftIDText(new_fbid)
                 _DB.setFBId(self.CURRENT_LID, self.CURRENT_FBID)
@@ -427,13 +427,14 @@ class MainWidget(QtWidgets.QWidget):
                 self.CURRENT_WEIGHT = self.combineWeight(lift[4], lift[5], self.CURRENT_WEIGHT, self.CURRENT_UOM)
                 print('Combined Lift Weight: {} {}'.format(self.CURRENT_WEIGHT, self.CURRENT_UOM))
                 _DB.updateCombineLift(self.CURRENT_LID, self.CURRENT_WEIGHT, self.CURRENT_UOM)
+            '''
             elif lift[11] == 1 or lift[11] == 2:
                 self.setLiftIDText(new_fbid)
                 self.showMessage("Info", "ALREADY COMPLETED LIFT", 5)
                 _App.APPSTATE = APP_STATE.STATE_LIFT_COMPLETE
                 self.setAppState()
                 return
-
+            '''
             '''
             if new_fbid == self.LAST_FBID:
                 _DB.setLiftCode(self.CURRENT_LID, False, "Combined Lift", 7)
