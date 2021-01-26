@@ -154,7 +154,7 @@ class MainWidget(QtWidgets.QWidget):
             self.btnSetRWT.setVisible(False)
 
         if _App.APPSTATE == APP_STATE.STATE_WEIGHT_ERROR:
-            self.setMessageText("Please drop forks and re-lift")
+            self.setMessageText("Please Drop Forks and Re-lift")
             self.setActiveLiftText("ERROR")
             self.updateWeightText("ERROR", "")
             #self.updateNoneCodeImage()
@@ -330,6 +330,7 @@ class MainWidget(QtWidgets.QWidget):
             _App.APPSTATE = APP_STATE.STATE_BEGIN_LIFT
             #self.changeAppState()
             self.setAppState()
+        '''
         elif weight == "-1":
             self.CURRENT_WEIGHT = ""
             self.CURRENT_UOM = ""
@@ -341,7 +342,7 @@ class MainWidget(QtWidgets.QWidget):
 
             _App.APPSTATE = APP_STATE.STATE_WEIGHT_ERROR
             self.setAppState()
-            
+        '''
         else:
             self.CURRENT_WEIGHT = weight
             self.CURRENT_UOM = weightmode
