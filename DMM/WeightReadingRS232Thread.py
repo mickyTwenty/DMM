@@ -148,6 +148,7 @@ class WeightReadingRs232Thread(threading.Thread):
         try:
             if weight == '-1':
                 self.GUI.setNewLift(weight, '')
+                self.OLDWEIGHT = '-1'
                 return
 
             if 'M' not in response:
@@ -215,7 +216,8 @@ class WeightReadingRs232Thread(threading.Thread):
                             #self.GUI.updateWeightText("NO LOAD", "")
                             #self.GUI.updateNoneCodeImage()
                             #self.GUI.setNewLift(0, "")
-                            self.GUI.newLiftSet("", "", None, None)
+                            self.GUI.newLiftSet('', '', None, None)
+                            self.OLDWEIGHT = '0'
                             #_App.APPSTATE = APP_STATE.STATE_BEGIN_LIFT
                             #self.GUI.changeAppState()
                             return

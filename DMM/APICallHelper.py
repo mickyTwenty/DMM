@@ -36,6 +36,10 @@ class APICallThread(threading.Thread):
                 FBITEM = self.GUI.message_queue[2]
 
                 res = self.send_request(FB)
+                if res is None:             # API call is failed
+                    print('API call is failed')
+                    pass
+
                 self.GUI.newTransactionSet(LID, res, FBITEM)
 
                 self.GUI.message_mutex.lock()
@@ -115,5 +119,6 @@ class APICallThread(threading.Thread):
 
             except requests.exceptions.RequestException as e:
                 print(e)
+                return None
                     
             return json_response
