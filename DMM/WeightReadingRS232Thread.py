@@ -148,9 +148,8 @@ class WeightReadingRs232Thread(threading.Thread):
         try:
             
             if weight == '-1':
-                #self.GUI.setNewLift(weight, '')
+                self.GUI.newLiftSet(weight, '')
                 self.OLDWEIGHT = '-1'
-                print('aaa')
                 return
             
             if 'M' not in response:
