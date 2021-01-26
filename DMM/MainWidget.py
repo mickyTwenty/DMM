@@ -330,19 +330,19 @@ class MainWidget(QtWidgets.QWidget):
             _App.APPSTATE = APP_STATE.STATE_BEGIN_LIFT
             #self.changeAppState()
             self.setAppState()
-        '''
-        elif weight == "-1":
-            self.CURRENT_WEIGHT = ""
-            self.CURRENT_UOM = ""
-            self.CURRENT_BARIMG = None
-            self.CURRENT_QRIMG = None
+            '''
+            elif weight == "-1":
+                self.CURRENT_WEIGHT = ""
+                self.CURRENT_UOM = ""
+                self.CURRENT_BARIMG = None
+                self.CURRENT_QRIMG = None
 
-            self.CURRENT_LID = ""
-            self.CURRENT_FBID = ""
+                self.CURRENT_LID = ""
+                self.CURRENT_FBID = ""
 
-            _App.APPSTATE = APP_STATE.STATE_WEIGHT_ERROR
-            self.setAppState()
-        '''
+                _App.APPSTATE = APP_STATE.STATE_WEIGHT_ERROR
+                self.setAppState()
+            '''
         else:
             self.CURRENT_WEIGHT = weight
             self.CURRENT_UOM = weightmode
