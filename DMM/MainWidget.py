@@ -150,7 +150,16 @@ class MainWidget(QtWidgets.QWidget):
             #self.setActiveLiftText("")
             self.setLiftIDText(self.CURRENT_FBID)
             self.btnLogin.setVisible(False)
-            self.btnCancelLift.setVisible(True)
+            self.btnCancelLift.setVisible(False)
+            self.btnSetRWT.setVisible(False)
+
+        if _App.APPSTATE == APP_STATE.STATE_WEIGHT_ERROR:
+            self.setMessageText("Please drop forks and re-lift")
+            self.setActiveLiftText("ERROR")
+            self.updateWeightText("ERROR", "")
+            #self.updateNoneCodeImage()
+            self.btnLogin.setVisible(True)
+            self.btnCancelLift.setVisible(False)
             self.btnSetRWT.setVisible(False)
 
         if _App.APPSTATE == APP_STATE.STATE_LIFT_COMPLETE:
@@ -295,6 +304,7 @@ class MainWidget(QtWidgets.QWidget):
 
     @QtCore.pyqtSlot(str, str, object, object)
     def setNewLift(self, weight, weightmode, barimg=None, qrimg=None):
+
         if self.CURRENT_LID != "" and self.CURRENT_FBID != "":
             print("Call API")
             #self.callApi(self.CURRENT_LID)
@@ -319,6 +329,17 @@ class MainWidget(QtWidgets.QWidget):
 
             _App.APPSTATE = APP_STATE.STATE_BEGIN_LIFT
             #self.changeAppState()
+            self.setAppState()
+        elif weight == "-1":
+            self.CURRENT_WEIGHT = ""
+            self.CURRENT_UOM = ""
+            self.CURRENT_BARIMG = None
+            self.CURRENT_QRIMG = None
+
+            self.CURRENT_LID = ""
+            self.CURRENT_FBID = ""
+
+            _App.APPSTATE = APP_STATE.STATE_WEIGHT_ERROR
             self.setAppState()
             
         else:
@@ -524,10 +545,21 @@ class MainWidget(QtWidgets.QWidget):
             return
 
         if ( self.LOG_ITEM is None or self.LOG_ITEM.data(QtCore.Qt.UserRole) != LID ):
-            i = QListWidgetItem()
-            i.setData(QtCore.Qt.UserRole, LID)
+            i = None
+            l = self.listLog.count()
+            while ( l > 0 ):
+                ll = self.listLog.item(l - 1)
+                if ll.data(QtCore.Qt.UserRole) == item[0]:
+                    i = ll
+                    break
+                l = l - 1
 
-            self.listLog.addItem(i)
+            if i is None:
+                i = QListWidgetItem()
+                i.setData(QtCore.Qt.UserRole, item[0])
+
+                self.listLog.addItem(i)
+            
             self.LOG_ITEM = i
 
         if item[1] == 1 or item[1] == 2:

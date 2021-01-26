@@ -15,6 +15,7 @@ class APP_STATE(enum.Enum):
     STATE_BEGIN_LIFT        = 2
     STATE_SCAN_BARCODE      = 3
     STATE_LIFT_COMPLETE     = 4
+    STATE_WEIGHT_ERROR      = 101
 
 global _App
 

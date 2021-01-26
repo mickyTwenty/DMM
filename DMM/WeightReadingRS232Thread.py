@@ -107,6 +107,7 @@ class WeightReadingRs232Thread(threading.Thread):
                                 if currentWeight != '-1':
                                     self.doProcessing(response, currentWeight)
                                 else:
+                                    self.doProcessing(response, currentWeight)
                                     print('Weight coming Zero')
                         time.sleep(self.rs232.INTERVAL)
                         #self.rsserial.flushInput()
@@ -145,6 +146,10 @@ class WeightReadingRs232Thread(threading.Thread):
     def doProcessing(self, response, weight):
         #weight = self.weightConversion(weight)
         try:
+            if weight == -1:
+                self.GUI.setNewLift(weight, '')
+                return
+
             if 'M' not in response:
                 if _App.DEBUG is True:
                     if float(weight) < _App._Settings.WEIGHTTHRESHOLD:
