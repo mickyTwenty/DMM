@@ -154,7 +154,7 @@ class MainWidget(QtWidgets.QWidget):
             self.btnSetRWT.setVisible(False)
 
         if _App.APPSTATE == APP_STATE.STATE_WEIGHT_ERROR:
-            self.setMessageText("Please Drop Forks and Re-lift")
+            self.setMessageText("Please adjust mast tilt or drop forks and re-lift")
             self.setActiveLiftText("ERROR")
             self.updateWeightText("ERROR", "")
             #self.updateNoneCodeImage()
