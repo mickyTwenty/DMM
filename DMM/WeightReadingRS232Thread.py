@@ -148,7 +148,7 @@ class WeightReadingRs232Thread(threading.Thread):
         try:
             
             if weight == '-1':
-                self.GUI.newLiftSet(weight, '')
+                self.GUI.newLiftSet(weight, '', None, None)
                 self.OLDWEIGHT = '-1'
                 return
             
