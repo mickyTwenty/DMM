@@ -29,6 +29,9 @@ class NetworkSetupDialog(QtWidgets.QDialog):
         self.setWindowFlags(QtCore.Qt.Window | QtCore.Qt.FramelessWindowHint | QtCore.Qt.CustomizeWindowHint | QtCore.Qt.WindowTitleHint | QtCore.Qt.WA_ShowWithoutActivating)
         self.setModal(True)
 
+        self.btnBack.grabGesture(QtCore.Qt.TapAndHoldGesture)
+        self.btnSave.grabGesture(QtCore.Qt.TapAndHoldGesture)
+
         self.net_type = 0
         self.net_ipaddr = ''
         self.net_mask = ''

@@ -243,7 +243,7 @@ class MainWidget(QtWidgets.QWidget):
     def setMessageText(self, message):
         if _App.MESSAGE_ON is True:
             if _App.MESSAGE_TYPE == "Alert":
-                self.lblMessage.setStyleSheet("color: rgb(255, 30, 30); font-size: 15px")
+                self.lblMessage.setStyleSheet("color: rgb(255, 30, 30); font-size: 24px")
             else:
                 self.lblMessage.setStyleSheet("color: rgb(255, 30, 30); font-size: 24px")
             self.lblMessage.setText(_App.MESSAGE_TEXT)
@@ -472,7 +472,7 @@ class MainWidget(QtWidgets.QWidget):
             '''
 
         if self.CURRENT_FBID != new_fbid:
-            self.showMessage("Alert", "MULTIPLE FRIEGHT BILLS NOT ALLOWED. PLEASE RE-LIFT", 5)
+            self.showMessage("Alert", "MULTIPLE FRIEGHT BILLS NOT\n ALLOWED. PLEASE RE-LIFT", 5)
             #self.setInvalidLift()
             #self.setNewLift("", "")
             return
