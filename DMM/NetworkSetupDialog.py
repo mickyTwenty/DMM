@@ -67,9 +67,9 @@ class NetworkSetupDialog(QtWidgets.QDialog):
 
             self.net_type = 1
 
-    #def mousePressEvent(self, event):
-    #    print("Main Widget Mouse Press")
-    #    super(NetworkSetupDialog, self).mousePressEvent(event)
+    def mousePressEvent(self, event):
+        print("Main Widget Mouse Press")
+        super(NetworkSetupDialog, self).mousePressEvent(event)
 
     def eventFilter(self, obj, event):
         if event.type() == event.MouseButtonPress:
