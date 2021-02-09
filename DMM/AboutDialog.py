@@ -12,7 +12,7 @@ class AboutDialog(QtWidgets.QDialog):
         self.setWindowFlags(QtCore.Qt.Window | QtCore.Qt.FramelessWindowHint | QtCore.Qt.CustomizeWindowHint | QtCore.Qt.WindowTitleHint | QtCore.Qt.WA_ShowWithoutActivating)
         self.setModal(True)
 
-        QScroller.grabGesture(self.scrollArea, QScroller.LeftMouseButtonGesture)
+        #QScroller.grabGesture(self.scrollArea, QScroller.LeftMouseButtonGesture)
 
         self.ABOUT_TXT = 'about.txt'
 
