@@ -4,7 +4,7 @@ import sys
 from Config import _App
 
 class CodeModeDialog(QtWidgets.QDialog):
-    def __init__(self):
+    def __init__(self, MainWindow):
         super(CodeModeDialog, self).__init__()
         uic.loadUi('codemodedialog.ui', self)
 
