@@ -9,7 +9,7 @@ class AboutDialog(QtWidgets.QDialog):
         self.parent = parent
 
         self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
-        self.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.CustomizeWindowHint | QtCore.Qt.WindowTitleHint | QtCore.Qt.WA_ShowWithoutActivating)
+        self.setWindowFlags(QtCore.Qt.Window | QtCore.Qt.FramelessWindowHint | QtCore.Qt.CustomizeWindowHint | QtCore.Qt.WindowTitleHint | QtCore.Qt.WA_ShowWithoutActivating)
         self.setModal(True)
 
         QScroller.grabGesture(self.scrollArea, QScroller.LeftMouseButtonGesture)

@@ -32,7 +32,7 @@ class BasicSettingsWidget(QtWidgets.QWidget):
         self.btnNetworkSetup.clicked.connect(self.slotNetSetupClicked)
         
     def slotCodeClicked(self):
-        diag = CodeModeDialog.CodeModeDialog()
+        diag = CodeModeDialog.CodeModeDialog(self)
         r = diag.exec_()
         if r:
             self.MainWindow.mainWidget.changeCodeMode()
