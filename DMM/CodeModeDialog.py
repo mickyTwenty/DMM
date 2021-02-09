@@ -9,7 +9,7 @@ class CodeModeDialog(QtWidgets.QDialog):
         uic.loadUi('codemodedialog.ui', self)
 
         self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
-        self.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.CustomizeWindowHint | QtCore.Qt.WindowTitleHint | QtCore.Qt.WA_ShowWithoutActivating)
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.CustomizeWindowHint | QtCore.Qt.WindowTitleHint | QtCore.Qt.WA_ShowWithoutActivating | QtCore.Qt.WA_AcceptTouchEvents)
         self.setModal(True)
 
         self.btnCodeNone.clicked.connect(self.slotCodeNone)
