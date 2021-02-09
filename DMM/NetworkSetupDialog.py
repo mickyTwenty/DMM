@@ -26,7 +26,7 @@ class NetworkSetupDialog(QtWidgets.QDialog):
         self.parent = parent
 
         self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
-        self.setWindowFlags(QtCore.Qt.Window | QtCore.Qt.FramelessWindowHint | QtCore.Qt.CustomizeWindowHint | QtCore.Qt.WindowTitleHint | QtCore.Qt.WA_ShowWithoutActivating)
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.CustomizeWindowHint | QtCore.Qt.WindowTitleHint | QtCore.Qt.WA_ShowWithoutActivating)
         self.setModal(True)
 
         self.btnBack.grabGesture(QtCore.Qt.TapAndHoldGesture)
@@ -43,8 +43,6 @@ class NetworkSetupDialog(QtWidgets.QDialog):
 
         self.btnBack.clicked.connect(self.on_btnBack_clicked)
         self.btnSave.clicked.connect(self.on_btnSave_clicked)
-        self.btnBack.installEventFilter(self)
-        self.btnSave.installEventFilter(self)
         self.editIpaddr.installEventFilter(self)
         self.editMask.installEventFilter(self)
         self.editGateway.installEventFilter(self)
