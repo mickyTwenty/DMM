@@ -43,6 +43,8 @@ class NetworkSetupDialog(QtWidgets.QDialog):
 
         self.btnBack.clicked.connect(self.on_btnBack_clicked)
         self.btnSave.clicked.connect(self.on_btnSave_clicked)
+        self.btnBack.installEventFilter(self)
+        self.btnSave.installEventFilter(self)
         self.editIpaddr.installEventFilter(self)
         self.editMask.installEventFilter(self)
         self.editGateway.installEventFilter(self)
